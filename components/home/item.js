@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity, TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, StyleSheet, FlatList, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { IMAGE_URL } from '../../core/config';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Title } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
@@ -8,7 +9,7 @@ export default function Item({ listItem, title, navigation }) {
     return (
         <View>
             <TouchableOpacity style={styles.title}>
-                <Title style={{fontSize: 17}}>{title}</Title>
+                <Title style={{ fontSize: 17 }}>{title}</Title>
                 <TouchableOpacity>
                     <AntDesign name="arrowright" size={24} color="black" />
                 </TouchableOpacity>
@@ -16,21 +17,22 @@ export default function Item({ listItem, title, navigation }) {
             <FlatList
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
+                keyExtractor={item=>item.ID}
                 data={listItem}
                 renderItem={({ item }) => {
                     return (
-                        <TouchableWithoutFeedback onPress={() => navigation.push('Detail',item)}>
+                        <TouchableWithoutFeedback onPress={() => navigation.push('Detail', item)}>
                             <View style={styles.item}>
                                 <LinearGradient
-                                    start={[0, 1]}
-                                    end={[1, 0]}
+                                    start={[0, 0]}
+                                    end={[1, 1]}
                                     colors={['black', 'white']}
                                     style={styles.image}>
-                                    <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={item.image}></Image>
+                                    <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={{uri:IMAGE_URL+item.Image}}></Image>
                                 </LinearGradient>
                                 <View style={styles.infor}>
-                                    <Text style={{ color: '#e23434', fontWeight: 'bold' }}>{item.name}</Text>
-                                    <Text>{item.price} vnđ</Text>
+                                    <Text style={{ color: '#e23434', fontWeight: 'bold' }}>{item.ProductName}</Text>
+                                    <Text>{item.Price} vnđ</Text>
                                 </View>
                             </View>
                         </TouchableWithoutFeedback>
@@ -54,11 +56,9 @@ const styles = StyleSheet.create({
     image: {
         width: 170,
         height: 160,
-        borderRadius: 30,
+        borderRadius: 20,
         justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        elevation: 3,
+        alignItems: 'center'
     },
     infor: {
         maxWidth: 170,

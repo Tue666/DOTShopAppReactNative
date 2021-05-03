@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Title, Caption } from 'react-native-paper';
+import { IMAGE_URL } from '../core/config';
+import { Caption } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -33,10 +34,10 @@ export function HeaderAbout({ param }) {
         <View style={styles.header}>
             <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
                 <View style={{width:40,height:40}}>
-                    <Image style={{width:'90%',height:'90%',resizeMode:'contain'}} source={param.image}></Image>
+                    <Image style={{width:'90%',height:'90%',resizeMode:'contain'}} source={{uri:IMAGE_URL+param.Image}}></Image>
                 </View>
                 <View style={{marginLeft:10}}>
-                    <Text style={{fontWeight:'bold'}}>{param.name}</Text>
+                    <Text style={{fontWeight:'bold'}}>{param.ProductName}</Text>
                     <Caption>Detail</Caption>
                 </View>
             </View>
@@ -47,7 +48,7 @@ export function HeaderDetail({ param }) {
     return (
         <View style={styles.header}>
             <View>
-                <Text style={{fontWeight:'bold'}}>{param.name}</Text>
+                <Text style={{fontWeight:'bold'}}>{param.ProductName}</Text>
             </View>
             <View style={styles.action}>
                 <View style={styles.titleCart}>

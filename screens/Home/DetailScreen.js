@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, Image, ScrollView, Button, TouchableOpacity, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { IMAGE_URL } from '../../core/config';
 import { Title, Caption } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
 import Item from '../../components/home/item';
@@ -22,11 +23,11 @@ export default function DetailScreen({ navigation, route }) {
         <ScrollView style={styles.container}>
             <View style={{ marginBottom: 15 }}>
                 <View style={styles.inforImage}>
-                    <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={route.params.image}></Image>
+                    <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={{uri:IMAGE_URL+route.params.Image}}></Image>
                 </View>
                 <View style={styles.inforName}>
-                    <Title style={styles.name}>{route.params.name}</Title>
-                    <Text style={styles.price}>{route.params.price} vnđ</Text>
+                    <Title style={styles.name}>{route.params.ProductName}</Title>
+                    <Text style={styles.price}>{route.params.Price} vnđ</Text>
                     <Button title="BUY NOW" color="orange"></Button>
                 </View>
             </View>
@@ -39,14 +40,14 @@ export default function DetailScreen({ navigation, route }) {
                         return (
                             <TouchableWithoutFeedback onPress={()=>{navigation.push('Image',item)}}>
                                 <View style={styles.item}>
-                                    <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={item.image}></Image>
+                                    <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={{uri:IMAGE_URL+item.Image}}></Image>
                                 </View>
                             </TouchableWithoutFeedback>
                         )
                     }}
                 ></FlatList>
             </View>
-            <TouchableOpacity style={styles.aboutProduct} onPress={() => { navigation.push('About', route.params) }}>
+            <TouchableOpacity style={styles.aboutProduct} onPress={() => { navigation.navigate('About', route.params) }}>
                 <View>
                     <Title style={{ fontSize: 17 }}>About this product</Title>
                     <Caption style={{ marginLeft: 20 }}>The information about this product</Caption>
@@ -56,9 +57,7 @@ export default function DetailScreen({ navigation, route }) {
                 </TouchableOpacity>
             </TouchableOpacity>
             {/* Related */}
-            <Item listItem={listRelated} title="Related products" navigation={navigation}></Item>
-            {/* Similar */}
-            <Item listItem={listRelated} title="Similar products" navigation={navigation}></Item>
+            {/* <Item listItem={listRelated} title="Related products" navigation={navigation}></Item> */}
         </ScrollView>
     )
 }
