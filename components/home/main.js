@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import Item from '../home/item';
 import Ads from '../home/ads';
 import { FetchTopProducts } from '../../model/fetchData';
@@ -15,7 +15,9 @@ export default function Main({ navigation }) {
     ]);
     useEffect(() => {
         FetchTopProducts('TopView',6).then(response=>response.json()).then(json=>setListTopView(json));
-    })
+        FetchTopProducts('TopHot',6).then(response=>response.json()).then(json=>setListTopHot(json));
+        FetchTopProducts('TopNew',6).then(response=>response.json()).then(json=>setListTopNew(json));
+    },[])
     return (
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
             {/* Ads */}
@@ -25,11 +27,11 @@ export default function Main({ navigation }) {
             {/* Ads */}
             <Ads listAds={listAds}></Ads>
             {/* Top Hot */}
-            <Item listItem={listTopView} title="Top Hot" navigation={navigation}></Item>
+            <Item listItem={listTopHot} title="Top Hot" navigation={navigation}></Item>
             {/* Ads */}
             <Ads listAds={listAds}></Ads>
             {/* Top New */}
-            <Item listItem={listTopView} title="Top New" navigation={navigation}></Item>
+            <Item listItem={listTopNew} title="Top New" navigation={navigation}></Item>
         </ScrollView>
     )
 }

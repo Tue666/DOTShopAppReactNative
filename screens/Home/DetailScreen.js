@@ -1,24 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, Image, ScrollView, Button, TouchableOpacity, FlatList, TouchableWithoutFeedback } from 'react-native';
 import { IMAGE_URL } from '../../core/config';
 import { Title, Caption } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
+import { FetchRelatedProducts } from '../../model/fetchData';
 import Item from '../../components/home/item';
 
 export default function DetailScreen({ navigation, route }) {
-    const [listRelated, setListRelated] = useState([
-        { name: 'ASUS ROG Strix SCAR 17 G733', image: require('../../assets/images/msige76raider.png'), price: '74,990,000', key: '1' },
-        { name: 'ASUS TUF Gaming A15 2021', image: require('../../assets/images/asusrogstrixscar17g733.png'), price: '32,990,000', key: '2' },
-        { name: 'MSI GE76 Raider Series', image: require('../../assets/images/asustufgaminga152021.png'), price: '109,990,000', key: '3' },
-        { name: 'Dell Gaming G7 15 7500', image: require('../../assets/images/acernitro5.png'), price: '38,990,000', key: '4' },
-        { name: 'Acer Nitro 5 2020', image: require('../../assets/images/dellgamingg7157500.png'), price: '20,990,000', key: '5' }
-    ]);
+    const [listRelated, setListRelated] = useState([]);
     const [slideImage, setSlideImage] = useState([
         { image: require('../../assets/images/msige76raider.png'), key: '1' },
         { image: require('../../assets/images/asusrogstrixscar17g733.png'), key: '2' },
         { image: require('../../assets/images/asustufgaminga152021.png'), key: '3' },
         { image: require('../../assets/images/dellgamingg7157500.png'), key: '4' }
     ]);
+    useEffect(()=>{
+        FetchRelatedProducts(route.params.IDCate).then(response=>response.json()).then(json=>setListRelated(json));
+    },[listRelated]);
     return (
         <ScrollView style={styles.container}>
             <View style={{ marginBottom: 15 }}>
@@ -27,7 +25,7 @@ export default function DetailScreen({ navigation, route }) {
                 </View>
                 <View style={styles.inforName}>
                     <Title style={styles.name}>{route.params.ProductName}</Title>
-                    <Text style={styles.price}>{route.params.Price} vnđ</Text>
+                    <Text style={styles.price}>{route.params.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
                     <Button title="BUY NOW" color="orange"></Button>
                 </View>
             </View>
@@ -40,7 +38,7 @@ export default function DetailScreen({ navigation, route }) {
                         return (
                             <TouchableWithoutFeedback onPress={()=>{navigation.push('Image',item)}}>
                                 <View style={styles.item}>
-                                    <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={{uri:IMAGE_URL+item.Image}}></Image>
+                                    <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={item.image}></Image>
                                 </View>
                             </TouchableWithoutFeedback>
                         )
@@ -57,7 +55,7 @@ export default function DetailScreen({ navigation, route }) {
                 </TouchableOpacity>
             </TouchableOpacity>
             {/* Related */}
-            {/* <Item listItem={listRelated} title="Related products" navigation={navigation}></Item> */}
+            <Item listItem={listRelated} title="Related products" navigation={navigation}></Item>
         </ScrollView>
     )
 }
