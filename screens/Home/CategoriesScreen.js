@@ -17,9 +17,9 @@ export default function CategoriesScreen({ navigation }) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.wrapper}>
-        {listCate.map((item) => {
+        {listCate.map((item, index) => {
           return (
-            <TouchableOpacity style={styles.item} onPress={() => { onClickRouteHandler(item.ID) }}>
+            <TouchableOpacity key={index} style={styles.item} onPress={() => { onClickRouteHandler(item.ID) }}>
               <LinearGradient
                 start={[0, 0]}
                 end={[1, 1]}

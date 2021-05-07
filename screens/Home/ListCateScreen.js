@@ -20,9 +20,9 @@ export default function ListCateScreen({ homeNavigation, navigation, route }) {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.wrapper}>
-          {listProductByCate.map((item) => {
+          {listProductByCate.map((item, index) => {
             return (
-              <TouchableOpacity style={styles.item} onPress={()=>homeNavigation.navigate('Detail',item)}>
+              <TouchableOpacity key={index} style={styles.item} onPress={()=>homeNavigation.navigate('Detail',item)}>
                 <LinearGradient
                   start={[0, 0]}
                   end={[1, 1]}

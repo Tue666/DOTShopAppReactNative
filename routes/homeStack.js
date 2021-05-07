@@ -15,20 +15,20 @@ export default function HomeStack({ navigation }) {
                 name="Home"
                 component={HomeScreen}
                 options={{
-                    headerTitle: ()=><HeaderHome drawerNavigation={navigation}></HeaderHome>
+                    headerTitle: () => <HeaderHome drawerNavigation={navigation}></HeaderHome>
                 }}
             >
             </Stack.Screen>
             <Stack.Screen
                 name="Detail"
                 component={DetailScreen}
-                options={({ route })=>({headerTitle: ()=><HeaderDetail param={route.params}></HeaderDetail>})}
+                options={({ route }) => ({ headerTitle: () => <HeaderDetail param={route.params}></HeaderDetail> })}
             >
             </Stack.Screen>
             <Stack.Screen
                 name="About"
                 component={AboutScreen}
-                options={({ route })=>({headerTitle: ()=><HeaderAbout param={route.params}></HeaderAbout>})}
+                options={({ route }) => ({ headerTitle: () => <HeaderAbout param={route.params}></HeaderAbout> })}
             >
             </Stack.Screen>
             <Stack.Screen
