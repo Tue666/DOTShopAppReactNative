@@ -14,10 +14,12 @@ export default function Main({ navigation }) {
         { image: require('../../assets/images/3.png'), key: '3' },
     ]);
     useEffect(() => {
-        FetchTopProducts('TopView',6).then(response=>response.json()).then(json=>setListTopView(json));
-        FetchTopProducts('TopHot',6).then(response=>response.json()).then(json=>setListTopHot(json));
-        FetchTopProducts('TopNew',6).then(response=>response.json()).then(json=>setListTopNew(json));
-    },[])
+        Promise.all([
+            FetchTopProducts('TopView', 6).then(response => response.json()).then(json => setListTopView(json)),
+            FetchTopProducts('TopHot', 6).then(response => response.json()).then(json => setListTopHot(json)),
+            FetchTopProducts('TopNew', 6).then(response => response.json()).then(json => setListTopNew(json))
+        ])
+    }, [])
     return (
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
             {/* Ads */}

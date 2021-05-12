@@ -4,12 +4,12 @@ import { IMAGE_URL } from '../core/config';
 import { Caption } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 
 export function HeaderHome({ drawerNavigation }) {
     const openMenu = () => {
         drawerNavigation.openDrawer();
     }
+    
     return (
         <View style={styles.header}>
             <Entypo style={styles.headerIcon} name="menu" size={27} color="black" onPress={openMenu} />
@@ -22,8 +22,8 @@ export function HeaderHome({ drawerNavigation }) {
                     <View style={styles.titleCount}>
                         <Text style={styles.textCount}>10</Text>
                     </View>
-                    <TouchableOpacity onPress={() => drawerNavigation.jumpTo("CartStack")}>
-                        <AntDesign name="shoppingcart" size={29} color="black" />
+                    <TouchableOpacity onPress={()=>drawerNavigation.jumpTo('CartStack')}>
+                        <AntDesign name="shoppingcart" size={34} color="black" />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -45,7 +45,7 @@ export function HeaderAbout({ param }) {
         </View>
     )
 }
-export function HeaderDetail({ param }) {
+export function HeaderDetail({ drawerNavigation, param }) {
     return (
         <View style={styles.header}>
             <View>
@@ -56,8 +56,8 @@ export function HeaderDetail({ param }) {
                     <View style={styles.titleCount}>
                         <Text style={styles.textCount}>10</Text>
                     </View>
-                    <TouchableOpacity>
-                        <AntDesign name="shoppingcart" size={29} color="black" />
+                    <TouchableOpacity onPress={()=>drawerNavigation.jumpTo('CartStack')}>
+                        <AntDesign name="shoppingcart" size={34} color="black" />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -69,7 +69,7 @@ export function HeaderCart({ drawerNavigation }) {
     return (
         <View style={styles.header}>
             <View style={{marginLeft: 20}}>
-                <AntDesign name="shoppingcart" size={30} color="black" />
+                <AntDesign name="shoppingcart" size={40} color="red" />
             </View>
             <TouchableOpacity onPress={()=>{drawerNavigation.goBack()}}>
                 <AntDesign name="closecircle" size={30} color="red" />

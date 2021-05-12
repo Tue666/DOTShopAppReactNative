@@ -5,12 +5,12 @@ import EditProfileScreen from '../screens/Profile/EditProfileScreen'
 
 const Stack = createStackNavigator();
 
-export default function ProfileStack({ navigation }) {
+export default function ProfileStack({ navigation, onClickRouteLogin }) {
   return (
       <Stack.Navigator
         screenOptions={{ headerShown: false }}
       >
-        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+        <Stack.Screen name="ProfileScreen" children={(props)=><ProfileScreen onClickRouteLogin={onClickRouteLogin} drawerNavigation={navigation} {...props}></ProfileScreen>} />
         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       </Stack.Navigator>
   );

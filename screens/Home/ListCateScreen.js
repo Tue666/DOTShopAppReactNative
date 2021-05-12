@@ -9,8 +9,10 @@ import { FetchProductsByCate } from '../../model/fetchData';
 export default function ListCateScreen({ homeNavigation, navigation, route }) {
   const [listProductByCate, setListProductByCate] = useState([]);
   useEffect(() => {
-    FetchProductsByCate(route.params.cateID).then(response => response.json()).then(json => setListProductByCate(json));
-  }, []);
+    let isMounted = true;
+    FetchProductsByCate(route.params.cateID).then(response => response.json()).then(json => { if (isMounted) setListProductByCate(json) });
+    return () => isMounted = false;
+  });
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.pop()}>
@@ -22,7 +24,7 @@ export default function ListCateScreen({ homeNavigation, navigation, route }) {
         <View style={styles.wrapper}>
           {listProductByCate.map((item, index) => {
             return (
-              <TouchableOpacity key={index} style={styles.item} onPress={()=>homeNavigation.navigate('Detail',item)}>
+              <TouchableOpacity key={index} style={styles.item} onPress={() => homeNavigation.navigate('Detail', item)}>
                 <LinearGradient
                   start={[0, 0]}
                   end={[1, 1]}

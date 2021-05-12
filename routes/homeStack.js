@@ -22,7 +22,7 @@ export default function HomeStack({ navigation }) {
             <Stack.Screen
                 name="Detail"
                 component={DetailScreen}
-                options={({ route }) => ({ headerTitle: () => <HeaderDetail param={route.params}></HeaderDetail> })}
+                options={({ route }) => ({ headerTitle: () => <HeaderDetail drawerNavigation={navigation} param={route.params}></HeaderDetail> })}
             >
             </Stack.Screen>
             <Stack.Screen

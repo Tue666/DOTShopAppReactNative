@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { setStorage } from '../../model/asyncStorage';
 import { TOKEN } from '../../constant';
 
-export default function LoginScreen({ navigation, drawerNavigation }) {
+export default function LoginScreen({ navigation, drawerNavigation, onClickRouteApp }) {
   const [userName, setUserName] = useState('');
   const [passWord, setPassWord] = useState('');
   const onChangeNameHandler = (input) => {
@@ -28,7 +28,7 @@ export default function LoginScreen({ navigation, drawerNavigation }) {
         }
         else {
           if (setStorage(TOKEN, json['token'])){
-            drawerNavigation.jumpTo('HomeStack');
+            onClickRouteApp();
           }
           else{
             Alert.alert('Sorry!', 'May we have some bugs, wait a minutes and try again. Thanks :D', [{ text: 'OK' }]);
@@ -103,6 +103,9 @@ export default function LoginScreen({ navigation, drawerNavigation }) {
             <TouchableOpacity style={[styles.loginButton, { borderWidth: 1, borderColor: 'orange' }]} onPress={() => navigation.push('Register')}>
               <Text style={[styles.loginButtonTitle, { color: 'orange' }]}>REGISTER</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={[styles.loginButton, { borderWidth: 1, borderColor: 'orange' }]} onPress={onClickRouteApp}>
+              <Text style={[styles.loginButtonTitle, { color: 'orange' }]}>BACK TO SHOP</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -152,11 +155,10 @@ const styles = StyleSheet.create({
   textInputContainer: {
     paddingLeft: 10,
     paddingHorizontal: 50,
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: '#ccc',
+    borderBottomWidth: 1,
+    borderBottomColor: '#fff',
     marginBottom: 20,
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
     flexDirection: "row",
     flexWrap: "wrap",
   },

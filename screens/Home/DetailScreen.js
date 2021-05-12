@@ -18,7 +18,9 @@ export default function DetailScreen({ navigation, route }) {
         { image: require('../../assets/images/dellgamingg7157500.png'), key: '4' }
     ]);
     useEffect(() => {
-        FetchRelatedProducts(route.params.IDCate).then(response => response.json()).then(json => setListRelated(json));
+        let isMounted = true;
+        FetchRelatedProducts(route.params.IDCate).then(response => response.json()).then(json => { if (isMounted) setListRelated(json) });
+        return ()=>isMounted = false;
     }, [listRelated]);
     const [quantityInput, setQuantityInput] = useState('1');
     const [maxInput, setMaxInput] = useState(route.params.Quantity);
@@ -207,7 +209,7 @@ const styles = StyleSheet.create({
     },
     modalView: {
         width: '100%',
-        height: '42%',
+        height: '45%',
         backgroundColor: '#fff',
         padding: 20,
         borderRadius: 13
