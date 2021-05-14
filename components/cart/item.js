@@ -1,68 +1,93 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, TextInput } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, TextInput, Modal } from 'react-native';
 import { IMAGE_URL } from '../../core/config';
+import { Entypo } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
-export default function Item() {
-    const [listCart, setListCart] = useState([
-        { name: 'ASUS ROG Strix SCAR 17 G733', image: 'iphone732gblikenew.png', price: '74,990,000 vnđ', key: '1' },
-        { name: 'ASUS ROG Strix SCAR 17 G733', image: 'iphone732gblikenew.png', price: '74,990,000 vnđ', key: '2' },
-        { name: 'ASUS ROG Strix SCAR 17 G733', image: 'iphone732gblikenew.png', price: '74,990,000 vnđ', key: '3' },
-        { name: 'ASUS ROG Strix SCAR 17 G733', image: 'iphone732gblikenew.png', price: '74,990,000 vnđ', key: '4' },
-        { name: 'ASUS ROG Strix SCAR 17 G733', image: 'iphone732gblikenew.png', price: '74,990,000 vnđ', key: '5' },
-        { name: 'ASUS ROG Strix SCAR 17 G733', image: 'iphone732gblikenew.png', price: '74,990,000 vnđ', key: '6' }
-    ]);
-    const [quantityInput, setQuantityInput] = useState('1');
-    const [maxInput, setMaxInput] = useState(19);
-    const [totalPrice, setTotalPrice] = useState('74,990,000 vnđ');
-    const onChangeInputHander = (value) => {
+export default function Item({ listCart, onClickRemoveHandler, onClickEditQuantityHandler }) {
+    const [switchModal, setSwitchModal] = useState(false);
+    const [maxQuantity, setMaxQuantity] = useState(0);
+    const [currentQuantity, setCurrentQuantity] = useState('0');
+    const [productID, setProductID] = useState(0);
+    const onChangeTextHandler = (value) => {
         if (parseInt(value) < 1 || value === '') {
-            setQuantityInput('1');
+            setCurrentQuantity('1');
         }
-        else if (parseInt(value) > maxInput) {
-            setQuantityInput(maxInput.toString());
+        else if (parseInt(value) > maxQuantity) {
+            setCurrentQuantity(maxQuantity.toString());
         }
         else {
-            setQuantityInput(value);
+            setCurrentQuantity(value);
         }
-        //setTotalPrice(((value === '' ? 1 : parseInt(value)) * route.params.Price).toString());
     }
     const onClickIncreaseHandler = () => {
-        setQuantityInput((parseInt(quantityInput) + 1).toString());
-        //setTotalPrice(((parseInt(quantityInput) + 1) * route.params.Price).toString());
+        setCurrentQuantity((parseInt(currentQuantity) + 1).toString());
     }
     const onClickDecreaseHandler = () => {
-        setQuantityInput((parseInt(quantityInput) - 1).toString());
-        //setTotalPrice(((parseInt(quantityInput) - 1) * route.params.Price).toString());
+        setCurrentQuantity((parseInt(currentQuantity) - 1).toString());
+    }
+    const onClickOpenModalHander = (max, current, productID) => {
+        setMaxQuantity(max);
+        setCurrentQuantity(current.toString());
+        setProductID(productID);
+        setSwitchModal(!switchModal);
     }
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={switchModal}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalView}>
+                        <View style={styles.quantity}>
+                            <TouchableOpacity onPress={onClickDecreaseHandler} disabled={parseInt(currentQuantity) <= 1 ? true : false} style={styles.quantityButton}>
+                                <Text style={styles.quantityText}>-</Text>
+                            </TouchableOpacity>
+                            <View style={styles.quantityInput}>
+                                <TextInput
+                                    keyboardType="number-pad"
+                                    onChangeText={value => onChangeTextHandler(value)}
+                                    value={currentQuantity}
+                                ></TextInput>
+                            </View>
+                            <TouchableOpacity onPress={onClickIncreaseHandler} disabled={parseInt(currentQuantity) >= maxQuantity ? true : false} style={styles.quantityButton}>
+                                <Text style={styles.quantityText}>+</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View>
+                            <Text style={{ fontSize: 12, marginBottom: 15 }}>( {maxQuantity} left )</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                            <TouchableOpacity onPress={()=>{onClickEditQuantityHandler(parseInt(currentQuantity),productID);setSwitchModal(!switchModal)}} style={[styles.buttonModal, { borderColor: '#C5FB9C', backgroundColor: '#ADFB9C' }]}>
+                                <Entypo style={styles.iconModal} name="check" size={24} color="green" />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => setSwitchModal(!switchModal)} style={[styles.buttonModal, { borderColor: '#F8BBB4', backgroundColor: '#F8ADA4' }]}>
+                                <Ionicons style={styles.iconModal} name="close-sharp" size={24} color="red" />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             {listCart.map((item, index) => {
                 return (
                     <View style={styles.item} key={index}>
                         <View style={styles.infor}>
                             <View style={styles.image}>
-                                <Image style={{ width: 120, height: 120, resizeMode: 'contain' }} source={{ uri: IMAGE_URL + item.image }}></Image>
+                                <Image style={{ width: 120, height: 120, resizeMode: 'contain' }} source={{ uri: IMAGE_URL + item.ProductImage }}></Image>
                             </View>
                             <View style={{ marginLeft: 10, maxWidth: 200 }}>
                                 <View>
-                                    <Text style={{ color: 'red', fontSize: 17 }}>{item.name}</Text>
-                                    <Text style={{marginBottom:7}}>{item.price}</Text>
-                                    <View style={styles.quantity}>
-                                        <TouchableOpacity onPress={onClickDecreaseHandler} disabled={parseInt(quantityInput) <= 1 ? true : false} style={styles.quantityButton}>
-                                            <Text style={styles.quantityText}>-</Text>
+                                    <Text style={{ color: 'red', fontSize: 17 }}>{item.ProductName}</Text>
+                                    <Text style={{ marginVertical: 5 }}>{item.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                                    <View style={[styles.quantity, { justifyContent: 'flex-start' }]}>
+                                        <Text>Quantity: {item.Quantity}</Text>
+                                        <TouchableOpacity style={{ marginLeft: 10 }} onPress={() => onClickOpenModalHander(item.MaxQuantity, item.Quantity, item.ProductID)}>
+                                            <MaterialIcons name="autorenew" size={24} color="black" />
                                         </TouchableOpacity>
-                                        <View style={styles.quantityInput}>
-                                            <TextInput
-                                                keyboardType="number-pad"
-                                                onChangeText={(value) => { onChangeInputHander(value) }}
-                                                value={quantityInput}
-                                            ></TextInput>
-                                        </View>
-                                        <TouchableOpacity onPress={onClickIncreaseHandler} disabled={parseInt(quantityInput) >= maxInput ? true : false} style={styles.quantityButton}>
-                                            <Text style={styles.quantityText}>+</Text>
-                                        </TouchableOpacity>
-                                        <Text style={{ marginLeft: 10, fontSize: 12 }}> ( 19 lefts )</Text>
                                     </View>
                                 </View>
                             </View>
@@ -73,7 +98,7 @@ export default function Item() {
                             colors={['red', 'orange']}
                             style={styles.removeButton}
                         >
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => onClickRemoveHandler(item.ProductID)}>
                                 <Text style={{ padding: 8, color: '#fff', fontSize: 14 }}>Remove</Text>
                             </TouchableOpacity>
                         </LinearGradient>
@@ -134,5 +159,32 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,.7)'
+    },
+    modalView: {
+        width: '48%',
+        height: '25%',
+        backgroundColor: '#fff',
+        padding: 20,
+        borderRadius: 13,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    buttonModal: {
+        borderWidth: 1,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 10,
+        elevation: 5
+    },
+    iconModal: {
+        paddingHorizontal: 20,
+        paddingVertical: 5
     }
 });

@@ -25,15 +25,15 @@ export default function Main({ navigation }) {
             {/* Ads */}
             <Ads listAds={listAds}></Ads>
             {/* Top View */}
-            <Item listItem={listTopView} title="Top View" navigation={navigation}></Item>
+            <Item listItem={listTopView} type={"TopView"} title="Top View" navigation={navigation}></Item>
             {/* Ads */}
             <Ads listAds={listAds}></Ads>
             {/* Top Hot */}
-            <Item listItem={listTopHot} title="Top Hot" navigation={navigation}></Item>
+            <Item listItem={listTopHot} type={"TopHot"} title="Top Hot" navigation={navigation}></Item>
             {/* Ads */}
             <Ads listAds={listAds}></Ads>
             {/* Top New */}
-            <Item listItem={listTopNew} title="Top New" navigation={navigation}></Item>
+            <Item listItem={listTopNew} type={"TopNew"} title="Top New" navigation={navigation}></Item>
         </ScrollView>
     )
 }

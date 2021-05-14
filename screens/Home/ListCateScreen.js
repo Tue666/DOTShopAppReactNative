@@ -94,5 +94,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     marginLeft: 10
-  },
+  }
 });

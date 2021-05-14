@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, Image, ScrollView, TouchableOpacity, FlatList, TouchableWithoutFeedback, Modal, TextInput } from 'react-native';
+import { Text, View, StyleSheet, Image, ScrollView, TouchableOpacity, FlatList, TouchableWithoutFeedback, Modal, TextInput, Alert } from 'react-native';
 import { IMAGE_URL } from '../../core/config';
 import { Title, Caption } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { FetchRelatedProducts } from '../../model/fetchData';
+import { addCart, FetchRelatedProducts } from '../../model/fetchData';
 import Item from '../../components/home/item';
+import { getStorage } from '../../model/asyncStorage';
+import { TOKEN } from '../../constant';
 
-export default function DetailScreen({ navigation, route }) {
+export default function DetailScreen({ navigation, route, onClickUpdateIconBadge }) {
     const [switchModal, setSwitchModal] = useState(false);
     const [listRelated, setListRelated] = useState([]);
     const [slideImage, setSlideImage] = useState([
@@ -20,7 +22,7 @@ export default function DetailScreen({ navigation, route }) {
     useEffect(() => {
         let isMounted = true;
         FetchRelatedProducts(route.params.IDCate).then(response => response.json()).then(json => { if (isMounted) setListRelated(json) });
-        return ()=>isMounted = false;
+        return () => isMounted = false;
     }, [listRelated]);
     const [quantityInput, setQuantityInput] = useState('1');
     const [maxInput, setMaxInput] = useState(route.params.Quantity);
@@ -45,6 +47,31 @@ export default function DetailScreen({ navigation, route }) {
         setQuantityInput((parseInt(quantityInput) - 1).toString());
         setTotalPrice(((parseInt(quantityInput) - 1) * route.params.Price).toString());
     }
+    const onClickAddCartHandler = () => {
+        let token = '';
+        getStorage(TOKEN).then(response => token = response).then(
+            () => {
+                if (token) {
+                    addCart(token, route.params.ID, quantityInput)
+                        .then(response => response.json())
+                        .then(json => {
+                            if (json['Result']) {
+                                Alert.alert('📣', 'Add ' + route.params.ProductName + ' to cart successfully ✅', [{ text: 'OK' }]);
+                                onClickUpdateIconBadge(json['CountItem']);
+                            }
+                            else {
+                                Alert.alert('📣', 'Add product failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [{ text: 'OK' }])
+                            }
+                            setSwitchModal(!switchModal);
+                        });
+                }
+                else {
+                    Alert.alert('📣', 'You are not logged in, do it and try again!. 💩', [{ text: 'OK' }])
+                }
+            }
+        );
+
+    }
     return (
         <ScrollView style={styles.container}>
             <Modal
@@ -60,46 +87,54 @@ export default function DetailScreen({ navigation, route }) {
                                     <AntDesign name="close" size={28} color="black" />
                                 </TouchableOpacity>
                             </View>
-                            <View style={[styles.row, { justifyContent: 'space-evenly', alignItems: 'center',marginBottom:10 }]}>
+                            <View style={[styles.row, { justifyContent: 'space-evenly', alignItems: 'center', marginBottom: 10 }]}>
                                 <Image style={{ width: 140, height: 140, resizeMode: 'contain' }} source={{ uri: IMAGE_URL + route.params.Image }}></Image>
                                 <Text style={{ color: 'red', fontWeight: 'bold', fontSize: 17, maxWidth: 230, marginLeft: 20 }}>{route.params.ProductName}</Text>
                             </View>
-                            <View style={styles.quantity}>
-                                <TouchableOpacity onPress={onClickDecreaseHandler} disabled={parseInt(quantityInput) <= 1 ? true : false} style={styles.quantityButton}>
-                                    <Text style={styles.quantityText}>-</Text>
-                                </TouchableOpacity>
-                                <View style={styles.quantityInput}>
-                                    <TextInput
-                                        keyboardType="number-pad"
-                                        onChangeText={(value) => { onChangeInputHander(value) }}
-                                        value={quantityInput}
-                                    ></TextInput>
+                            {route.params.Quantity > 0 ?
+                                <>
+                                    <View style={styles.quantity}>
+                                        <TouchableOpacity onPress={onClickDecreaseHandler} disabled={parseInt(quantityInput) <= 1 ? true : false} style={styles.quantityButton}>
+                                            <Text style={styles.quantityText}>-</Text>
+                                        </TouchableOpacity>
+                                        <View style={styles.quantityInput}>
+                                            <TextInput
+                                                keyboardType="number-pad"
+                                                onChangeText={(value) => { onChangeInputHander(value) }}
+                                                value={quantityInput}
+                                            ></TextInput>
+                                        </View>
+                                        <TouchableOpacity onPress={onClickIncreaseHandler} disabled={parseInt(quantityInput) >= maxInput ? true : false} style={styles.quantityButton}>
+                                            <Text style={styles.quantityText}>+</Text>
+                                        </TouchableOpacity>
+                                        <Text style={{ marginLeft: 20, fontSize: 17 }}> ( {maxInput} lefts )</Text>
+                                    </View>
+                                    <View style={[styles.row, { justifyContent: 'flex-start', borderBottomWidth: 1, borderBottomColor: '#eee', marginBottom: 5 }]}>
+                                        <FontAwesome5 name="money-bill-alt" size={24} color="black" />
+                                    </View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                                        <View style={{ borderRadius: 5, elevation: 5, backgroundColor: '#eee' }}>
+                                            <Text style={{ fontWeight: 'bold', padding: 10 }}>{totalPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                                        </View>
+                                        <View>
+                                            <TouchableOpacity onPress={onClickAddCartHandler}>
+                                                <LinearGradient
+                                                    start={[0, 0]}
+                                                    end={[1, 1]}
+                                                    colors={['red', 'orange']}
+                                                    style={styles.addCartButton}
+                                                >
+                                                    <Text style={styles.addCartText}>ADD TO CARD</Text>
+                                                </LinearGradient>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                </>
+                                :
+                                <View style={{ marginTop: 75 }}>
+                                    <Text style={{ fontSize: 18, color: 'red', fontStyle: 'italic' }}>😍 Sold out! Thanks for your attention 😍</Text>
                                 </View>
-                                <TouchableOpacity onPress={onClickIncreaseHandler} disabled={parseInt(quantityInput) >= maxInput ? true : false} style={styles.quantityButton}>
-                                    <Text style={styles.quantityText}>+</Text>
-                                </TouchableOpacity>
-                                <Text style={{ marginLeft: 20, fontSize: 17 }}> ( {maxInput} lefts )</Text>
-                            </View>
-                            <View style={[styles.row, { justifyContent: 'flex-start', borderBottomWidth: 1, borderBottomColor: '#eee', marginBottom: 5 }]}>
-                                <FontAwesome5 name="money-bill-alt" size={24} color="black" />
-                            </View>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                                <View style={{ borderRadius: 5, elevation: 5, backgroundColor: '#eee' }}>
-                                    <Text style={{ fontWeight: 'bold', padding: 10 }}>{totalPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
-                                </View>
-                                <View>
-                                    <TouchableOpacity>
-                                        <LinearGradient
-                                            start={[0, 0]}
-                                            end={[1, 1]}
-                                            colors={['red', 'orange']}
-                                            style={styles.addCartButton}
-                                        >
-                                            <Text style={styles.addCartText}>ADD TO CARD</Text>
-                                        </LinearGradient>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
+                            }
                         </View>
                     </View>
                 </View>
@@ -107,10 +142,31 @@ export default function DetailScreen({ navigation, route }) {
             <View style={{ marginBottom: 15 }}>
                 <View style={styles.inforImage}>
                     <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={{ uri: IMAGE_URL + route.params.Image }}></Image>
+                    {route.params.Quantity > 0 ?
+                        <View></View>
+                        :
+                        <Image style={{ width: 150, height: 150, resizeMode: 'contain', position: 'absolute', top: 5, right: 1 }} source={{ uri: IMAGE_URL + 'soldout.png' }}></Image>
+                    }
+                    {route.params.Discount > 0 ?
+                        <Image style={{ width: 80, height: 80, resizeMode: 'contain', position: 'absolute', top: -20, left: 1 }} source={{ uri: IMAGE_URL + 'sale.png' }}></Image>
+                        :
+                        <View></View>
+                    }
                 </View>
                 <View style={styles.inforName}>
                     <Title style={styles.name}>{route.params.ProductName}</Title>
-                    <Text style={styles.price}>{route.params.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                    {route.params.Discount > 0 ?
+                        <View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginVertical: 3 }}>
+                                <Text style={{ fontSize: 15, fontStyle: 'italic', textDecorationLine: 'line-through' }}>{route.params.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                                <Text style={{ fontSize: 15, fontStyle: 'italic', marginLeft: 10 }}>-{route.params.Discount}%</Text>
+                            </View>
+                            <Text style={{ fontSize: 20, fontStyle: 'italic', fontWeight: 'bold', color: 'red', marginBottom: 3 }}>NOW {((parseInt(route.params.Price)) - ((parseInt(route.params.Price) * route.params.Discount / 100))).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                        </View>
+                        :
+                        <Text style={{ fontSize: 16, fontStyle: 'italic' }}>{route.params.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                    }
+                    <Text style={{ fontSize: 14, fontStyle: 'italic', marginBottom: 17 }}>{route.params.Count} products have been sold!</Text>
                 </View>
                 <TouchableOpacity onPress={() => { setSwitchModal(!switchModal) }}>
                     <LinearGradient

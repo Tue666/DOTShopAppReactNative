@@ -8,21 +8,21 @@ import ImageScreen from '../screens/Shared/ImageScreen';
 
 const Stack = createStackNavigator();
 
-export default function HomeStack({ navigation }) {
+export default function HomeStack({ navigation, iconBadge, onClickUpdateIconBadge }) {
     return (
         <Stack.Navigator>
             <Stack.Screen
                 name="Home"
                 component={HomeScreen}
                 options={{
-                    headerTitle: () => <HeaderHome drawerNavigation={navigation}></HeaderHome>
+                    headerTitle: () => <HeaderHome iconBadge={iconBadge} drawerNavigation={navigation}></HeaderHome>
                 }}
             >
             </Stack.Screen>
             <Stack.Screen
                 name="Detail"
-                component={DetailScreen}
-                options={({ route }) => ({ headerTitle: () => <HeaderDetail drawerNavigation={navigation} param={route.params}></HeaderDetail> })}
+                children={(props)=><DetailScreen onClickUpdateIconBadge={onClickUpdateIconBadge} {...props} ></DetailScreen>}
+                options={({ route }) => ({ headerTitle: () => <HeaderDetail iconBadge={iconBadge} drawerNavigation={navigation} param={route.params}></HeaderDetail> })}
             >
             </Stack.Screen>
             <Stack.Screen

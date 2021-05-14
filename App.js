@@ -21,15 +21,16 @@ export default function App() {
     )
   }
   let container;
-  if (isLoginScreen){
-    container = <LoginStack onClickRouteApp={()=>setIsLoginScreen(false)}></LoginStack>
+  if (isLoginScreen) {
+    container = <LoginStack onClickRouteApp={() => setIsLoginScreen(false)}></LoginStack>
   }
-  else{
-    container = <AppScreen onClickRouteLogin={()=>setIsLoginScreen(true)}></AppScreen>
+  else {
+    container = <AppScreen onClickRouteLogin={() => setIsLoginScreen(true)}></AppScreen>
   }
   return (
     <>
       {container}
     </>
+
   );
 }

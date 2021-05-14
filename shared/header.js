@@ -1,15 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { IMAGE_URL } from '../core/config';
 import { Caption } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
-export function HeaderHome({ drawerNavigation }) {
+export function HeaderHome({ drawerNavigation, iconBadge }) {
     const openMenu = () => {
         drawerNavigation.openDrawer();
     }
-    
     return (
         <View style={styles.header}>
             <Entypo style={styles.headerIcon} name="menu" size={27} color="black" onPress={openMenu} />
@@ -19,10 +18,14 @@ export function HeaderHome({ drawerNavigation }) {
             </View>
             <View style={styles.action}>
                 <View style={styles.titleCart}>
-                    <View style={styles.titleCount}>
-                        <Text style={styles.textCount}>10</Text>
-                    </View>
-                    <TouchableOpacity onPress={()=>drawerNavigation.jumpTo('CartStack')}>
+                    {iconBadge > 0 ?
+                        <View style={styles.titleCount}>
+                            <Text style={styles.textCount}>{iconBadge}</Text>
+                        </View>
+                        :
+                        <View></View>
+                    }
+                    <TouchableOpacity onPress={() => drawerNavigation.jumpTo('CartStack')}>
                         <AntDesign name="shoppingcart" size={34} color="black" />
                     </TouchableOpacity>
                 </View>
@@ -30,6 +33,7 @@ export function HeaderHome({ drawerNavigation }) {
         </View>
     )
 }
+
 export function HeaderAbout({ param }) {
     return (
         <View style={styles.header}>
@@ -45,7 +49,8 @@ export function HeaderAbout({ param }) {
         </View>
     )
 }
-export function HeaderDetail({ drawerNavigation, param }) {
+
+export function HeaderDetail({ drawerNavigation, param, iconBadge }) {
     return (
         <View style={styles.header}>
             <View>
@@ -53,10 +58,14 @@ export function HeaderDetail({ drawerNavigation, param }) {
             </View>
             <View style={styles.action}>
                 <View style={styles.titleCart}>
-                    <View style={styles.titleCount}>
-                        <Text style={styles.textCount}>10</Text>
-                    </View>
-                    <TouchableOpacity onPress={()=>drawerNavigation.jumpTo('CartStack')}>
+                    {iconBadge > 0 ?
+                        <View style={styles.titleCount}>
+                            <Text style={styles.textCount}>{iconBadge}</Text>
+                        </View>
+                        :
+                        <View></View>
+                    }
+                    <TouchableOpacity onPress={() => drawerNavigation.jumpTo('CartStack')}>
                         <AntDesign name="shoppingcart" size={34} color="black" />
                     </TouchableOpacity>
                 </View>
@@ -68,12 +77,27 @@ export function HeaderDetail({ drawerNavigation, param }) {
 export function HeaderCart({ drawerNavigation }) {
     return (
         <View style={styles.header}>
-            <View style={{marginLeft: 20}}>
+            <View style={{ marginLeft: 20 }}>
                 <AntDesign name="shoppingcart" size={40} color="red" />
             </View>
-            <TouchableOpacity onPress={()=>{drawerNavigation.goBack()}}>
+            <TouchableOpacity onPress={() => { drawerNavigation.goBack() }}>
                 <AntDesign name="closecircle" size={30} color="red" />
             </TouchableOpacity>
+        </View>
+    )
+}
+
+export function HeaderPurchased({ drawerNavigation }) {
+    const openMenu = () => {
+        drawerNavigation.openDrawer();
+    }
+
+    return (
+        <View style={styles.header}>
+            <Entypo style={styles.headerIcon} name="menu" size={27} color="black" onPress={openMenu} />
+            <View style={styles.title}>
+                <Text style={[styles.textTitle, { color: 'orange', marginRight: 30 }]}>Purchased</Text>
+            </View>
         </View>
     )
 }

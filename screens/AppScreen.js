@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -8,10 +8,22 @@ import HomeStack from '../routes/homeStack';
 import CustomDrawer from '../shared/customDrawer';
 import CartStack from '../routes/cartStack';
 import ProfileStack from '../routes/profileStack';
+import PurchasedStack from '../routes/purchasedStack';
+import { getStorage } from '../model/asyncStorage';
+import { TOKEN } from '../constant';
+import { countCartItem } from '../model/fetchData';
+
 
 const Drawer = createDrawerNavigator();
 
 export default function AppScreen({ onClickRouteLogin }) {
+    const [iconBadge, setIconBadge] = useState(0);
+    useEffect(()=>{
+        getStorage(TOKEN).then(response=>countCartItem(response).then(response=>response.json()).then(json=>setIconBadge(json)))
+    },[]);
+    const onClickUpdateIconBadge = (value) => {
+      setIconBadge(parseInt(value));
+    }
     return (
         <NavigationContainer>
             <Drawer.Navigator
@@ -23,7 +35,7 @@ export default function AppScreen({ onClickRouteLogin }) {
             >
                 <Drawer.Screen
                     name="HomeStack"
-                    component={HomeStack}
+                    children={(props)=><HomeStack iconBadge={iconBadge} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props}></HomeStack>}
                     options={{
                         title: 'Home',
                         drawerIcon: ({ size, color }) => <Ionicons name="home-outline" size={size} color={color} />
@@ -41,7 +53,7 @@ export default function AppScreen({ onClickRouteLogin }) {
                 </Drawer.Screen>
                 <Drawer.Screen
                     name="CartStack"
-                    component={CartStack}
+                    children={(props)=><CartStack onClickRouteLogin={onClickRouteLogin} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props}></CartStack>}
                     options={{
                         title: 'Cart',
                         drawerIcon: ({ size, color }) => <AntDesign name="shoppingcart" size={size} color={color} />
@@ -50,7 +62,7 @@ export default function AppScreen({ onClickRouteLogin }) {
                 </Drawer.Screen>
                 <Drawer.Screen
                     name="PurchasedScreen"
-                    component={ProfileStack}
+                    children={(props)=><PurchasedStack onClickRouteLogin={onClickRouteLogin} {...props}></PurchasedStack>}
                     options={{
                         title: 'Purchased',
                         drawerIcon: ({ size, color }) => <MaterialCommunityIcons name="av-timer" size={size} color={color} />

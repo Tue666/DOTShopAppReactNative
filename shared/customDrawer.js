@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
         elevation: 5
     },
     userInfor: {
-        marginBottom: 15,
+        marginTop: 20,
         justifyContent: 'center',
         alignItems: 'center'
     },
