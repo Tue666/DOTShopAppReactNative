@@ -9,10 +9,10 @@ import { FetchProductsByCate } from '../../model/fetchData';
 export default function ListCateScreen({ homeNavigation, navigation, route }) {
   const [listProductByCate, setListProductByCate] = useState([]);
   useEffect(() => {
-    let isMounted = true;
-    FetchProductsByCate(route.params.cateID).then(response => response.json()).then(json => { if (isMounted) setListProductByCate(json) });
-    return () => isMounted = false;
-  });
+    FetchProductsByCate(route.params.cateID)
+      .then(response => response.json())
+      .then(json => setListProductByCate(json));
+  }, []);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.pop()}>

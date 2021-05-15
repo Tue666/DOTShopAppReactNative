@@ -14,6 +14,36 @@ export const Login = (userName, passWord) => {
     });
 }
 
+export const getUser = (token) => {
+    return fetch(BASE_URL + 'User', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Token: token
+        })
+    });
+}
+
+export const editUser = (token, name, phone, email, address) => {
+    return fetch(BASE_URL + 'EditUser', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Token: token,
+            Name: name,
+            Phone: phone,
+            Email: email,
+            Address: address
+        })
+    });
+}
+
 export const loadPurchased = (token) => {
     return fetch(BASE_URL + 'Purchased', {
         method: 'POST',
@@ -131,8 +161,8 @@ export const FetchTopProducts = (type, number) => {
     return fetch(BASE_URL + type + '/' + number);
 }
 
-export const FetchRelatedProducts = (cateID) => {
-    return fetch(BASE_URL + 'Related/' + cateID);
+export const FetchRelatedProducts = (productID) => {
+    return fetch(BASE_URL + 'Related/' + productID);
 }
 
 export const FetchListCate = () => {

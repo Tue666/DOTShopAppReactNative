@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Text, View, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Title, Caption, Avatar, Switch, Drawer, TouchableRipple } from 'react-native-paper';
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
 import { TOKEN } from '../constant';
-import { getStorage, removeStorage } from '../model/asyncStorage';
+import { removeStorage } from '../model/asyncStorage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { IMAGE_URL } from '../core/config';
 
-export default function CustomDrawer({ onClickRouteLogin, ...props }) {
-    const [token, setToken] = useState('');
-    useEffect(() => {
-        getStorage(TOKEN).then(response => setToken(response));
-
-    }, []);
+export default function CustomDrawer({ token, user, onClickRouteLogin, ...props }) {
     const onClickSignOutHandler = () => {
         removeStorage(TOKEN);
         onClickRouteLogin();
@@ -22,7 +17,7 @@ export default function CustomDrawer({ onClickRouteLogin, ...props }) {
         <LinearGradient
             start={[1, 0]}
             end={[0, 1]}
-            colors={['#fff','rgba(248, 191, 115,0.4)']}
+            colors={['#fff', 'rgba(248, 191, 115,0.4)']}
             style={{ flex: 1 }}
         >
             <View style={styles.container}>
@@ -33,11 +28,11 @@ export default function CustomDrawer({ onClickRouteLogin, ...props }) {
                                 <Avatar.Image
                                     source={require('../assets/images/12.png')}
                                     size={100}
-                                    style={{ backgroundColor: 'transparent',borderWidth: 1,borderColor:'#fff' }}
+                                    style={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: '#fff' }}
                                 />
-                                <View style={{justifyContent:'center',alignItems:'center'}}>
-                                    <Title>Admin</Title>
-                                    <Caption>dapamu333@gmail.com</Caption>
+                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                    <Title>{user.UserName}</Title>
+                                    <Caption>{user.Email ? user.Email : 'Abc123@gmail.com'}</Caption>
                                 </View>
                             </View>
                         </ImageBackground>
@@ -78,7 +73,7 @@ export default function CustomDrawer({ onClickRouteLogin, ...props }) {
                         start={[0, 0]}
                         end={[1, 1]}
                         colors={['rgba(255, 71, 71, 1)', 'rgba(255,100,100,0.3)']}
-                        style={{ borderRadius: 50, height: 50,marginHorizontal:25,marginBottom:10 }}
+                        style={{ borderRadius: 50, height: 50, marginHorizontal: 25, marginBottom: 10 }}
                     >
                         <Drawer.Section>
                             <DrawerItem

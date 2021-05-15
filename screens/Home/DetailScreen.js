@@ -20,10 +20,10 @@ export default function DetailScreen({ navigation, route, onClickUpdateIconBadge
         { image: require('../../assets/images/dellgamingg7157500.png'), key: '4' }
     ]);
     useEffect(() => {
-        let isMounted = true;
-        FetchRelatedProducts(route.params.IDCate).then(response => response.json()).then(json => { if (isMounted) setListRelated(json) });
-        return () => isMounted = false;
-    }, [listRelated]);
+        FetchRelatedProducts(route.params.ID)
+            .then(response => response.json())
+            .then(json => setListRelated(json));
+    }, []);
     const [quantityInput, setQuantityInput] = useState('1');
     const [maxInput, setMaxInput] = useState(route.params.Quantity);
     const [totalPrice, setTotalPrice] = useState(route.params.Price.toString());

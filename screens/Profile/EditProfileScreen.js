@@ -1,11 +1,31 @@
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-import { Avatar } from 'react-native-paper';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { Caption } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import Svg, { Circle } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
+import { editUser, getUser } from '../../model/fetchData';
 
-export default function EditProfile({ navigation }) {
+export default function EditProfile({ onEditUserHandler, navigation, route }) {
+  const [name, setName] = useState(route.params.user.Name);
+  const [phone, setPhone] = useState(route.params.user.Phone);
+  const [email, setEmail] = useState(route.params.user.Email);
+  const [address, setAddress] = useState(route.params.user.Address);
+  const onClickEditUserHandler = () => {
+    editUser(route.params.token, name, phone, email, address)
+      .then(response => response.json())
+      .then(json => {
+        if (json) {
+          Alert.alert('📣', 'Edit information successfully ✅', [{ text: 'OK' }]);
+          onEditUserHandler();
+          navigation.pop();
+        }
+        else {
+          Alert.alert('📣', 'Edit information failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [{ text: 'OK' }])
+        }
+      })
+  }
   return (
     <LinearGradient
       start={[0, 0]}
@@ -25,16 +45,14 @@ export default function EditProfile({ navigation }) {
       <Svg height="100%" width="100%" style={{ position: 'absolute', opacity: 0.5 }}>
         <Circle cx="380" cy="380" r="150" fill="rgba(251, 210, 156, 0.8)" />
       </Svg>
-      <TouchableOpacity style={{ position:'absolute',top:40,left:10 }}>
-        <Ionicons name="chevron-back" size={30} color="black" onPress={() => navigation.pop()} style={{paddingHorizontal:10}} />
+      <TouchableOpacity style={{ position: 'absolute', top: 40, left: 10 }}>
+        <Ionicons name="chevron-back" size={30} color="black" onPress={() => navigation.pop()} style={{ paddingHorizontal: 10 }} />
       </TouchableOpacity>
       <View>
-        <Avatar.Image
-          source={require('../../assets/user.png')}
-          size={80}
-        />
+        <FontAwesome5 name="user-edit" size={80} color="orange" />
       </View>
       <View style={styles.down}>
+        <Caption style={{ alignSelf: 'flex-start' }}>Name</Caption>
         <View style={styles.textInputContainer}>
           <Ionicons
             style={styles.icon}
@@ -46,9 +64,13 @@ export default function EditProfile({ navigation }) {
           <TextInput
             style={styles.textInput}
             placeholder="No information"
+            value={name}
+            onChangeText={value => setName(value)}
+            maxLength={20}
           >
           </TextInput>
         </View>
+        <Caption style={{ alignSelf: 'flex-start' }}>Phone</Caption>
         <View style={styles.textInputContainer}>
           <Ionicons
             style={styles.icon}
@@ -60,9 +82,14 @@ export default function EditProfile({ navigation }) {
           <TextInput
             style={styles.textInput}
             placeholder="No information"
+            value={phone}
+            onChangeText={value => setPhone(value)}
+            keyboardType={'number-pad'}
+            maxLength={10}
           >
           </TextInput>
         </View>
+        <Caption style={{ alignSelf: 'flex-start' }}>Email</Caption>
         <View style={styles.textInputContainer}>
           <Ionicons
             style={styles.icon}
@@ -76,9 +103,13 @@ export default function EditProfile({ navigation }) {
             textContentType='emailAddress'
             keyboardType='email-address'
             placeholder="No information"
+            value={email}
+            onChangeText={value => setEmail(value)}
+            keyboardType={'email-address'}
           >
           </TextInput>
         </View>
+        <Caption style={{ alignSelf: 'flex-start' }}>Address</Caption>
         <View style={styles.textInputContainer}>
           <Ionicons
             style={styles.icon}
@@ -90,6 +121,9 @@ export default function EditProfile({ navigation }) {
           <TextInput
             style={styles.textInput}
             placeholder="No information"
+            value={address}
+            onChangeText={value => setAddress(value)}
+            keyboardType={'email-address'}
           >
           </TextInput>
         </View>
@@ -99,7 +133,7 @@ export default function EditProfile({ navigation }) {
           colors={['red', 'orange']}
           style={styles.button}
         >
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onClickEditUserHandler}>
             <Text style={[styles.text, { elevation: 6 }]}>SAVE</Text>
           </TouchableOpacity>
         </LinearGradient>
@@ -124,8 +158,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#fff',
     flexDirection: "row",
     flexWrap: "wrap",
-    marginVertical: 10,
-    paddingVertical: 5
+    marginBottom: 20
   },
   textInput: {
     width: 200,

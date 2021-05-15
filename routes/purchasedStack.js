@@ -7,12 +7,12 @@ import DetailScreen from '../screens/Home/DetailScreen';
 
 const Stack = createStackNavigator();
 
-export default function PurchasedStack({ navigation, onClickRouteLogin }) {
+export default function PurchasedStack({ token, navigation, onClickRouteLogin }) {
     return (
         <Stack.Navigator>
             <Stack.Screen
                 name="Purchased"
-                children={(props)=><PurchasedScreen onClickRouteLogin={onClickRouteLogin} {...props}></PurchasedScreen>}
+                children={(props)=><PurchasedScreen token={token} onClickRouteLogin={onClickRouteLogin} {...props}></PurchasedScreen>}
                 options={{
                     headerTitle: () => <HeaderPurchased drawerNavigation={navigation}></HeaderPurchased>
                 }}

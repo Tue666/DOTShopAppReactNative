@@ -11,17 +11,16 @@ export default function Index({ drawerNavigation, token, navigation, onClickUpda
     const [listCart, setListCart] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     useEffect(() => {
-        let isMounted = true;
-        loadCart(token)
-            .then(response => response.json())
-            .then(json => {
-                if (isMounted) {
+        setInterval(() => {
+            loadCart(token)
+                .then(response => response.json())
+                .then(json => {
                     setListCart(JSON.parse(json['ListCart']));
                     setTotalPrice(JSON.parse(json['TotalPrice']));
-                }
-            });
-        return () => isMounted = false;
-    }, [listCart]);
+                });
+        }, 3000);
+        return () => clearInterval();
+    }, []);
     const onClickEditQuantityHandler = (newQuantity, productID) => {
         editQuantityCart(token, productID, newQuantity)
             .then(response => response.json())
@@ -32,6 +31,12 @@ export default function Index({ drawerNavigation, token, navigation, onClickUpda
                 else {
                     Alert.alert('📣', 'Edit quantity failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [{ text: 'OK' }]);
                 }
+                loadCart(token)
+                    .then(response => response.json())
+                    .then(json => {
+                        setListCart(JSON.parse(json['ListCart']));
+                        setTotalPrice(JSON.parse(json['TotalPrice']));
+                    });
             });
     }
     const onClickClearHandler = () => {
@@ -47,8 +52,14 @@ export default function Index({ drawerNavigation, token, navigation, onClickUpda
                             else {
                                 Alert.alert('📣', 'Clear failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [{ text: 'OK' }]);
                             }
+                            loadCart(token)
+                                .then(response => response.json())
+                                .then(json => {
+                                    setListCart(JSON.parse(json['ListCart']));
+                                    setTotalPrice(JSON.parse(json['TotalPrice']));
+                                });
+                            onClickUpdateIconBadge(0);
                         });
-                    onClickUpdateIconBadge(0);
                 }
             },
             { text: 'CANCEL' }
@@ -63,11 +74,17 @@ export default function Index({ drawerNavigation, token, navigation, onClickUpda
                         .then(json => {
                             if (json['Result']) {
                                 Alert.alert('📣', 'Remove item successfully ✅', [{ text: 'OK' }]);
-                                onClickUpdateIconBadge(json['CountItem']);
                             }
                             else {
                                 Alert.alert('📣', 'Remove failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [{ text: 'OK' }]);
                             }
+                            loadCart(token)
+                                .then(response => response.json())
+                                .then(json => {
+                                    setListCart(JSON.parse(json['ListCart']));
+                                    setTotalPrice(JSON.parse(json['TotalPrice']));
+                                });
+                            onClickUpdateIconBadge(json['CountItem']);
                         });
                 }
             },
@@ -79,7 +96,7 @@ export default function Index({ drawerNavigation, token, navigation, onClickUpda
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Image style={{ width: 300, height: 300, resizeMode: 'contain' }} source={{ uri: IMAGE_URL + 'shop.png' }}></Image>
                 <Caption>Nothing here :D Go and buy something :D</Caption>
-                <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     <LinearGradient
                         start={[0, 0]}
                         end={[1, 1]}
@@ -94,7 +111,7 @@ export default function Index({ drawerNavigation, token, navigation, onClickUpda
                         start={[0, 0]}
                         end={[1, 1]}
                         colors={['green', '#5EF56D']}
-                        style={{ borderRadius: 20, marginTop: 20, marginHorizontal:10 }}
+                        style={{ borderRadius: 20, marginTop: 20, marginHorizontal: 10 }}
                     >
                         <TouchableOpacity>
                             <Text style={{ paddingHorizontal: 20, paddingVertical: 10, color: '#fff' }}>HISTORY ⏱</Text>
