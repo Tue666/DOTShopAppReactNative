@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Svg, { Circle } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
-import { editUser, getUser } from '../../model/fetchData';
+import { editUser } from '../../model/fetchData';
 
 export default function EditProfile({ onEditUserHandler, navigation, route }) {
   const [name, setName] = useState(route.params.user.Name);

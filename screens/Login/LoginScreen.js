@@ -4,6 +4,7 @@ import { Login } from '../../model/fetchData';
 import { Svg, Polygon } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { FontAwesome } from '@expo/vector-icons';
 import { setStorage } from '../../model/asyncStorage';
 import { TOKEN } from '../../constant';
 
@@ -27,10 +28,10 @@ export default function LoginScreen({ navigation, drawerNavigation, onClickRoute
           Alert.alert('Oops!', 'Username or Password is incorrect :D', [{ text: 'OK' }]);
         }
         else {
-          if (setStorage(TOKEN, json['token'])){
+          if (setStorage(TOKEN, json['token'])) {
             onClickRouteApp();
           }
-          else{
+          else {
             Alert.alert('Sorry!', 'May we have some bugs, wait a minutes and try again. Thanks :D', [{ text: 'OK' }]);
           }
         }
@@ -54,11 +55,7 @@ export default function LoginScreen({ navigation, drawerNavigation, onClickRoute
         </LinearGradient>
         <View style={styles.form}>
           <View style={styles.up}>
-            <Ionicons
-              name="person-circle-outline"
-              size={100}
-              color={'orange'}>
-            </Ionicons>
+            <FontAwesome name="user-circle" size={100} color="orange" />
           </View>
           <View style={styles.down}>
             <View style={styles.textInputContainer}>

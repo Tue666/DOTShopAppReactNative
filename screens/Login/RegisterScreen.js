@@ -1,10 +1,55 @@
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import { Svg, Polygon } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import { Caption } from 'react-native-paper';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { FontAwesome } from '@expo/vector-icons';
+import { checkExistUserName, Register } from '../../model/fetchData';
 
 export default function RegisterScreen({ navigation }) {
+  const [userName, setUserName] = useState('');
+  const [userNameMSG, setUserNameMSG] = useState('');
+  const [passWord, setPassWord] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
+  const onChangeUserNameHandler = (value) => {
+    if (value) {
+      checkExistUserName(value)
+        .then(response => response.json())
+        .then(json => {
+          if (json) {
+            setUserNameMSG('This user name is existed 😛');
+          }
+          else {
+            setUserNameMSG('');
+          }
+        });
+      setUserName(value);
+    }
+  }
+  const onClickRegisterHandler = () => {
+    Register(userName, passWord, confirmPass)
+      .then(response => response.json())
+      .then(json => {
+        switch (json) {
+          case 1:
+            {
+              Alert.alert('📣', 'Register successfully ✅', [{ text: 'OK' }]);
+              navigation.pop();
+            }
+            break;
+          case 2:
+            Alert.alert('📣', 'Oops!. This name is already in use 😩, please choose another name 😉', [{ text: 'OK' }]);
+            break;
+          case 3:
+            Alert.alert('📣', 'The password is in conflict 😮. Check and try again 😁', [{ text: 'OK' }]);
+            break;
+          case 4:
+            Alert.alert('📣', 'Register failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [{ text: 'OK' }])
+            break;
+        }
+      })
+  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -23,14 +68,10 @@ export default function RegisterScreen({ navigation }) {
         </LinearGradient>
         <View style={styles.form}>
           <View style={styles.up}>
-            <Ionicons
-              name="person-circle-outline"
-              size={100}
-              color={'orange'}>
-            </Ionicons>
+            <FontAwesome name="user-plus" size={100} color="orange" />
           </View>
           <View style={styles.down}>
-            <View style={styles.textInputContainer}>
+            <View style={[styles.textInputContainer, { marginBottom: 0 }]}>
               <Ionicons
                 style={styles.icon}
                 name="person-circle-outline"
@@ -40,9 +81,11 @@ export default function RegisterScreen({ navigation }) {
               <TextInput
                 style={styles.textInput}
                 placeholder="Enter user name here ... "
+                onChangeText={value => onChangeUserNameHandler(value)}
               >
               </TextInput>
             </View>
+            <Caption style={userNameMSG ? { marginBottom: 5, fontStyle: 'italic', color: 'red' } : {}}>{userNameMSG}</Caption>
             <View style={styles.textInputContainer}>
               <Ionicons
                 style={styles.icon}
@@ -54,6 +97,7 @@ export default function RegisterScreen({ navigation }) {
                 style={styles.textInput}
                 placeholder="Enter password here  ... "
                 secureTextEntry={true}
+                onChangeText={value => setPassWord(value)}
               >
               </TextInput>
             </View>
@@ -68,10 +112,11 @@ export default function RegisterScreen({ navigation }) {
                 style={styles.textInput}
                 placeholder="Re Enter password here  ... "
                 secureTextEntry={true}
+                onChangeText={value => setConfirmPass(value)}
               >
               </TextInput>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onClickRegisterHandler} disabled={userName === '' || passWord === '' || confirmPass === '' ? true : false}>
               <LinearGradient
                 start={[0, 0]}
                 end={[1, 1]}

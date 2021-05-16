@@ -10,7 +10,7 @@ import Item from '../../components/home/item';
 import { getStorage } from '../../model/asyncStorage';
 import { TOKEN } from '../../constant';
 
-export default function DetailScreen({ navigation, route, onClickUpdateIconBadge }) {
+export default function DetailScreen({ navigation, route, onClickUpdateIconBadge, onLoadCartHandler, token }) {
     const [switchModal, setSwitchModal] = useState(false);
     const [listRelated, setListRelated] = useState([]);
     const [slideImage, setSlideImage] = useState([
@@ -48,29 +48,24 @@ export default function DetailScreen({ navigation, route, onClickUpdateIconBadge
         setTotalPrice(((parseInt(quantityInput) - 1) * route.params.Price).toString());
     }
     const onClickAddCartHandler = () => {
-        let token = '';
-        getStorage(TOKEN).then(response => token = response).then(
-            () => {
-                if (token) {
-                    addCart(token, route.params.ID, quantityInput)
-                        .then(response => response.json())
-                        .then(json => {
-                            if (json['Result']) {
-                                Alert.alert('📣', 'Add ' + route.params.ProductName + ' to cart successfully ✅', [{ text: 'OK' }]);
-                                onClickUpdateIconBadge(json['CountItem']);
-                            }
-                            else {
-                                Alert.alert('📣', 'Add product failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [{ text: 'OK' }])
-                            }
-                            setSwitchModal(!switchModal);
-                        });
-                }
-                else {
-                    Alert.alert('📣', 'You are not logged in, do it and try again!. 💩', [{ text: 'OK' }])
-                }
-            }
-        );
-
+        if (token) {
+            addCart(token, route.params.ID, quantityInput)
+                .then(response => response.json())
+                .then(json => {
+                    if (json['Result']) {
+                        Alert.alert('📣', 'Add ' + route.params.ProductName + ' to cart successfully ✅', [{ text: 'OK' }]);
+                        onClickUpdateIconBadge(json['CountItem']);
+                        onLoadCartHandler();
+                    }
+                    else {
+                        Alert.alert('📣', 'Add product failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [{ text: 'OK' }])
+                    }
+                    setSwitchModal(!switchModal);
+                });
+        }
+        else {
+            Alert.alert('📣', 'You are not logged in, do it and try again!. 💩', [{ text: 'OK' }])
+        }
     }
     return (
         <ScrollView style={styles.container}>

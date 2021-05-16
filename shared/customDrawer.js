@@ -7,6 +7,8 @@ import { TOKEN } from '../constant';
 import { removeStorage } from '../model/asyncStorage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { IMAGE_URL } from '../core/config';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function CustomDrawer({ token, user, onClickRouteLogin, ...props }) {
     const onClickSignOutHandler = () => {
@@ -31,7 +33,12 @@ export default function CustomDrawer({ token, user, onClickRouteLogin, ...props 
                                     style={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: '#fff' }}
                                 />
                                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                    <Title>{user.UserName}</Title>
+                                    <Title>{user.Name ? user.Name : user.UserName}</Title>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text style={{ marginHorizontal: 3, fontSize: 17, paddingBottom: 2 }}>🏆</Text>
+                                        <FontAwesome5 style={{ marginHorizontal: 3 }} name="medal" size={24} color="red" />
+                                        <Ionicons style={{ marginHorizontal: 3 }} name="md-medal-sharp" size={24} color="red" />
+                                    </View>
                                     <Caption>{user.Email ? user.Email : 'Abc123@gmail.com'}</Caption>
                                 </View>
                             </View>

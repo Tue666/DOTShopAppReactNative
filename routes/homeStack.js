@@ -8,7 +8,7 @@ import ImageScreen from '../screens/Shared/ImageScreen';
 
 const Stack = createStackNavigator();
 
-export default function HomeStack({ navigation, iconBadge, onClickUpdateIconBadge }) {
+export default function HomeStack({ navigation, iconBadge, onClickUpdateIconBadge, onLoadCartHandler, token }) {
     return (
         <Stack.Navigator>
             <Stack.Screen
@@ -21,7 +21,7 @@ export default function HomeStack({ navigation, iconBadge, onClickUpdateIconBadg
             </Stack.Screen>
             <Stack.Screen
                 name="Detail"
-                children={(props)=><DetailScreen onClickUpdateIconBadge={onClickUpdateIconBadge} {...props} ></DetailScreen>}
+                children={(props)=><DetailScreen token={token} onLoadCartHandler={onLoadCartHandler} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props} ></DetailScreen>}
                 options={({ route }) => ({ headerTitle: () => <HeaderDetail iconBadge={iconBadge} drawerNavigation={navigation} param={route.params}></HeaderDetail> })}
             >
             </Stack.Screen>

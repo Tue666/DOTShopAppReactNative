@@ -1,26 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { Caption } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { IMAGE_URL } from '../../core/config';
-import { clearCart, editQuantityCart, loadCart, removeItem } from '../../model/fetchData';
+import { clearCart, editQuantityCart, removeItem } from '../../model/fetchData';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Item from './item';
 
-export default function Index({ drawerNavigation, token, navigation, onClickUpdateIconBadge }) {
-    const [listCart, setListCart] = useState([]);
-    const [totalPrice, setTotalPrice] = useState(0);
-    useEffect(() => {
-        setInterval(() => {
-            loadCart(token)
-                .then(response => response.json())
-                .then(json => {
-                    setListCart(JSON.parse(json['ListCart']));
-                    setTotalPrice(JSON.parse(json['TotalPrice']));
-                });
-        }, 3000);
-        return () => clearInterval();
-    }, []);
+export default function Index({ drawerNavigation, token, navigation, onClickUpdateIconBadge, listCart, onLoadCartHandler, totalPrice }) {
     const onClickEditQuantityHandler = (newQuantity, productID) => {
         editQuantityCart(token, productID, newQuantity)
             .then(response => response.json())
@@ -31,12 +18,7 @@ export default function Index({ drawerNavigation, token, navigation, onClickUpda
                 else {
                     Alert.alert('📣', 'Edit quantity failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [{ text: 'OK' }]);
                 }
-                loadCart(token)
-                    .then(response => response.json())
-                    .then(json => {
-                        setListCart(JSON.parse(json['ListCart']));
-                        setTotalPrice(JSON.parse(json['TotalPrice']));
-                    });
+                onLoadCartHandler();
             });
     }
     const onClickClearHandler = () => {
@@ -52,12 +34,7 @@ export default function Index({ drawerNavigation, token, navigation, onClickUpda
                             else {
                                 Alert.alert('📣', 'Clear failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [{ text: 'OK' }]);
                             }
-                            loadCart(token)
-                                .then(response => response.json())
-                                .then(json => {
-                                    setListCart(JSON.parse(json['ListCart']));
-                                    setTotalPrice(JSON.parse(json['TotalPrice']));
-                                });
+                            onLoadCartHandler();
                             onClickUpdateIconBadge(0);
                         });
                 }
@@ -78,12 +55,7 @@ export default function Index({ drawerNavigation, token, navigation, onClickUpda
                             else {
                                 Alert.alert('📣', 'Remove failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [{ text: 'OK' }]);
                             }
-                            loadCart(token)
-                                .then(response => response.json())
-                                .then(json => {
-                                    setListCart(JSON.parse(json['ListCart']));
-                                    setTotalPrice(JSON.parse(json['TotalPrice']));
-                                });
+                            onLoadCartHandler();
                             onClickUpdateIconBadge(json['CountItem']);
                         });
                 }
@@ -154,7 +126,7 @@ export default function Index({ drawerNavigation, token, navigation, onClickUpda
                     </LinearGradient>
                 </View>
             </View>
-            <Item onClickEditQuantityHandler={onClickEditQuantityHandler} onClickRemoveHandler={onClickRemoveHandler} token={token} listCart={listCart}></Item>
+            <Item onClickEditQuantityHandler={onClickEditQuantityHandler} onClickRemoveHandler={onClickRemoveHandler} listCart={listCart}></Item>
         </>
     )
 }

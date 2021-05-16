@@ -8,12 +8,12 @@ import CheckOutScreen from '../screens/Cart/CheckOutScreen';
 
 const Stack = createStackNavigator();
 
-export default function CartStack({ navigation, onClickRouteLogin, onClickUpdateIconBadge }) {
+export default function CartStack({ navigation, onClickRouteLogin, onClickUpdateIconBadge, onLoadCartHandler, listCart, token, totalPrice, onLoadListPurchased }) {
     return (
       <Stack.Navigator>
         <Stack.Screen
             name="Cart"
-            children={(props)=><CartScreen onClickRouteLogin={onClickRouteLogin} onClickUpdateIconBadge={onClickUpdateIconBadge} drawerNavigation={navigation} {...props}></CartScreen>}
+            children={(props)=><CartScreen listCart={listCart} totalPrice={totalPrice} onLoadCartHandler={onLoadCartHandler} token={token} onClickRouteLogin={onClickRouteLogin} onClickUpdateIconBadge={onClickUpdateIconBadge} drawerNavigation={navigation} {...props}></CartScreen>}
             options={{
               headerBackground: ()=><Image style={{width:'100%',height:'100%',resizeMode:'cover'}} source={{uri:IMAGE_URL+'background_cart.png'}}></Image>,
               headerTitle: ()=><HeaderCart drawerNavigation={navigation}></HeaderCart>
@@ -22,7 +22,7 @@ export default function CartStack({ navigation, onClickRouteLogin, onClickUpdate
         </Stack.Screen>
         <Stack.Screen
           name="CheckOut"
-          children={(props)=><CheckOutScreen onClickUpdateIconBadge={onClickUpdateIconBadge} {...props}></CheckOutScreen>}
+          children={(props)=><CheckOutScreen token={token} onLoadListPurchased={onLoadListPurchased} onLoadCartHandler={onLoadCartHandler} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props}></CheckOutScreen>}
           options={{
             headerShown: false
           }}

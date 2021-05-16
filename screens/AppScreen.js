@@ -11,7 +11,7 @@ import ProfileStack from '../routes/profileStack';
 import PurchasedStack from '../routes/purchasedStack';
 import { getStorage } from '../model/asyncStorage';
 import { TOKEN } from '../constant';
-import { countCartItem, getUser } from '../model/fetchData';
+import { countCartItem, getUser, loadCart, loadPurchased, loadHistory } from '../model/fetchData';
 
 
 const Drawer = createDrawerNavigator();
@@ -20,6 +20,10 @@ export default function AppScreen({ onClickRouteLogin }) {
     const [iconBadge, setIconBadge] = useState(0);
     const [token, setToken] = useState('');
     const [user, setUser] = useState({});
+    const [listCart, setListCart] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [listPurchased, setListPurchased] = useState([]);
+    const [listHistory, setListHistory] = useState([]);
     useEffect(() => {
         getStorage(TOKEN).then(response => {
             if (response) {
@@ -30,6 +34,18 @@ export default function AppScreen({ onClickRouteLogin }) {
                 getUser(response)
                     .then(response => response.json())
                     .then(json => setUser(json));
+                loadCart(response)
+                    .then(response => response.json())
+                    .then(json => {
+                        setListCart(JSON.parse(json['ListCart']));
+                        setTotalPrice(JSON.parse(json['TotalPrice']));
+                    });
+                loadPurchased(response)
+                    .then(response => response.json())
+                    .then(json => setListPurchased(json));
+                loadHistory(response)
+                    .then(response => response.json())
+                    .then(json => setListHistory(json));
             }
         });
     }, []);
@@ -37,6 +53,24 @@ export default function AppScreen({ onClickRouteLogin }) {
         getUser(token)
             .then(response => response.json())
             .then(json => setUser(json));
+    }
+    const onLoadCartHandler = () => {
+        loadCart(token)
+            .then(response => response.json())
+            .then(json => {
+                setListCart(JSON.parse(json['ListCart']));
+                setTotalPrice(JSON.parse(json['TotalPrice']));
+            });
+    }
+    const onLoadListPurchased = () => {
+        loadPurchased(token)
+            .then(response => response.json())
+            .then(json => setListPurchased(json));
+    }
+    const onLoadHistory = () => {
+        loadHistory(token)
+            .then(response => response.json())
+            .then(json => setListHistory(json));
     }
     const onClickUpdateIconBadge = (value) => {
         setIconBadge(parseInt(value));
@@ -52,7 +86,7 @@ export default function AppScreen({ onClickRouteLogin }) {
             >
                 <Drawer.Screen
                     name="HomeStack"
-                    children={(props) => <HomeStack iconBadge={iconBadge} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props}></HomeStack>}
+                    children={(props) => <HomeStack token={token} onLoadCartHandler={onLoadCartHandler} iconBadge={iconBadge} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props}></HomeStack>}
                     options={{
                         title: 'Home',
                         drawerIcon: ({ size, color }) => <Ionicons name="home-outline" size={size} color={color} />
@@ -61,7 +95,7 @@ export default function AppScreen({ onClickRouteLogin }) {
                 </Drawer.Screen>
                 <Drawer.Screen
                     name="ProfileStack"
-                    children={(props) => <ProfileStack token={token} user={user} onEditUserHandler={onEditUserHandler} onClickRouteLogin={onClickRouteLogin} {...props}></ProfileStack>}
+                    children={(props) => <ProfileStack listHistory={listHistory} token={token} user={user} onEditUserHandler={onEditUserHandler} onClickRouteLogin={onClickRouteLogin} {...props}></ProfileStack>}
                     options={{
                         title: 'Profile',
                         drawerIcon: ({ size, color }) => <MaterialCommunityIcons name="account-outline" size={size} color={color} />
@@ -70,7 +104,7 @@ export default function AppScreen({ onClickRouteLogin }) {
                 </Drawer.Screen>
                 <Drawer.Screen
                     name="CartStack"
-                    children={(props) => <CartStack onClickRouteLogin={onClickRouteLogin} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props}></CartStack>}
+                    children={(props) => <CartStack onLoadListPurchased={onLoadListPurchased} listCart={listCart} totalPrice={totalPrice} onLoadCartHandler={onLoadCartHandler} token={token} onClickRouteLogin={onClickRouteLogin} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props}></CartStack>}
                     options={{
                         title: 'Cart',
                         drawerIcon: ({ size, color }) => <AntDesign name="shoppingcart" size={size} color={color} />
@@ -79,7 +113,7 @@ export default function AppScreen({ onClickRouteLogin }) {
                 </Drawer.Screen>
                 <Drawer.Screen
                     name="PurchasedScreen"
-                    children={(props) => <PurchasedStack token={token} onClickRouteLogin={onClickRouteLogin} {...props}></PurchasedStack>}
+                    children={(props) => <PurchasedStack token={token} listPurchased={listPurchased} onLoadListPurchased={onLoadListPurchased} onLoadCartHandler={onLoadCartHandler} iconBadge={iconBadge} onClickUpdateIconBadge={onClickUpdateIconBadge} onClickRouteLogin={onClickRouteLogin} {...props}></PurchasedStack>}
                     options={{
                         title: 'Purchased',
                         drawerIcon: ({ size, color }) => <MaterialCommunityIcons name="av-timer" size={size} color={color} />

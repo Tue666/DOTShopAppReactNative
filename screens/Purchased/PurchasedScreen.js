@@ -7,13 +7,7 @@ import { loadPurchased } from '../../model/fetchData';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 
-export default function PurchasedScreen({ token, navigation, onClickRouteLogin }) {
-  const [listPurchased, setListPurchased] = useState([]);
-  useEffect(() => {
-    loadPurchased(token)
-      .then(response => response.json())
-      .then(json => setListPurchased(json));
-  }, []);
+export default function PurchasedScreen({ token, navigation, onClickRouteLogin, listPurchased }) {
   if (!token) {
     return (
       <View style={styles.container}>

@@ -7,12 +7,12 @@ import DetailScreen from '../screens/Home/DetailScreen';
 
 const Stack = createStackNavigator();
 
-export default function PurchasedStack({ token, navigation, onClickRouteLogin }) {
+export default function PurchasedStack({ token, navigation, onClickRouteLogin, onLoadCartHandler, onClickUpdateIconBadge, iconBadge, listPurchased }) {
     return (
         <Stack.Navigator>
             <Stack.Screen
                 name="Purchased"
-                children={(props)=><PurchasedScreen token={token} onClickRouteLogin={onClickRouteLogin} {...props}></PurchasedScreen>}
+                children={(props) => <PurchasedScreen token={token} listPurchased={listPurchased} onClickRouteLogin={onClickRouteLogin} {...props}></PurchasedScreen>}
                 options={{
                     headerTitle: () => <HeaderPurchased drawerNavigation={navigation}></HeaderPurchased>
                 }}
@@ -20,8 +20,8 @@ export default function PurchasedStack({ token, navigation, onClickRouteLogin })
             </Stack.Screen>
             <Stack.Screen
                 name="Detail"
-                component={DetailScreen}
-                options={({ route }) => ({ headerTitle: () => <HeaderDetail drawerNavigation={navigation} param={route.params}></HeaderDetail> })}
+                children={(props) => <DetailScreen token={token} onLoadCartHandler={onLoadCartHandler} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props} ></DetailScreen>}
+                options={({ route }) => ({ headerTitle: () => <HeaderDetail iconBadge={iconBadge} drawerNavigation={navigation} param={route.params}></HeaderDetail> })}
             >
             </Stack.Screen>
         </Stack.Navigator>

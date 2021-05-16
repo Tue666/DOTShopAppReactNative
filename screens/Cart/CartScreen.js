@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Caption } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
-import { getStorage } from '../../model/asyncStorage';
-import { TOKEN } from '../../constant';
 import Index from '../../components/cart';
 
-export default function CartScreen({ drawerNavigation, onClickRouteLogin, navigation, onClickUpdateIconBadge }) {
-  const [token, setToken] = useState('');
-  getStorage(TOKEN).then(response=>setToken(response));
+export default function CartScreen({ drawerNavigation, onClickRouteLogin, navigation, onClickUpdateIconBadge, listCart, onLoadCartHandler, token, totalPrice }) {
   return (
     <View style={styles.container}>
       {token ?
-        <Index token={token} drawerNavigation={drawerNavigation} navigation={navigation} onClickUpdateIconBadge={onClickUpdateIconBadge}></Index>
+        <Index token={token} listCart={listCart} totalPrice={totalPrice} onLoadCartHandler={onLoadCartHandler} drawerNavigation={drawerNavigation} navigation={navigation} onClickUpdateIconBadge={onClickUpdateIconBadge}></Index>
         :
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Caption>You are not logged in</Caption>

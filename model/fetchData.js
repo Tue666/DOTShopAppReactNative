@@ -14,6 +14,25 @@ export const Login = (userName, passWord) => {
     });
 }
 
+export const Register = (userName, passWord, confirmPass) => {
+    return fetch(BASE_URL + 'Register', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            UserName: userName,
+            PassWord: passWord,
+            ConfirmPass: confirmPass
+        })
+    });
+}
+
+export const checkExistUserName = (userName) => {
+    return fetch(BASE_URL + 'CheckExistUserName/' + userName);
+}
+
 export const getUser = (token) => {
     return fetch(BASE_URL + 'User', {
         method: 'POST',
@@ -171,4 +190,30 @@ export const FetchListCate = () => {
 
 export const FetchProductsByCate = (cateID) => {
     return fetch(BASE_URL + 'ProductsByCate/' + cateID);
+}
+
+export const loadHistory = (token) => {
+    return fetch(BASE_URL + 'ListHistory', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Token: token
+        })
+    });
+}
+
+export const getListOrderDetail = (orderID) => {
+    return fetch(BASE_URL + 'ListOrderDetail', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            OrderID: orderID
+        })
+    });
 }

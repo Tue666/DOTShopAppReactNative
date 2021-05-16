@@ -6,6 +6,7 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Svg, { Circle } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function ProfileScreen({ token, user, navigation, drawerNavigation, onClickRouteLogin }) {
   const onClickNavigateHandler = (navigateName) => {
@@ -56,8 +57,8 @@ export default function ProfileScreen({ token, user, navigation, drawerNavigatio
             />
             <View style={{ marginLeft: 20 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginBottom: 5 }}>
-                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{user.UserName}</Text>
-                <Text style={{ marginLeft: 7, fontStyle: 'italic' }}>({user.Name ? user.Name : 'Shop Customer'})</Text>
+                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{user.Name ? user.Name : user.UserName}</Text>
+                <Text style={{ marginLeft: 7, fontStyle: 'italic' }}>({user.UserName})</Text>
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <LinearGradient
@@ -84,6 +85,10 @@ export default function ProfileScreen({ token, user, navigation, drawerNavigatio
                 >
                   <Text style={{ paddingHorizontal: 10, fontSize: 12, color: '#fff', fontStyle: 'italic' }}>New Customer</Text>
                 </LinearGradient>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
+                <FontAwesome name="credit-card-alt" size={24} color="=rgba(96, 157, 237, 1)" />
+                <Caption style={{ fontStyle: 'italic' }}>999,999,999,999 vnđ</Caption>
               </View>
             </View>
           </View>
@@ -201,11 +206,11 @@ const styles = StyleSheet.create({
   },
   menuWrapper: {
     marginTop: 50,
-    paddingHorizontal: 30
+    paddingHorizontal: 15
   },
   menuItem: {
     flexDirection: 'row',
-    paddingVertical: 15,
+    padding: 15,
     marginVertical: 5
   },
   menuItemText: {

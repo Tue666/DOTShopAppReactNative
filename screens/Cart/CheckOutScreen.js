@@ -3,11 +3,9 @@ import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, TextInput, A
 import { Title, Caption } from 'react-native-paper';
 import { IMAGE_URL } from '../../core/config';
 import { Ionicons } from '@expo/vector-icons';
-import { getStorage } from '../../model/asyncStorage';
-import { TOKEN } from '../../constant';
 import { checkOut } from '../../model/fetchData';
 
-export default function CheckOutScreen({ navigation, onClickUpdateIconBadge }) {
+export default function CheckOutScreen({ navigation, onClickUpdateIconBadge, token, onLoadCartHandler, onLoadListPurchased }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -16,23 +14,23 @@ export default function CheckOutScreen({ navigation, onClickUpdateIconBadge }) {
     Alert.alert('📣', 'Click \'OK\' to order 😎', [
       {
         text: 'OK', onPress: () => {
-          getStorage(TOKEN).then(response => {
-            checkOut(response,name,email,phone,address)
-              .then(response => response.json())
-              .then(json => {
-                if (json) {
-                  Alert.alert('📣', 'Order successfully ✅. Thanks for your attention 😍.\nCheck your orders in HISTORY 🕛', [
-                    { text: 'OK' }
-                  ]);
-                  onClickUpdateIconBadge(0);
-                }
-                else{
-                  Alert.alert('📣', 'Order failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [
-                    { text: 'OK' }
-                  ]);
-                }
-              })
-          })
+          checkOut(token, name, email, phone, address)
+            .then(response => response.json())
+            .then(json => {
+              if (json) {
+                Alert.alert('📣', 'Order successfully ✅. Thanks for your attention 😍.\nCheck your orders in HISTORY 🕛', [
+                  { text: 'OK' }
+                ]);
+                onLoadCartHandler();
+                onLoadListPurchased();
+                onClickUpdateIconBadge(0);
+              }
+              else {
+                Alert.alert('📣', 'Order failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [
+                  { text: 'OK' }
+                ]);
+              }
+            })
           navigation.pop();
         }
       },
