@@ -104,7 +104,7 @@ export const addCart = (token, productID, quantity) => {
     });
 }
 
-export const editQuantityCart = (token,productID,newQuantity) => {
+export const editQuantityCart = (token, productID, newQuantity) => {
     return fetch(BASE_URL + 'EditQuantityCart', {
         method: 'POST',
         headers: {
@@ -159,7 +159,7 @@ export const countCartItem = (token) => {
     });
 }
 
-export const checkOut = (token,name,email,phone,address) => {
+export const checkOut = (token, name, email, phone, address) => {
     return fetch(BASE_URL + 'CheckOut', {
         method: 'POST',
         headers: {
@@ -214,6 +214,55 @@ export const getListOrderDetail = (orderID) => {
         },
         body: JSON.stringify({
             OrderID: orderID
+        })
+    });
+}
+
+export const submitFeedback = (token, name, email, phone, title, content) => {
+    return fetch(BASE_URL + 'SubmitFeedback', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Token: token,
+            Name: name,
+            Email: email,
+            Phone: phone,
+            Title: title,
+            Content: content
+        })
+    });
+}
+
+export const loadFeedback = (token) => {
+    return fetch(BASE_URL + 'ListFeedback', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Token: token
+        })
+    });
+}
+
+export const getFeedbackByID = (feedbackID) => {
+    return fetch(BASE_URL + 'Feedback/' + feedbackID);
+}
+
+export const sendFeedback = (feedbackID, content) => {
+    return fetch(BASE_URL + 'SendFeedback', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            FeedbackID: feedbackID,
+            Content: content
         })
     });
 }

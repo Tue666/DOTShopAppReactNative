@@ -17,7 +17,7 @@ export default function HistoryScreen({ navigation, listHistory }) {
             </TouchableOpacity>
             <View>
                 {listHistory.length > 0 ?
-                    <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 30, fontStyle: 'italic' }}>TRANSACTION</Text>
+                    <Text style={{ fontFamily: 'poppins-extralight', color: '#fff', fontSize: 30 }}>TRANSACTION</Text>
                     :
                     <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
                         <Text style={{ fontSize: 30, color: 'rgba(41, 127, 239, 1)', fontStyle: 'italic', fontWeight: 'bold' }}>NOTHING 😛 HERE</Text>
@@ -32,7 +32,7 @@ export default function HistoryScreen({ navigation, listHistory }) {
                                 key={index}
                                 start={[0, 0]}
                                 end={[1, 1]}
-                                colors={['rgba(41, 127, 239, 1)', 'rgba(41, 127, 239, 0.8)']}
+                                colors={['rgba(41, 127, 239, 1)', 'rgba(41, 127, 239, 0.6)']}
                                 style={styles.item}
                             >
                                 <View style={styles.infor}>
@@ -129,8 +129,7 @@ const styles = StyleSheet.create({
     text: {
         color: '#fff',
         fontSize: 14,
-        fontWeight: 'bold',
-        fontStyle: 'italic'
+        fontFamily: 'poppins-extralight'
     },
     button: {
         borderRadius: 20,

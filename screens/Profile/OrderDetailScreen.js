@@ -25,9 +25,9 @@ export default function OrderDetail({ navigation, route }) {
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.pop()}>
         <Ionicons name="arrow-back-sharp" size={28} color="white" />
       </TouchableOpacity>
-      <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 30, fontStyle: 'italic' }}>TOTAL PRICE</Text>
-        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 30, fontStyle: 'italic' }}>{totalPrice.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+      <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
+        <Text style={{ color: '#fff', fontSize: 30, fontFamily: 'poppins-extralight' }}>TOTAL PRICE</Text>
+        <Text style={{ color: '#fff', fontSize: 30, fontFamily: 'poppins-extralight' }}>{totalPrice.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
       </View>
       <View style={styles.wrapper}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   text: {
-    fontSize: 15
+    fontSize: 15,
+    fontFamily: 'poppins-extralight'
   }
 });

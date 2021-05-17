@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import AppLoading from 'expo-app-loading';
+import * as Font from 'expo-font';
 import AppScreen from './screens/AppScreen';
 import LoginStack from './routes/loginStack';
 
 export default function App() {
   const loadData = () => {
-
+    return Font.loadAsync({
+      'poppins-extralight': require('./assets/fonts/Poppins-ExtraLight.ttf'),
+      'poppins-bold': require('./assets/fonts/Poppins-Bold.ttf')
+    });
   }
   const [isReady, setIsReady] = useState(false);
   const [isLoginScreen, setIsLoginScreen] = useState(false);

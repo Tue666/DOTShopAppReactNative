@@ -102,6 +102,17 @@ export function HeaderPurchased({ drawerNavigation }) {
     )
 }
 
+export function HeaderContact({ drawerNavigation }) {
+    const openMenu = () => {
+        drawerNavigation.openDrawer();
+    }
+    return (
+        <View style={styles.header}>
+            <Entypo style={styles.headerIcon} name="menu" size={27} color="black" onPress={openMenu} />
+        </View>
+    )
+}
+
 const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',

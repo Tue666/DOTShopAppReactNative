@@ -5,7 +5,7 @@ import { IMAGE_URL } from '../../core/config';
 import { Ionicons } from '@expo/vector-icons';
 import { checkOut } from '../../model/fetchData';
 
-export default function CheckOutScreen({ navigation, onClickUpdateIconBadge, token, onLoadCartHandler, onLoadListPurchased }) {
+export default function CheckOutScreen({ navigation, onClickUpdateIconBadge, token, onLoadCartHandler, onLoadListPurchased, onLoadHistory }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -23,6 +23,7 @@ export default function CheckOutScreen({ navigation, onClickUpdateIconBadge, tok
                 ]);
                 onLoadCartHandler();
                 onLoadListPurchased();
+                onLoadHistory();
                 onClickUpdateIconBadge(0);
               }
               else {

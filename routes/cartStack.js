@@ -8,7 +8,7 @@ import CheckOutScreen from '../screens/Cart/CheckOutScreen';
 
 const Stack = createStackNavigator();
 
-export default function CartStack({ navigation, onClickRouteLogin, onClickUpdateIconBadge, onLoadCartHandler, listCart, token, totalPrice, onLoadListPurchased }) {
+export default function CartStack({ navigation, onClickRouteLogin, onClickUpdateIconBadge, onLoadCartHandler, listCart, token, totalPrice, onLoadListPurchased, onLoadHistory }) {
     return (
       <Stack.Navigator>
         <Stack.Screen
@@ -22,7 +22,7 @@ export default function CartStack({ navigation, onClickRouteLogin, onClickUpdate
         </Stack.Screen>
         <Stack.Screen
           name="CheckOut"
-          children={(props)=><CheckOutScreen token={token} onLoadListPurchased={onLoadListPurchased} onLoadCartHandler={onLoadCartHandler} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props}></CheckOutScreen>}
+          children={(props)=><CheckOutScreen token={token} onLoadHistory={onLoadHistory} onLoadListPurchased={onLoadListPurchased} onLoadCartHandler={onLoadCartHandler} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props}></CheckOutScreen>}
           options={{
             headerShown: false
           }}

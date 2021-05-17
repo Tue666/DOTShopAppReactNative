@@ -9,10 +9,10 @@ import CustomDrawer from '../shared/customDrawer';
 import CartStack from '../routes/cartStack';
 import ProfileStack from '../routes/profileStack';
 import PurchasedStack from '../routes/purchasedStack';
+import ContactStack from '../routes/contactStack';
 import { getStorage } from '../model/asyncStorage';
 import { TOKEN } from '../constant';
-import { countCartItem, getUser, loadCart, loadPurchased, loadHistory } from '../model/fetchData';
-
+import { countCartItem, getUser, loadCart, loadPurchased, loadHistory, loadFeedback } from '../model/fetchData';
 
 const Drawer = createDrawerNavigator();
 
@@ -24,6 +24,8 @@ export default function AppScreen({ onClickRouteLogin }) {
     const [totalPrice, setTotalPrice] = useState(0);
     const [listPurchased, setListPurchased] = useState([]);
     const [listHistory, setListHistory] = useState([]);
+    const [listFeedback, setListFeedback] = useState([]);
+    const [countUnread, setCounUnread] = useState(0);
     useEffect(() => {
         getStorage(TOKEN).then(response => {
             if (response) {
@@ -46,6 +48,12 @@ export default function AppScreen({ onClickRouteLogin }) {
                 loadHistory(response)
                     .then(response => response.json())
                     .then(json => setListHistory(json));
+                loadFeedback(response)
+                    .then(response => response.json())
+                    .then(json => {
+                        setCounUnread(JSON.parse(json['CountUnread']));
+                        setListFeedback(JSON.parse(json['ListFeedback']));
+                    });
             }
         });
     }, []);
@@ -75,18 +83,34 @@ export default function AppScreen({ onClickRouteLogin }) {
     const onClickUpdateIconBadge = (value) => {
         setIconBadge(parseInt(value));
     }
+    const onLoadFeedback = () => {
+        loadFeedback(token)
+            .then(response => response.json())
+            .then(json => {
+                setCounUnread(JSON.parse(json['CountUnread']));
+                setListFeedback(JSON.parse(json['ListFeedback']));
+            });
+    }
     return (
         <NavigationContainer>
             <Drawer.Navigator
                 initialRouteName="HomeStack"
-                drawerContent={props => <CustomDrawer token={token} user={user} onClickRouteLogin={onClickRouteLogin} {...props}></CustomDrawer>}
+                drawerContent={props => <CustomDrawer
+                    token={token}
+                    onClickRouteLogin={onClickRouteLogin}
+                    user={user} {...props}>
+                </CustomDrawer>}
                 drawerContentOptions={{
                     activeTintColor: "orange"
                 }}
             >
                 <Drawer.Screen
                     name="HomeStack"
-                    children={(props) => <HomeStack token={token} onLoadCartHandler={onLoadCartHandler} iconBadge={iconBadge} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props}></HomeStack>}
+                    children={(props) => <HomeStack
+                        iconBadge={iconBadge}
+                        onClickUpdateIconBadge={onClickUpdateIconBadge}
+                        token={token}
+                        onLoadCartHandler={onLoadCartHandler} {...props}></HomeStack>}
                     options={{
                         title: 'Home',
                         drawerIcon: ({ size, color }) => <Ionicons name="home-outline" size={size} color={color} />
@@ -95,7 +119,12 @@ export default function AppScreen({ onClickRouteLogin }) {
                 </Drawer.Screen>
                 <Drawer.Screen
                     name="ProfileStack"
-                    children={(props) => <ProfileStack listHistory={listHistory} token={token} user={user} onEditUserHandler={onEditUserHandler} onClickRouteLogin={onClickRouteLogin} {...props}></ProfileStack>}
+                    children={(props) => <ProfileStack
+                        token={token}
+                        onClickRouteLogin={onClickRouteLogin}
+                        user={user}
+                        onEditUserHandler={onEditUserHandler}
+                        listHistory={listHistory} {...props}></ProfileStack>}
                     options={{
                         title: 'Profile',
                         drawerIcon: ({ size, color }) => <MaterialCommunityIcons name="account-outline" size={size} color={color} />
@@ -104,7 +133,15 @@ export default function AppScreen({ onClickRouteLogin }) {
                 </Drawer.Screen>
                 <Drawer.Screen
                     name="CartStack"
-                    children={(props) => <CartStack onLoadListPurchased={onLoadListPurchased} listCart={listCart} totalPrice={totalPrice} onLoadCartHandler={onLoadCartHandler} token={token} onClickRouteLogin={onClickRouteLogin} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props}></CartStack>}
+                    children={(props) => <CartStack
+                        totalPrice={totalPrice}
+                        onClickUpdateIconBadge={onClickUpdateIconBadge}
+                        token={token}
+                        onClickRouteLogin={onClickRouteLogin}
+                        listCart={listCart}
+                        onLoadCartHandler={onLoadCartHandler}
+                        onLoadListPurchased={onLoadListPurchased}
+                        onLoadHistory={onLoadHistory} {...props}></CartStack>}
                     options={{
                         title: 'Cart',
                         drawerIcon: ({ size, color }) => <AntDesign name="shoppingcart" size={size} color={color} />
@@ -113,7 +150,14 @@ export default function AppScreen({ onClickRouteLogin }) {
                 </Drawer.Screen>
                 <Drawer.Screen
                     name="PurchasedScreen"
-                    children={(props) => <PurchasedStack token={token} listPurchased={listPurchased} onLoadListPurchased={onLoadListPurchased} onLoadCartHandler={onLoadCartHandler} iconBadge={iconBadge} onClickUpdateIconBadge={onClickUpdateIconBadge} onClickRouteLogin={onClickRouteLogin} {...props}></PurchasedStack>}
+                    children={(props) => <PurchasedStack
+                        iconBadge={iconBadge}
+                        onClickUpdateIconBadge={onClickUpdateIconBadge}
+                        token={token}
+                        onClickRouteLogin={onClickRouteLogin}
+                        onLoadCartHandler={onLoadCartHandler}
+                        listPurchased={listPurchased}
+                        onLoadListPurchased={onLoadListPurchased} {...props}></PurchasedStack>}
                     options={{
                         title: 'Purchased',
                         drawerIcon: ({ size, color }) => <MaterialCommunityIcons name="av-timer" size={size} color={color} />
@@ -121,8 +165,12 @@ export default function AppScreen({ onClickRouteLogin }) {
                 >
                 </Drawer.Screen>
                 <Drawer.Screen
-                    name="ContactScreen"
-                    component={ProfileStack}
+                    name="ContactStack"
+                    children={(props) => <ContactStack
+                        token={token}
+                        countUnread={countUnread}
+                        listFeedback={listFeedback}
+                        onLoadFeedback={onLoadFeedback} {...props}></ContactStack>}
                     options={{
                         title: 'Contact',
                         drawerIcon: ({ size, color }) => <MaterialCommunityIcons name="contacts-outline" size={size} color={color} />

@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import Item from '../home/item';
 import Ads from '../home/ads';
 import { FetchTopProducts } from '../../model/fetchData';
 
+const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 export default function Main({ navigation }) {
+    const [refreshing, setRefreshing] = useState(false);
     const [listTopView, setListTopView] = useState([]);
     const [listTopHot, setListTopHot] = useState([]);
     const [listTopNew, setListTopNew] = useState([]);
@@ -13,15 +18,33 @@ export default function Main({ navigation }) {
         { image: require('../../assets/images/2.png'), key: '2' },
         { image: require('../../assets/images/3.png'), key: '3' },
     ]);
-    useEffect(() => {
+    const loadHome = () => {
         Promise.all([
             FetchTopProducts('TopView', 6).then(response => response.json()).then(json => setListTopView(json)),
             FetchTopProducts('TopHot', 6).then(response => response.json()).then(json => setListTopHot(json)),
             FetchTopProducts('TopNew', 6).then(response => response.json()).then(json => setListTopNew(json))
         ])
+    };
+    useEffect(() => {
+        loadHome();
     }, [])
+    const onRefresh = useCallback(() => {
+        loadHome();
+        setRefreshing(true);
+        wait(2000).then(() => setRefreshing(false));
+    }, []);
     return (
-        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        <ScrollView
+            style={styles.content}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                >
+                </RefreshControl>
+            }
+        >
             {/* Ads */}
             <Ads listAds={listAds}></Ads>
             {/* Top View */}
@@ -41,6 +64,6 @@ export default function Main({ navigation }) {
 const styles = StyleSheet.create({
     content: {
         flex: 1,
-        paddingHorizontal: 20
+        paddingHorizontal: 15
     }
 });
