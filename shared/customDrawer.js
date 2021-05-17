@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, ImageBackground, TouchableOpacity, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Title, Caption, Avatar, Switch, Drawer, TouchableRipple } from 'react-native-paper';
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
@@ -10,16 +10,25 @@ import { IMAGE_URL } from '../core/config';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function CustomDrawer({ token, user, onClickRouteLogin, ...props }) {
+export default function CustomDrawer({ isDarkTheme, onSwapDarkHandler, token, user, onClickRouteLogin, ...props }) {
     const onClickSignOutHandler = () => {
-        removeStorage(TOKEN);
-        onClickRouteLogin();
+        Alert.alert('📣', 'Click \'OK\' to sign out. \nBye 🙋 and hope to see you next time 🙆', [
+            {
+                text: 'OK', onPress: () => {
+                    removeStorage(TOKEN);
+                    onClickRouteLogin();
+                }
+            },
+            {
+                text: 'CANCEL'
+            }
+        ])
     }
     return (
         <LinearGradient
             start={[1, 0]}
             end={[0, 1]}
-            colors={['#fff', 'rgba(248, 191, 115,0.4)']}
+            colors={isDarkTheme ? ['rgba(61, 61, 61, 1)', 'rgba(0, 0, 0, 0.9)'] : ['#fff', 'rgba(248, 191, 115,0.4)']}
             style={{ flex: 1 }}
         >
             <View style={styles.container}>
@@ -69,8 +78,13 @@ export default function CustomDrawer({ token, user, onClickRouteLogin, ...props 
                     <Drawer.Section>
                         <TouchableRipple>
                             <View style={styles.darkTheme}>
-                                <Text style={{ color: "black" }}>Dark Theme</Text>
-                                <Switch></Switch>
+                                <Text style={{ color: isDarkTheme ? '#fff' : 'black' }}>Dark Theme</Text>
+                                <Switch
+                                    trackColor={{ false: "#767577", true: "#FBCB82" }}
+                                    thumbColor={isDarkTheme ? "orange" : "#f4f3f4"}
+                                    onValueChange={onSwapDarkHandler}
+                                    value={isDarkTheme}
+                                />
                             </View>
                         </TouchableRipple>
                     </Drawer.Section>

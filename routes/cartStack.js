@@ -8,12 +8,12 @@ import CheckOutScreen from '../screens/Cart/CheckOutScreen';
 
 const Stack = createStackNavigator();
 
-export default function CartStack({ navigation, onClickRouteLogin, onClickUpdateIconBadge, onLoadCartHandler, listCart, token, totalPrice, onLoadListPurchased, onLoadHistory }) {
+export default function CartStack({ isDarkTheme, navigation, onClickRouteLogin, onClickUpdateIconBadge, onLoadCartHandler, listCart, token, totalPrice, onLoadListPurchased, onLoadHistory }) {
     return (
       <Stack.Navigator>
         <Stack.Screen
             name="Cart"
-            children={(props)=><CartScreen listCart={listCart} totalPrice={totalPrice} onLoadCartHandler={onLoadCartHandler} token={token} onClickRouteLogin={onClickRouteLogin} onClickUpdateIconBadge={onClickUpdateIconBadge} drawerNavigation={navigation} {...props}></CartScreen>}
+            children={(props)=><CartScreen isDarkTheme={isDarkTheme} listCart={listCart} totalPrice={totalPrice} onLoadCartHandler={onLoadCartHandler} token={token} onClickRouteLogin={onClickRouteLogin} onClickUpdateIconBadge={onClickUpdateIconBadge} drawerNavigation={navigation} {...props}></CartScreen>}
             options={{
               headerBackground: ()=><Image style={{width:'100%',height:'100%',resizeMode:'cover'}} source={{uri:IMAGE_URL+'background_cart.png'}}></Image>,
               headerTitle: ()=><HeaderCart drawerNavigation={navigation}></HeaderCart>

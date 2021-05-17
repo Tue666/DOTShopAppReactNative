@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { IMAGE_URL } from '../core/config';
 import { Caption } from 'react-native-paper';
 import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
-export function HeaderHome({ drawerNavigation, iconBadge }) {
+export function HeaderHome({ isDarkTheme, drawerNavigation, iconBadge }) {
     const openMenu = () => {
         drawerNavigation.openDrawer();
     }
     return (
         <View style={styles.header}>
-            <Entypo style={styles.headerIcon} name="menu" size={27} color="black" onPress={openMenu} />
+            <Entypo style={styles.headerIcon} name="menu" size={27} color={isDarkTheme ? '#fff' : 'black'} onPress={openMenu} />
             <View style={styles.title}>
                 <Text style={[styles.textTitle, { color: 'orange' }]}>DOT </Text>
-                <Text style={[styles.textTitle, { color: 'black' }]}>Shop</Text>
+                <Text style={[styles.textTitle, { color: isDarkTheme ? '#fff' : 'black' }]}>Shop</Text>
             </View>
             <View style={styles.action}>
                 <View style={styles.titleCart}>
@@ -26,7 +26,7 @@ export function HeaderHome({ drawerNavigation, iconBadge }) {
                         <View></View>
                     }
                     <TouchableOpacity onPress={() => drawerNavigation.jumpTo('CartStack')}>
-                        <AntDesign name="shoppingcart" size={34} color="black" />
+                        <AntDesign name="shoppingcart" size={34} color={isDarkTheme ? '#fff' : 'black'} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -34,7 +34,7 @@ export function HeaderHome({ drawerNavigation, iconBadge }) {
     )
 }
 
-export function HeaderAbout({ param }) {
+export function HeaderAbout({ isDarkTheme, param }) {
     return (
         <View style={styles.header}>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -42,19 +42,19 @@ export function HeaderAbout({ param }) {
                     <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={{ uri: IMAGE_URL + param.Image }}></Image>
                 </View>
                 <View style={{ marginLeft: 10 }}>
-                    <Text style={{ fontWeight: 'bold' }}>{param.ProductName}</Text>
-                    <Caption>Detail</Caption>
+                    <Text style={{ fontWeight: 'bold', color: isDarkTheme ? '#fff' : 'black' }}>{param.ProductName}</Text>
+                    <Caption style={{ color: isDarkTheme ? '#fff' : 'black' }}>Detail</Caption>
                 </View>
             </View>
         </View>
     )
 }
 
-export function HeaderDetail({ drawerNavigation, param, iconBadge }) {
+export function HeaderDetail({ isDarkTheme, drawerNavigation, param, iconBadge }) {
     return (
         <View style={styles.header}>
             <View>
-                <Text style={{ fontWeight: 'bold' }}>{param.ProductName}</Text>
+                <Text style={{ fontWeight: 'bold', color: isDarkTheme ? '#fff' : 'black' }}>{param.ProductName}</Text>
             </View>
             <View style={styles.action}>
                 <View style={styles.titleCart}>
@@ -66,7 +66,7 @@ export function HeaderDetail({ drawerNavigation, param, iconBadge }) {
                         <View></View>
                     }
                     <TouchableOpacity onPress={() => drawerNavigation.jumpTo('CartStack')}>
-                        <AntDesign name="shoppingcart" size={34} color="black" />
+                        <AntDesign name="shoppingcart" size={34} color={isDarkTheme ? '#fff' : 'black'} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -87,14 +87,14 @@ export function HeaderCart({ drawerNavigation }) {
     )
 }
 
-export function HeaderPurchased({ drawerNavigation }) {
+export function HeaderPurchased({ isDarkTheme, drawerNavigation }) {
     const openMenu = () => {
         drawerNavigation.openDrawer();
     }
 
     return (
         <View style={styles.header}>
-            <Entypo style={styles.headerIcon} name="menu" size={27} color="black" onPress={openMenu} />
+            <Entypo style={styles.headerIcon} name="menu" size={27} color={isDarkTheme ? '#fff' : 'black'} onPress={openMenu} />
             <View style={styles.title}>
                 <Text style={[styles.textTitle, { color: 'orange', marginRight: 30 }]}>Purchased</Text>
             </View>
@@ -102,13 +102,13 @@ export function HeaderPurchased({ drawerNavigation }) {
     )
 }
 
-export function HeaderContact({ drawerNavigation }) {
+export function HeaderContact({ isDarkTheme, drawerNavigation }) {
     const openMenu = () => {
         drawerNavigation.openDrawer();
     }
     return (
         <View style={styles.header}>
-            <Entypo style={styles.headerIcon} name="menu" size={27} color="black" onPress={openMenu} />
+            <Entypo style={styles.headerIcon} name="menu" size={27} color={isDarkTheme ? '#fff' : 'black'} onPress={openMenu} />
         </View>
     )
 }

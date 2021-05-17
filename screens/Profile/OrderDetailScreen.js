@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { IMAGE_URL } from '../../core/config';
 import { getListOrderDetail } from '../../model/fetchData';
 
-export default function OrderDetail({ navigation, route }) {
+export default function OrderDetail({ isDarkTheme, navigation, route }) {
   const [listOrderDetail, setListOrderDetail] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   useEffect(() => {
@@ -18,9 +18,14 @@ export default function OrderDetail({ navigation, route }) {
       });
   }, []);
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      start={[0, 0]}
+      end={[1, 1]}
+      colors={isDarkTheme ? ['black', '#848383'] : ['#fff', '#fff']}
+      style={styles.container}
+    >
       <Svg height="1000" width="1000" style={{ position: 'absolute' }}>
-        <Circle cx="400" cy="40" r="350" fill="rgba(41, 127, 239, 0.8)" />
+        <Circle cx="400" cy="40" r="350" fill={isDarkTheme ? 'rgba(253, 137, 20, 1)' : "rgba(41, 127, 239, 0.8)"} />
       </Svg>
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.pop()}>
         <Ionicons name="arrow-back-sharp" size={28} color="white" />
@@ -61,7 +66,7 @@ export default function OrderDetail({ navigation, route }) {
           })}
         </ScrollView>
       </View>
-    </View>
+    </LinearGradient>
   )
 }
 

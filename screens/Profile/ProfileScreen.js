@@ -8,7 +8,7 @@ import Svg, { Circle } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome } from '@expo/vector-icons';
 
-export default function ProfileScreen({ token, user, navigation, drawerNavigation, onClickRouteLogin }) {
+export default function ProfileScreen({ isDarkTheme, token, user, navigation, drawerNavigation, onClickRouteLogin }) {
   const onClickNavigateHandler = (navigateName) => {
     if (token) {
       switch (navigateName) {
@@ -32,8 +32,8 @@ export default function ProfileScreen({ token, user, navigation, drawerNavigatio
   }
   let wrapperAccount = (
     <View style={{ height: 200, justifyContent: 'center', alignItems: 'center' }}>
-      <Caption>You are not logged in</Caption>
-      <Caption>Click below to login</Caption>
+      <Caption style={{ color: isDarkTheme ? '#fff' : 'black' }}>You are not logged in</Caption>
+      <Caption style={{ color: isDarkTheme ? '#fff' : 'black' }}>Click below to login</Caption>
       <LinearGradient
         start={[0, 0]}
         end={[1, 1]}
@@ -57,8 +57,8 @@ export default function ProfileScreen({ token, user, navigation, drawerNavigatio
             />
             <View style={{ marginLeft: 20 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginBottom: 5 }}>
-                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{user.Name ? user.Name : user.UserName}</Text>
-                <Text style={{ marginLeft: 7, fontStyle: 'italic' }}>({user.UserName})</Text>
+                <Text style={{ fontSize: 25, fontWeight: 'bold', color: isDarkTheme ? '#fff' : 'black' }}>{user.Name ? user.Name : user.UserName}</Text>
+                <Text style={{ marginLeft: 7, fontStyle: 'italic', color: isDarkTheme ? '#fff' : 'black' }}>({user.UserName})</Text>
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <LinearGradient
@@ -88,23 +88,23 @@ export default function ProfileScreen({ token, user, navigation, drawerNavigatio
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
                 <FontAwesome name="credit-card-alt" size={24} color="=rgba(96, 157, 237, 1)" />
-                <Caption style={{ fontStyle: 'italic' }}>999,999,999,999 vnđ</Caption>
+                <Caption style={{ fontStyle: 'italic', color: isDarkTheme ? '#fff' : 'gray' }}>999,999,999,999 vnđ</Caption>
               </View>
             </View>
           </View>
         </View>
         <View style={styles.userInfoSection}>
           <View style={styles.row}>
-            <Ionicons name="map-outline" color="#777777" size={20} />
-            <Text style={{ color: "#777777", marginLeft: 20 }}>{user.Address ? user.Address : 'No information'}</Text>
+            <Ionicons name="map-outline" color={isDarkTheme ? '#fff' : "#777777"} size={20} />
+            <Text style={{ marginLeft: 20, color: isDarkTheme ? '#fff' : 'gray' }}>{user.Address ? user.Address : 'No information'}</Text>
           </View>
           <View style={styles.row}>
-            <Ionicons name="call-outline" color="#777777" size={20} />
-            <Text style={{ color: "#777777", marginLeft: 20 }}>{user.Phone ? user.Phone : 'No information'}</Text>
+            <Ionicons name="call-outline" color={isDarkTheme ? '#fff' : "#777777"} size={20} />
+            <Text style={{ marginLeft: 20, color: isDarkTheme ? '#fff' : 'gray' }}>{user.Phone ? user.Phone : 'No information'}</Text>
           </View>
           <View style={styles.row}>
-            <Ionicons name="mail-outline" color="#777777" size={20} />
-            <Text style={{ color: "#777777", marginLeft: 20 }}>{user.Email ? user.Email : 'No information'}</Text>
+            <Ionicons name="mail-outline" color={isDarkTheme ? '#fff' : "#777777"} size={20} />
+            <Text style={{ marginLeft: 20, color: isDarkTheme ? '#fff' : 'gray' }}>{user.Email ? user.Email : 'No information'}</Text>
           </View>
         </View>
         <LinearGradient
@@ -127,7 +127,7 @@ export default function ProfileScreen({ token, user, navigation, drawerNavigatio
     <LinearGradient
       start={[0, 0]}
       end={[1, 1]}
-      colors={['#fff', '#fff']}
+      colors={isDarkTheme ? ['black', '#848383'] : ['#fff', '#fff']}
       style={styles.container}
     >
       <Svg height="100%" width="100%" style={{ position: 'absolute', opacity: 0.5 }}>
@@ -145,41 +145,41 @@ export default function ProfileScreen({ token, user, navigation, drawerNavigatio
       <LinearGradient
         start={[0.5, 1]}
         end={[0.5, 0]}
-        colors={['rgba(251, 210, 156, 0.8)', 'rgba(251, 210, 156, 0.6)']}
+        colors={isDarkTheme ? ['#848383', 'black'] : ['rgba(251, 210, 156, 0.8)', 'rgba(251, 210, 156, 0.6)']}
         style={{ borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}
       >
         <View style={{ marginTop: 35, marginLeft: 20 }}>
-          <Entypo name="menu" size={27} color="black" onPress={() => drawerNavigation.openDrawer()} />
+          <Entypo name="menu" size={27} color={isDarkTheme ? '#fff' : 'black'} onPress={() => drawerNavigation.openDrawer()} />
         </View>
         {wrapperAccount}
       </LinearGradient>
       <View style={styles.menuWrapper}>
         <TouchableRipple onPress={() => onClickNavigateHandler('favorites')}>
           <View style={styles.menuItem}>
-            <Ionicons name="heart-outline" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Your Favorites</Text>
+            <Ionicons name={isDarkTheme ? "heart" : "heart-outline"} color="#FF6347" size={25} />
+            <Text style={[styles.menuItemText, { color: isDarkTheme ? '#fff' : 'black' }]}>Your Favorites</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => onClickNavigateHandler('history')}>
           <View style={styles.menuItem}>
-            <Ionicons name="wallet-outline" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Transaction History</Text>
+            <Ionicons name={isDarkTheme ? "wallet" : "wallet-outline"} color="#FF6347" size={25} />
+            <Text style={[styles.menuItemText, { color: isDarkTheme ? '#fff' : 'black' }]}>Transaction History</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => onClickNavigateHandler('support')}>
           <View style={styles.menuItem}>
-            <Ionicons name="help-circle-outline" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Support</Text>
+            <Ionicons name={isDarkTheme ? "help-circle" : "help-circle-outline"} color="#FF6347" size={25} />
+            <Text style={[styles.menuItemText, { color: isDarkTheme ? '#fff' : 'black' }]}>Support</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => onClickNavigateHandler('settings')}>
           <View style={styles.menuItem}>
-            <Ionicons name="settings-outline" color="#FF6347" size={25} />
-            <Text style={styles.menuItemText}>Settings</Text>
+            <Ionicons name={isDarkTheme ? "settings" : "settings-outline"} color="#FF6347" size={25} />
+            <Text style={[styles.menuItemText, { color: isDarkTheme ? '#fff' : 'black' }]}>Settings</Text>
           </View>
         </TouchableRipple>
       </View>
-    </LinearGradient>
+    </LinearGradient >
   );
 }
 

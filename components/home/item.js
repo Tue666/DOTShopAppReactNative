@@ -8,13 +8,13 @@ import { Entypo } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-export default function Item({ listItem, title, navigation, type }) {
+export default function Item({ isDarkTheme, listItem, title, navigation, type }) {
     return (
         <View>
             <TouchableOpacity style={styles.title}>
-                <Title style={{ fontSize: 17 }}>{title}</Title>
+                <Title style={{ fontSize: 17, color: isDarkTheme ? '#fff' : 'black' }}>{title}</Title>
                 <TouchableOpacity>
-                    <AntDesign name="arrowright" size={24} color="black" />
+                    <AntDesign name="arrowright" size={24} color={isDarkTheme ? '#fff' : 'black'} />
                 </TouchableOpacity>
             </TouchableOpacity>
             <FlatList
@@ -30,7 +30,7 @@ export default function Item({ listItem, title, navigation, type }) {
                                     <LinearGradient
                                         start={[0, 0]}
                                         end={[1, 1]}
-                                        colors={['black', 'white']}
+                                        colors={isDarkTheme ? ['#eee', '#fff'] : ['black', 'white']}
                                         style={styles.image}>
                                         <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={{ uri: IMAGE_URL + item.Image }}></Image>
                                     </LinearGradient>
@@ -67,17 +67,17 @@ export default function Item({ listItem, title, navigation, type }) {
                                     }
                                 </View>
                                 <View style={styles.infor}>
-                                    <Text style={{ color: '#e23434', fontWeight: 'bold' }}>{item.ProductName}</Text>
+                                    <Text style={{ color: isDarkTheme ? 'red' : '#e23434', fontWeight: 'bold' }}>{item.ProductName}</Text>
                                     {item.Discount > 0 ?
                                         <View>
                                             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                                                <Text style={{ fontSize: 13, fontStyle: 'italic', textDecorationLine: 'line-through' }}>{item.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
-                                                <Text style={{ fontSize: 13, fontStyle: 'italic', marginLeft: 10 }}>-{item.Discount}%</Text>
+                                                <Text style={{ fontSize: 13, fontStyle: 'italic', textDecorationLine: 'line-through', color: isDarkTheme ? '#fff' : 'black' }}>{item.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                                                <Text style={{ fontSize: 13, fontStyle: 'italic', marginLeft: 10, color: isDarkTheme ? '#fff' : 'black' }}>-{item.Discount}%</Text>
                                             </View>
                                             <Text style={{ color: 'red', fontWeight: 'bold', fontStyle: 'italic' }}>NOW {((parseInt(item.Price)) - ((parseInt(item.Price) * item.Discount / 100))).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
                                         </View>
                                         :
-                                        <Text style={{ fontSize: 14, fontStyle: 'italic' }}>{item.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                                        <Text style={{ fontSize: 14, fontStyle: 'italic', color: isDarkTheme ? '#fff' : 'black' }}>{item.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
                                     }
                                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', paddingHorizontal: 5 }}>
                                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -85,11 +85,11 @@ export default function Item({ listItem, title, navigation, type }) {
                                             <AntDesign name="star" size={16} color="orange" />
                                             <AntDesign name="star" size={16} color="orange" />
                                             <AntDesign name="star" size={16} color="orange" />
-                                            <AntDesign name="star" size={16} color="gray" />
+                                            <AntDesign name="star" size={16} color={isDarkTheme ? '#fff' : "gray"} />
                                         </View>
                                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                                            <Entypo name="eye" size={24} color="black" style={{ marginRight: 5, fontWeight: 'bold' }} />
-                                            <Text style={{ color: 'black', fontStyle: 'italic', fontWeight: 'bold' }}>{item.View}</Text>
+                                            <Entypo name="eye" size={24} color={isDarkTheme ? '#fff' : 'black'} style={{ marginRight: 5, fontWeight: 'bold' }} />
+                                            <Text style={{ color: isDarkTheme ? '#fff' : 'black', fontStyle: 'italic', fontWeight: 'bold' }}>{item.View}</Text>
                                         </View>
                                     </View>
                                 </View>

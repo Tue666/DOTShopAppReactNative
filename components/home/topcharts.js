@@ -1,11 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
-export default function TopCharts() {
+export default function TopCharts({ isDarkTheme }) {
     return (
-        <View style={styles.container}>
-            <Text>Top Charts</Text>
-        </View>
+        <LinearGradient
+            start={[0, 0]}
+            end={[1, 1]}
+            colors={isDarkTheme ? ['black', '#848383'] : ['#fff', '#fff']}
+            style={styles.container}
+        >
+            <Text style={{ color: isDarkTheme ? '#fff' : 'black' }}>Top Charts</Text>
+        </LinearGradient>
     )
 }
 

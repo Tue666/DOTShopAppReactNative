@@ -6,7 +6,7 @@ import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
-export default function Item({ listCart, onClickRemoveHandler, onClickEditQuantityHandler }) {
+export default function Item({ isDarkTheme, listCart, onClickRemoveHandler, onClickEditQuantityHandler }) {
     const [switchModal, setSwitchModal] = useState(false);
     const [maxQuantity, setMaxQuantity] = useState(0);
     const [currentQuantity, setCurrentQuantity] = useState('0');
@@ -62,7 +62,7 @@ export default function Item({ listCart, onClickRemoveHandler, onClickEditQuanti
                             <Text style={{ fontSize: 12, marginBottom: 15 }}>( {maxQuantity} left )</Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                            <TouchableOpacity onPress={()=>{onClickEditQuantityHandler(parseInt(currentQuantity),productID);setSwitchModal(!switchModal)}} style={[styles.buttonModal, { borderColor: '#C5FB9C', backgroundColor: '#ADFB9C' }]}>
+                            <TouchableOpacity onPress={() => { onClickEditQuantityHandler(parseInt(currentQuantity), productID); setSwitchModal(!switchModal) }} style={[styles.buttonModal, { borderColor: '#C5FB9C', backgroundColor: '#ADFB9C' }]}>
                                 <Entypo style={styles.iconModal} name="check" size={24} color="green" />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => setSwitchModal(!switchModal)} style={[styles.buttonModal, { borderColor: '#F8BBB4', backgroundColor: '#F8ADA4' }]}>
@@ -74,7 +74,7 @@ export default function Item({ listCart, onClickRemoveHandler, onClickEditQuanti
             </Modal>
             {listCart.map((item, index) => {
                 return (
-                    <View style={styles.item} key={index}>
+                    <View style={[styles.item, { backgroundColor: isDarkTheme ? '#fff' : '#ee' }]} key={index}>
                         <View style={styles.infor}>
                             <View style={styles.image}>
                                 <Image style={{ width: 120, height: 120, resizeMode: 'contain' }} source={{ uri: IMAGE_URL + item.ProductImage }}></Image>
@@ -121,7 +121,9 @@ const styles = StyleSheet.create({
         margin: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 10
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#eee'
     },
     infor: {
         width: '100%',

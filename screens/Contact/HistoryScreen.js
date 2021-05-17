@@ -2,12 +2,18 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Svg, Circle } from 'react-native-svg';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
-export default function HistoryScreen({ navigation, listFeedback }) {
+export default function HistoryScreen({ isDarkTheme, navigation, listFeedback }) {
     return (
-        <View style={styles.container}>
+        <LinearGradient
+            start={[0, 0]}
+            end={[1, 1]}
+            colors={isDarkTheme ? ['#171719', '#717171'] : ['#eee', '#fff']}
+            style={styles.container}
+        >
             <Svg height="1000" width="1000" style={{ position: 'absolute' }}>
-                <Circle cx="400" cy="40" r="350" fill="rgba(41, 127, 239, 0.8)" />
+                <Circle cx="400" cy="40" r="350" fill={isDarkTheme ? 'orange' : "rgba(41, 127, 239, 0.8)"} />
             </Svg>
             <TouchableOpacity style={styles.backButton} onPress={() => navigation.pop()}>
                 <Ionicons name="arrow-back-sharp" size={28} color="white" />
@@ -32,7 +38,7 @@ export default function HistoryScreen({ navigation, listFeedback }) {
                     })}
                 </ScrollView>
             </View>
-        </View >
+        </LinearGradient >
     )
 }
 

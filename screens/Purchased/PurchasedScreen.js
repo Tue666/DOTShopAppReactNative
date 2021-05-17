@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { IMAGE_URL } from '../../core/config';
 import { Caption } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
-import { loadPurchased } from '../../model/fetchData';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 
-export default function PurchasedScreen({ token, navigation, onClickRouteLogin, listPurchased }) {
+export default function PurchasedScreen({ isDarkTheme, token, navigation, onClickRouteLogin, listPurchased }) {
   if (!token) {
     return (
-      <View style={styles.container}>
+      <LinearGradient
+        start={[0, 0]}
+        end={[1, 1]}
+        colors={isDarkTheme ? ['black', '#848383'] : ['#fff', '#fff']}
+        style={styles.container}
+      >
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Caption>You are not logged in</Caption>
-          <Caption>Click below to login</Caption>
+          <Caption style={{ color: isDarkTheme ? '#fff' : 'black' }}>You are not logged in</Caption>
+          <Caption style={{ color: isDarkTheme ? '#fff' : 'black' }}>Click below to login</Caption>
           <LinearGradient
             start={[0, 0]}
             end={[1, 1]}
@@ -25,11 +29,15 @@ export default function PurchasedScreen({ token, navigation, onClickRouteLogin, 
             </TouchableOpacity>
           </LinearGradient>
         </View>
-      </View>
+      </LinearGradient>
     )
   }
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      start={[0, 0]}
+      end={[1, 1]}
+      colors={isDarkTheme ? ['#171719', '#171719', '#7E7E7D'] : ['#eee', '#fff']}
+      style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.wrapper}>
           {listPurchased.map((item, index) => {
@@ -80,7 +88,7 @@ export default function PurchasedScreen({ token, navigation, onClickRouteLogin, 
           })}
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   )
 }
 
@@ -102,7 +110,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     margin: 10,
     elevation: 5,
-    borderRadius: 10
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ccc'
   },
   image: {
     width: '90%',

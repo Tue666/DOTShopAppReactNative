@@ -12,7 +12,7 @@ const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
-export default function ContactScreen({ token, navigation, countUnread, onLoadFeedback }) {
+export default function ContactScreen({ isDarkTheme, token, navigation, countUnread, onLoadFeedback }) {
     const [refreshing, setRefreshing] = useState(false);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -55,7 +55,11 @@ export default function ContactScreen({ token, navigation, countUnread, onLoadFe
         setSwitchModal(!switchModal);
     }
     return (
-        <View style={styles.container}>
+        <LinearGradient
+            start={[0, 0]}
+            end={[1, 1]}
+            colors={isDarkTheme ? ['#171719', '#fff'] : ['#eee', '#fff']}
+            style={styles.container}>
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -208,7 +212,7 @@ export default function ContactScreen({ token, navigation, countUnread, onLoadFe
                     </Marker>
                 </MapView>
             </View>
-        </View>
+        </LinearGradient>
     )
 }
 

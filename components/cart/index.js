@@ -7,7 +7,7 @@ import { clearCart, editQuantityCart, removeItem } from '../../model/fetchData';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Item from './item';
 
-export default function Index({ drawerNavigation, token, navigation, onClickUpdateIconBadge, listCart, onLoadCartHandler, totalPrice }) {
+export default function Index({ isDarkTheme, drawerNavigation, token, navigation, onClickUpdateIconBadge, listCart, onLoadCartHandler, totalPrice }) {
     const onClickEditQuantityHandler = (newQuantity, productID) => {
         editQuantityCart(token, productID, newQuantity)
             .then(response => response.json())
@@ -67,7 +67,7 @@ export default function Index({ drawerNavigation, token, navigation, onClickUpda
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Image style={{ width: 300, height: 300, resizeMode: 'contain' }} source={{ uri: IMAGE_URL + 'shop.png' }}></Image>
-                <Caption>Nothing here :D Go and buy something :D</Caption>
+                <Caption style={{ color: isDarkTheme ? '#fff' : 'black' }}>Nothing here :D Go and buy something :D</Caption>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                     <LinearGradient
                         start={[0, 0]}
@@ -98,10 +98,10 @@ export default function Index({ drawerNavigation, token, navigation, onClickUpda
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 5, }}>
                 <View>
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                        <FontAwesome5 name="money-bill-alt" size={24} color="black" />
-                        <Text style={{ color: 'gray' }}>  Total</Text>
+                        <FontAwesome5 name="money-bill-alt" size={24} color={isDarkTheme ? '#fff' : 'black'} />
+                        <Text style={{ color: isDarkTheme ? '#fff' : 'gray' }}>  Total</Text>
                     </View>
-                    <Text style={{ fontStyle: 'italic' }}>{totalPrice ? totalPrice.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : 0} vnđ</Text>
+                    <Text style={{ fontStyle: 'italic', color: isDarkTheme ? '#fff' : 'black' }}>{totalPrice ? totalPrice.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') : 0} vnđ</Text>
                 </View>
                 <View style={styles.action}>
                     <LinearGradient
@@ -126,7 +126,7 @@ export default function Index({ drawerNavigation, token, navigation, onClickUpda
                     </LinearGradient>
                 </View>
             </View>
-            <Item onClickEditQuantityHandler={onClickEditQuantityHandler} onClickRemoveHandler={onClickRemoveHandler} listCart={listCart}></Item>
+            <Item isDarkTheme={isDarkTheme} onClickEditQuantityHandler={onClickEditQuantityHandler} onClickRemoveHandler={onClickRemoveHandler} listCart={listCart}></Item>
         </>
     )
 }

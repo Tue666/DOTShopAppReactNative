@@ -9,7 +9,7 @@ const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
-export default function DetailScreen({ navigation, route, listFeedback, onLoadFeedback }) {
+export default function DetailScreen({ isDarkTheme, navigation, route, listFeedback, onLoadFeedback }) {
   const [refreshing, setRefreshing] = useState(false);
   const [feedback, setFeedback] = useState((listFeedback.filter(item => item.ID === route.params.feedbackID))[0]);
   const [content, setContent] = useState('');
@@ -35,15 +35,20 @@ export default function DetailScreen({ navigation, route, listFeedback, onLoadFe
       })
   }
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      start={[0, 0]}
+      end={[1, 1]}
+      colors={isDarkTheme ? ['black', '#5E5D5C'] : ['#eee', '#fff']}
+      style={styles.container}
+    >
       <Svg height="1000" width="1000" style={{ position: 'absolute' }}>
-        <Circle cx="350" cy="200" r="400" fill="rgba(41, 127, 239, 0.6)" />
+        <Circle cx="350" cy="200" r="400" fill={isDarkTheme ? 'rgba(248, 167, 91,0.6)' : "rgba(41, 127, 239, 0.6)"} />
       </Svg>
       <Svg height="1000" width="1000" style={{ position: 'absolute' }}>
-        <Circle cx="850" cy="300" r="400" fill="rgba(41, 127, 239, 0.4)" />
+        <Circle cx="850" cy="300" r="400" fill={isDarkTheme ? 'rgba(248, 167, 91,0.4)' : "rgba(41, 127, 239, 0.4)"} />
       </Svg>
       <Svg height="1000" width="1000" style={{ position: 'absolute' }}>
-        <Circle cx="300" cy="800" r="400" fill="rgba(41, 127, 239, 0.2)" />
+        <Circle cx="300" cy="800" r="400" fill={isDarkTheme ? 'rgba(248, 167, 91,0.2)' : "rgba(41, 127, 239, 0.2)"} />
       </Svg>
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.pop()}>
         <Ionicons name="arrow-back-sharp" size={28} color="white" />
@@ -122,7 +127,7 @@ export default function DetailScreen({ navigation, route, listFeedback, onLoadFe
         }
       </View>
 
-    </View>
+    </LinearGradient>
   )
 }
 

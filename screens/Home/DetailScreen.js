@@ -7,10 +7,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { addCart, FetchRelatedProducts } from '../../model/fetchData';
 import Item from '../../components/home/item';
-import { getStorage } from '../../model/asyncStorage';
-import { TOKEN } from '../../constant';
 
-export default function DetailScreen({ navigation, route, onClickUpdateIconBadge, onLoadCartHandler, token }) {
+export default function DetailScreen({ isDarkTheme, navigation, route, onClickUpdateIconBadge, onLoadCartHandler, token }) {
     const [switchModal, setSwitchModal] = useState(false);
     const [listRelated, setListRelated] = useState([]);
     const [slideImage, setSlideImage] = useState([
@@ -68,153 +66,165 @@ export default function DetailScreen({ navigation, route, onClickUpdateIconBadge
         }
     }
     return (
-        <ScrollView style={styles.container}>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={switchModal}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalView}>
-                        <View style={styles.wrapper}>
-                            <View style={[styles.row, { justifyContent: 'flex-end' }]}>
-                                <TouchableOpacity onPress={() => setSwitchModal(!switchModal)}>
-                                    <AntDesign name="close" size={28} color="black" />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={[styles.row, { justifyContent: 'space-evenly', alignItems: 'center', marginBottom: 10 }]}>
-                                <Image style={{ width: 140, height: 140, resizeMode: 'contain' }} source={{ uri: IMAGE_URL + route.params.Image }}></Image>
-                                <Text style={{ color: 'red', fontWeight: 'bold', fontSize: 17, maxWidth: 230, marginLeft: 20 }}>{route.params.ProductName}</Text>
-                            </View>
-                            {route.params.Quantity > 0 ?
-                                <>
-                                    <View style={styles.quantity}>
-                                        <TouchableOpacity onPress={onClickDecreaseHandler} disabled={parseInt(quantityInput) <= 1 ? true : false} style={styles.quantityButton}>
-                                            <Text style={styles.quantityText}>-</Text>
-                                        </TouchableOpacity>
-                                        <View style={styles.quantityInput}>
-                                            <TextInput
-                                                keyboardType="number-pad"
-                                                onChangeText={(value) => { onChangeInputHander(value) }}
-                                                value={quantityInput}
-                                            ></TextInput>
-                                        </View>
-                                        <TouchableOpacity onPress={onClickIncreaseHandler} disabled={parseInt(quantityInput) >= maxInput ? true : false} style={styles.quantityButton}>
-                                            <Text style={styles.quantityText}>+</Text>
-                                        </TouchableOpacity>
-                                        <Text style={{ marginLeft: 20, fontSize: 17 }}> ( {maxInput} lefts )</Text>
-                                    </View>
-                                    <View style={[styles.row, { justifyContent: 'flex-start', borderBottomWidth: 1, borderBottomColor: '#eee', marginBottom: 5 }]}>
-                                        <FontAwesome5 name="money-bill-alt" size={24} color="black" />
-                                    </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                                        <View style={{ borderRadius: 5, elevation: 5, backgroundColor: '#eee' }}>
-                                            <Text style={{ fontWeight: 'bold', padding: 10 }}>{totalPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
-                                        </View>
-                                        <View>
-                                            <TouchableOpacity onPress={onClickAddCartHandler}>
-                                                <LinearGradient
-                                                    start={[0, 0]}
-                                                    end={[1, 1]}
-                                                    colors={['red', 'orange']}
-                                                    style={styles.addCartButton}
-                                                >
-                                                    <Text style={styles.addCartText}>ADD TO CARD</Text>
-                                                </LinearGradient>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </>
-                                :
-                                <View style={{ marginTop: 75 }}>
-                                    <Text style={{ fontSize: 18, color: 'red', fontStyle: 'italic' }}>😍 Sold out! Thanks for your attention 😍</Text>
+        <LinearGradient
+            start={[0, 0]}
+            end={[1, 1]}
+            colors={isDarkTheme ? ['black', '#848383'] : ['#fff', '#fff']}
+            style={styles.container}
+        >
+            <ScrollView style={styles.content}>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={switchModal}
+                >
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalView}>
+                            <View style={styles.wrapper}>
+                                <View style={[styles.row, { justifyContent: 'flex-end' }]}>
+                                    <TouchableOpacity onPress={() => setSwitchModal(!switchModal)}>
+                                        <AntDesign name="close" size={28} color="black" />
+                                    </TouchableOpacity>
                                 </View>
-                            }
+                                <View style={[styles.row, { justifyContent: 'space-evenly', alignItems: 'center', marginBottom: 10 }]}>
+                                    <Image style={{ width: 140, height: 140, resizeMode: 'contain' }} source={{ uri: IMAGE_URL + route.params.Image }}></Image>
+                                    <Text style={{ color: 'red', fontWeight: 'bold', fontSize: 17, maxWidth: 230, marginLeft: 20 }}>{route.params.ProductName}</Text>
+                                </View>
+                                {route.params.Quantity > 0 ?
+                                    <>
+                                        <View style={styles.quantity}>
+                                            <TouchableOpacity onPress={onClickDecreaseHandler} disabled={parseInt(quantityInput) <= 1 ? true : false} style={styles.quantityButton}>
+                                                <Text style={styles.quantityText}>-</Text>
+                                            </TouchableOpacity>
+                                            <View style={styles.quantityInput}>
+                                                <TextInput
+                                                    keyboardType="number-pad"
+                                                    onChangeText={(value) => { onChangeInputHander(value) }}
+                                                    value={quantityInput}
+                                                ></TextInput>
+                                            </View>
+                                            <TouchableOpacity onPress={onClickIncreaseHandler} disabled={parseInt(quantityInput) >= maxInput ? true : false} style={styles.quantityButton}>
+                                                <Text style={styles.quantityText}>+</Text>
+                                            </TouchableOpacity>
+                                            <Text style={{ marginLeft: 20, fontSize: 17 }}> ( {maxInput} lefts )</Text>
+                                        </View>
+                                        <View style={[styles.row, { justifyContent: 'flex-start', borderBottomWidth: 1, borderBottomColor: '#eee', marginBottom: 5 }]}>
+                                            <FontAwesome5 name="money-bill-alt" size={24} color="black" />
+                                        </View>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                                            <View style={{ borderRadius: 5, elevation: 5, backgroundColor: '#eee' }}>
+                                                <Text style={{ fontWeight: 'bold', padding: 10 }}>{totalPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                                            </View>
+                                            <View>
+                                                <TouchableOpacity onPress={onClickAddCartHandler}>
+                                                    <LinearGradient
+                                                        start={[0, 0]}
+                                                        end={[1, 1]}
+                                                        colors={['red', 'orange']}
+                                                        style={styles.addCartButton}
+                                                    >
+                                                        <Text style={styles.addCartText}>ADD TO CARD</Text>
+                                                    </LinearGradient>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                    </>
+                                    :
+                                    <View style={{ marginTop: 75 }}>
+                                        <Text style={{ fontSize: 18, color: 'red', fontStyle: 'italic' }}>😍 Sold out! Thanks for your attention 😍</Text>
+                                    </View>
+                                }
+                            </View>
                         </View>
                     </View>
-                </View>
-            </Modal>
-            <View style={{ marginBottom: 15 }}>
-                <View style={styles.inforImage}>
-                    <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={{ uri: IMAGE_URL + route.params.Image }}></Image>
-                    {route.params.Quantity > 0 ?
-                        <View></View>
-                        :
-                        <Image style={{ width: 150, height: 150, resizeMode: 'contain', position: 'absolute', top: 5, right: 1 }} source={{ uri: IMAGE_URL + 'soldout.png' }}></Image>
-                    }
-                    {route.params.Discount > 0 ?
-                        <Image style={{ width: 80, height: 80, resizeMode: 'contain', position: 'absolute', top: -20, left: 1 }} source={{ uri: IMAGE_URL + 'sale.png' }}></Image>
-                        :
-                        <View></View>
-                    }
-                </View>
-                <View style={styles.inforName}>
-                    <Title style={styles.name}>{route.params.ProductName}</Title>
-                    {route.params.Discount > 0 ?
-                        <View>
-                            <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginVertical: 3 }}>
-                                <Text style={{ fontSize: 15, fontStyle: 'italic', textDecorationLine: 'line-through' }}>{route.params.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
-                                <Text style={{ fontSize: 15, fontStyle: 'italic', marginLeft: 10 }}>-{route.params.Discount}%</Text>
-                            </View>
-                            <Text style={{ fontSize: 20, fontStyle: 'italic', fontWeight: 'bold', color: 'red', marginBottom: 3 }}>NOW {((parseInt(route.params.Price)) - ((parseInt(route.params.Price) * route.params.Discount / 100))).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
-                        </View>
-                        :
-                        <Text style={{ fontSize: 16, fontStyle: 'italic' }}>{route.params.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
-                    }
-                    <Text style={{ fontSize: 14, fontStyle: 'italic', marginBottom: 17 }}>{route.params.Count} products have been sold!</Text>
-                </View>
-                <TouchableOpacity onPress={() => { setSwitchModal(!switchModal) }}>
-                    <LinearGradient
-                        start={[0, 0]}
-                        end={[1, 1]}
-                        colors={['red', 'orange']}
-                        style={styles.buyButton}
-                    >
-                        <Text style={styles.buyText}>BUY NOW</Text>
-                    </LinearGradient>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.imageProduct}>
-                <FlatList
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    data={slideImage}
-                    renderItem={({ item }) => {
-                        return (
-                            <TouchableWithoutFeedback onPress={() => { navigation.push('Image', item) }}>
-                                <View style={styles.item}>
-                                    <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={item.image}></Image>
+                </Modal>
+                <View style={{ marginBottom: 15 }}>
+                    <View style={[styles.inforImage, { backgroundColor: isDarkTheme ? '#eee' : '#fff' }]}>
+                        <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={{ uri: IMAGE_URL + route.params.Image }}></Image>
+                        {route.params.Quantity > 0 ?
+                            <View></View>
+                            :
+                            <Image style={{ width: 150, height: 150, resizeMode: 'contain', position: 'absolute', top: 5, right: 1 }} source={{ uri: IMAGE_URL + 'soldout.png' }}></Image>
+                        }
+                        {route.params.Discount > 0 ?
+                            <Image style={{ width: 80, height: 80, resizeMode: 'contain', position: 'absolute', top: -20, left: 1 }} source={{ uri: IMAGE_URL + 'sale.png' }}></Image>
+                            :
+                            <View></View>
+                        }
+                    </View>
+                    <View style={styles.inforName}>
+                        <Title style={styles.name}>{route.params.ProductName}</Title>
+                        {route.params.Discount > 0 ?
+                            <View>
+                                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginVertical: 3 }}>
+                                    <Text style={{ fontSize: 15, fontStyle: 'italic', textDecorationLine: 'line-through', color: isDarkTheme ? '#fff' : 'black' }}>{route.params.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                                    <Text style={{ fontSize: 15, fontStyle: 'italic', marginLeft: 10, color: isDarkTheme ? '#fff' : 'black' }}>-{route.params.Discount}%</Text>
                                 </View>
-                            </TouchableWithoutFeedback>
-                        )
-                    }}
-                ></FlatList>
-            </View>
-            <TouchableOpacity style={styles.aboutProduct} onPress={() => { navigation.navigate('About', route.params) }}>
-                <View>
-                    <Title style={{ fontSize: 17 }}>About this product</Title>
-                    <Caption style={{ marginLeft: 20 }}>The information about this product</Caption>
+                                <Text style={{ fontSize: 20, fontStyle: 'italic', fontWeight: 'bold', color: 'red', marginBottom: 3 }}>NOW {((parseInt(route.params.Price)) - ((parseInt(route.params.Price) * route.params.Discount / 100))).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                            </View>
+                            :
+                            <Text style={{ fontSize: 16, fontStyle: 'italic', color: isDarkTheme ? '#fff' : 'black' }}>{route.params.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                        }
+                        <Text style={{ fontSize: 14, fontStyle: 'italic', marginBottom: 17, color: isDarkTheme ? '#fff' : 'black' }}>{route.params.Count} products have been sold!</Text>
+                    </View>
+                    <TouchableOpacity onPress={() => { setSwitchModal(!switchModal) }}>
+                        <LinearGradient
+                            start={[0, 0]}
+                            end={[1, 1]}
+                            colors={['red', 'orange']}
+                            style={styles.buyButton}
+                        >
+                            <Text style={styles.buyText}>BUY NOW</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity>
-                    <AntDesign name="arrowright" size={24} color="black" />
+                <View style={styles.imageProduct}>
+                    <FlatList
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        data={slideImage}
+                        renderItem={({ item }) => {
+                            return (
+                                <TouchableWithoutFeedback onPress={() => { navigation.push('Image', item) }}>
+                                    <View style={styles.item}>
+                                        <Image style={{ width: '90%', height: '90%', resizeMode: 'contain' }} source={item.image}></Image>
+                                    </View>
+                                </TouchableWithoutFeedback>
+                            )
+                        }}
+                    ></FlatList>
+                </View>
+                <TouchableOpacity style={styles.aboutProduct} onPress={() => { navigation.navigate('About', route.params) }}>
+                    <View>
+                        <Title style={{ fontSize: 17, color: isDarkTheme ? '#fff' : 'black' }}>About this product</Title>
+                        <Caption style={{ marginLeft: 20, color: isDarkTheme ? '#fff' : 'black' }}>The information about this product</Caption>
+                    </View>
+                    <TouchableOpacity>
+                        <AntDesign name="arrowright" size={24} color={isDarkTheme ? '#fff' : 'black'} />
+                    </TouchableOpacity>
                 </TouchableOpacity>
-            </TouchableOpacity>
-            {/* Related */}
-            <Item listItem={listRelated} title="Related products" navigation={navigation}></Item>
-        </ScrollView>
+                {/* Related */}
+                <Item listItem={listRelated} isDarkTheme={isDarkTheme} title="Related products" navigation={navigation}></Item>
+            </ScrollView>
+        </LinearGradient>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1
+    },
+    content: {
         flex: 1,
         paddingHorizontal: 15,
-        backgroundColor: '#fff'
+        width: '100%'
     },
     inforImage: {
         height: 250,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 5,
+        borderRadius: 20
     },
     name: {
         color: 'red'

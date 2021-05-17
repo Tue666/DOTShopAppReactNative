@@ -6,11 +6,16 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function HistoryScreen({ navigation, listHistory }) {
+export default function HistoryScreen({ isDarkTheme, navigation, listHistory }) {
     return (
-        <View style={styles.container}>
+        <LinearGradient
+            start={[0, 0]}
+            end={[1, 1]}
+            colors={isDarkTheme ? ['black', '#848383'] : ['#fff', '#fff']}
+            style={styles.container}
+        >
             <Svg height="1000" width="1000" style={{ position: 'absolute' }}>
-                <Circle cx="400" cy="40" r="350" fill="rgba(41, 127, 239, 0.8)" />
+                <Circle cx="400" cy="40" r="350" fill={isDarkTheme ? 'rgba(253, 137, 20, 1)' : "rgba(41, 127, 239, 0.8)"} />
             </Svg>
             <TouchableOpacity style={styles.backButton} onPress={() => navigation.pop()}>
                 <Ionicons name="arrow-back-sharp" size={28} color="white" />
@@ -32,7 +37,7 @@ export default function HistoryScreen({ navigation, listHistory }) {
                                 key={index}
                                 start={[0, 0]}
                                 end={[1, 1]}
-                                colors={['rgba(41, 127, 239, 1)', 'rgba(41, 127, 239, 0.6)']}
+                                colors={isDarkTheme ? ['rgba(253, 137, 20, 0.8)', 'rgba(253, 137, 20, 0.4)'] : ['rgba(41, 127, 239, 1)', 'rgba(41, 127, 239, 0.6)']}
                                 style={styles.item}
                             >
                                 <View style={styles.infor}>
@@ -84,7 +89,7 @@ export default function HistoryScreen({ navigation, listHistory }) {
                     })}
                 </ScrollView>
             </View>
-        </View>
+        </LinearGradient>
     )
 }
 

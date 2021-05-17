@@ -4,15 +4,19 @@ import { Caption } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import Index from '../../components/cart';
 
-export default function CartScreen({ drawerNavigation, onClickRouteLogin, navigation, onClickUpdateIconBadge, listCart, onLoadCartHandler, token, totalPrice }) {
+export default function CartScreen({ isDarkTheme, drawerNavigation, onClickRouteLogin, navigation, onClickUpdateIconBadge, listCart, onLoadCartHandler, token, totalPrice }) {
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      start={[0, 0]}
+      end={[1, 1]}
+      colors={isDarkTheme ? ['#54514F', '#171719'] : ['#eee', '#fff']}
+      style={styles.container}>
       {token ?
-        <Index token={token} listCart={listCart} totalPrice={totalPrice} onLoadCartHandler={onLoadCartHandler} drawerNavigation={drawerNavigation} navigation={navigation} onClickUpdateIconBadge={onClickUpdateIconBadge}></Index>
+        <Index token={token} isDarkTheme={isDarkTheme} listCart={listCart} totalPrice={totalPrice} onLoadCartHandler={onLoadCartHandler} drawerNavigation={drawerNavigation} navigation={navigation} onClickUpdateIconBadge={onClickUpdateIconBadge}></Index>
         :
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Caption>You are not logged in</Caption>
-          <Caption>Click below to login</Caption>
+          <Caption style={{ color: isDarkTheme ? '#fff' : 'black' }}>You are not logged in</Caption>
+          <Caption style={{ color: isDarkTheme ? '#fff' : 'black' }}>Click below to login</Caption>
           <LinearGradient
             start={[0, 0]}
             end={[1, 1]}
@@ -25,7 +29,7 @@ export default function CartScreen({ drawerNavigation, onClickRouteLogin, naviga
           </LinearGradient>
         </View>
       }
-    </View>
+    </LinearGradient>
   )
 }
 

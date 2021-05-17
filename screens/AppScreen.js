@@ -10,13 +10,14 @@ import CartStack from '../routes/cartStack';
 import ProfileStack from '../routes/profileStack';
 import PurchasedStack from '../routes/purchasedStack';
 import ContactStack from '../routes/contactStack';
-import { getStorage } from '../model/asyncStorage';
-import { TOKEN } from '../constant';
+import { getStorage, setStorage } from '../model/asyncStorage';
+import { ISDARK, TOKEN } from '../constant';
 import { countCartItem, getUser, loadCart, loadPurchased, loadHistory, loadFeedback } from '../model/fetchData';
 
 const Drawer = createDrawerNavigator();
 
 export default function AppScreen({ onClickRouteLogin }) {
+    const [isDarkTheme, setIsDarkTheme] = useState(false);
     const [iconBadge, setIconBadge] = useState(0);
     const [token, setToken] = useState('');
     const [user, setUser] = useState({});
@@ -56,7 +57,16 @@ export default function AppScreen({ onClickRouteLogin }) {
                     });
             }
         });
+        getStorage(ISDARK).then(response => {
+            if (response) {
+                setIsDarkTheme(JSON.parse(response));
+            }
+        })
     }, []);
+    const onSwapDarkHandler = () => {
+        setIsDarkTheme(!isDarkTheme);
+        setStorage(ISDARK, JSON.stringify(!isDarkTheme));
+    }
     const onEditUserHandler = () => {
         getUser(token)
             .then(response => response.json())
@@ -96,17 +106,21 @@ export default function AppScreen({ onClickRouteLogin }) {
             <Drawer.Navigator
                 initialRouteName="HomeStack"
                 drawerContent={props => <CustomDrawer
+                    isDarkTheme={isDarkTheme}
+                    onSwapDarkHandler={onSwapDarkHandler}
                     token={token}
                     onClickRouteLogin={onClickRouteLogin}
                     user={user} {...props}>
                 </CustomDrawer>}
                 drawerContentOptions={{
-                    activeTintColor: "orange"
+                    activeTintColor: "orange",
+                    inactiveTintColor: isDarkTheme ? '#fff' : 'gray'
                 }}
             >
                 <Drawer.Screen
                     name="HomeStack"
                     children={(props) => <HomeStack
+                        isDarkTheme={isDarkTheme}
                         iconBadge={iconBadge}
                         onClickUpdateIconBadge={onClickUpdateIconBadge}
                         token={token}
@@ -120,6 +134,7 @@ export default function AppScreen({ onClickRouteLogin }) {
                 <Drawer.Screen
                     name="ProfileStack"
                     children={(props) => <ProfileStack
+                        isDarkTheme={isDarkTheme}
                         token={token}
                         onClickRouteLogin={onClickRouteLogin}
                         user={user}
@@ -134,6 +149,7 @@ export default function AppScreen({ onClickRouteLogin }) {
                 <Drawer.Screen
                     name="CartStack"
                     children={(props) => <CartStack
+                        isDarkTheme={isDarkTheme}
                         totalPrice={totalPrice}
                         onClickUpdateIconBadge={onClickUpdateIconBadge}
                         token={token}
@@ -151,6 +167,7 @@ export default function AppScreen({ onClickRouteLogin }) {
                 <Drawer.Screen
                     name="PurchasedScreen"
                     children={(props) => <PurchasedStack
+                        isDarkTheme={isDarkTheme}
                         iconBadge={iconBadge}
                         onClickUpdateIconBadge={onClickUpdateIconBadge}
                         token={token}
@@ -167,6 +184,7 @@ export default function AppScreen({ onClickRouteLogin }) {
                 <Drawer.Screen
                     name="ContactStack"
                     children={(props) => <ContactStack
+                        isDarkTheme={isDarkTheme}
                         token={token}
                         countUnread={countUnread}
                         listFeedback={listFeedback}

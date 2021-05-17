@@ -7,7 +7,7 @@ import Svg, { Circle } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import { editUser } from '../../model/fetchData';
 
-export default function EditProfile({ onEditUserHandler, navigation, route }) {
+export default function EditProfile({ isDarkTheme, onEditUserHandler, navigation, route }) {
   const [name, setName] = useState(route.params.user.Name);
   const [phone, setPhone] = useState(route.params.user.Phone);
   const [email, setEmail] = useState(route.params.user.Email);
@@ -30,7 +30,7 @@ export default function EditProfile({ onEditUserHandler, navigation, route }) {
     <LinearGradient
       start={[0, 0]}
       end={[1, 1]}
-      colors={['#fff', 'rgba(251, 210, 156, 0.5)']}
+      colors={isDarkTheme ? ['black', '#848383'] : ['#fff', '#fff']}
       style={styles.container}
     >
       <Svg height="100%" width="100%" style={{ position: 'absolute', opacity: 0.5 }}>
@@ -46,23 +46,23 @@ export default function EditProfile({ onEditUserHandler, navigation, route }) {
         <Circle cx="380" cy="380" r="150" fill="rgba(251, 210, 156, 0.8)" />
       </Svg>
       <TouchableOpacity style={{ position: 'absolute', top: 40, left: 10 }}>
-        <Ionicons name="chevron-back" size={30} color="black" onPress={() => navigation.pop()} style={{ paddingHorizontal: 10 }} />
+        <Ionicons name="chevron-back" size={30} color={isDarkTheme ? '#fff' : 'black'} onPress={() => navigation.pop()} style={{ paddingHorizontal: 10 }} />
       </TouchableOpacity>
       <View>
         <FontAwesome5 name="user-edit" size={80} color="orange" />
       </View>
       <View style={styles.down}>
-        <Caption style={{ alignSelf: 'flex-start' }}>Name</Caption>
+        <Caption style={{ alignSelf: 'flex-start', color: isDarkTheme ? '#fff' : 'gray' }}>Name</Caption>
         <View style={styles.textInputContainer}>
           <Ionicons
             style={styles.icon}
-            name="person-outline"
+            name={isDarkTheme ? "person" : "person-outline"}
             size={25}
             color="#FF6347"
           >
           </Ionicons>
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, { color: isDarkTheme ? '#fff' : 'black' }]}
             placeholder="No information"
             value={name}
             onChangeText={value => setName(value)}
@@ -70,17 +70,17 @@ export default function EditProfile({ onEditUserHandler, navigation, route }) {
           >
           </TextInput>
         </View>
-        <Caption style={{ alignSelf: 'flex-start' }}>Phone</Caption>
+        <Caption style={{ alignSelf: 'flex-start', color: isDarkTheme ? '#fff' : 'gray' }}>Phone</Caption>
         <View style={styles.textInputContainer}>
           <Ionicons
             style={styles.icon}
-            name="call-outline"
+            name={isDarkTheme ? "call" : "call-outline"}
             size={25}
             color="#FF6347"
           >
           </Ionicons>
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, { color: isDarkTheme ? '#fff' : 'black' }]}
             placeholder="No information"
             value={phone}
             onChangeText={value => setPhone(value)}
@@ -89,17 +89,17 @@ export default function EditProfile({ onEditUserHandler, navigation, route }) {
           >
           </TextInput>
         </View>
-        <Caption style={{ alignSelf: 'flex-start' }}>Email</Caption>
+        <Caption style={{ alignSelf: 'flex-start', color: isDarkTheme ? '#fff' : 'gray' }}>Email</Caption>
         <View style={styles.textInputContainer}>
           <Ionicons
             style={styles.icon}
-            name="mail-outline"
+            name={isDarkTheme ? "mail" : "mail-outline"}
             size={25}
             color="#FF6347"
           >
           </Ionicons>
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, { color: isDarkTheme ? '#fff' : 'black' }]}
             textContentType='emailAddress'
             keyboardType='email-address'
             placeholder="No information"
@@ -109,17 +109,17 @@ export default function EditProfile({ onEditUserHandler, navigation, route }) {
           >
           </TextInput>
         </View>
-        <Caption style={{ alignSelf: 'flex-start' }}>Address</Caption>
+        <Caption style={{ alignSelf: 'flex-start', color: isDarkTheme ? '#fff' : 'gray' }}>Address</Caption>
         <View style={styles.textInputContainer}>
           <Ionicons
             style={styles.icon}
-            name="location-outline"
+            name={isDarkTheme ? "location" : "location-outline"}
             size={25}
             color="#FF6347"
           >
           </Ionicons>
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, { color: isDarkTheme ? '#fff' : 'black' }]}
             placeholder="No information"
             value={address}
             onChangeText={value => setAddress(value)}
@@ -138,7 +138,7 @@ export default function EditProfile({ onEditUserHandler, navigation, route }) {
           </TouchableOpacity>
         </LinearGradient>
       </View>
-    </LinearGradient>
+    </LinearGradient >
   );
 }
 const styles = StyleSheet.create({

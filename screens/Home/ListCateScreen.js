@@ -6,7 +6,7 @@ import { Svg, Polygon } from 'react-native-svg'
 import { IMAGE_URL } from '../../core/config';
 import { FetchProductsByCate } from '../../model/fetchData';
 
-export default function ListCateScreen({ homeNavigation, navigation, route }) {
+export default function ListCateScreen({ isDarkTheme, homeNavigation, navigation, route }) {
   const [listProductByCate, setListProductByCate] = useState([]);
   useEffect(() => {
     FetchProductsByCate(route.params.cateID)
@@ -14,9 +14,14 @@ export default function ListCateScreen({ homeNavigation, navigation, route }) {
       .then(json => setListProductByCate(json));
   }, []);
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      start={[0, 0]}
+      end={[1, 1]}
+      colors={isDarkTheme ? ['black', '#848383'] : ['#fff', '#fff']}
+      style={styles.container}
+    >
       <TouchableOpacity onPress={() => navigation.pop()}>
-        <AntDesign name="arrowleft" size={28} color="black" />
+        <AntDesign name="arrowleft" size={28} color={isDarkTheme ? '#fff' : 'black'} />
       </TouchableOpacity>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -50,7 +55,7 @@ export default function ListCateScreen({ homeNavigation, navigation, route }) {
           })}
         </View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   )
 }
 

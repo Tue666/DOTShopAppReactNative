@@ -7,15 +7,15 @@ import OrderDetailScreen from '../screens/Profile/OrderDetailScreen';
 
 const Stack = createStackNavigator();
 
-export default function ProfileStack({ token, user, onEditUserHandler, navigation, onClickRouteLogin, listHistory }) {
+export default function ProfileStack({ isDarkTheme, token, user, onEditUserHandler, navigation, onClickRouteLogin, listHistory }) {
   return (
       <Stack.Navigator
         screenOptions={{ headerShown: false }}
       >
-        <Stack.Screen name="ProfileScreen" children={(props)=><ProfileScreen token={token} user={user} onClickRouteLogin={onClickRouteLogin} drawerNavigation={navigation} {...props}></ProfileScreen>} />
-        <Stack.Screen name="EditProfileScreen" children={(props)=><EditProfileScreen onEditUserHandler={onEditUserHandler} onClickRouteLogin={onClickRouteLogin} drawerNavigation={navigation} {...props}></EditProfileScreen>} />
-        <Stack.Screen name="HistoryScreen" children={(props)=><HistoryScreen token={token} listHistory={listHistory} {...props}></HistoryScreen>} />
-        <Stack.Screen name="OrderDetailScreen" children={(props)=><OrderDetailScreen token={token} {...props}></OrderDetailScreen>} />
+        <Stack.Screen name="ProfileScreen" children={(props)=><ProfileScreen isDarkTheme={isDarkTheme} token={token} user={user} onClickRouteLogin={onClickRouteLogin} drawerNavigation={navigation} {...props}></ProfileScreen>} />
+        <Stack.Screen name="EditProfileScreen" children={(props)=><EditProfileScreen isDarkTheme={isDarkTheme} onEditUserHandler={onEditUserHandler} onClickRouteLogin={onClickRouteLogin} drawerNavigation={navigation} {...props}></EditProfileScreen>} />
+        <Stack.Screen name="HistoryScreen" children={(props)=><HistoryScreen isDarkTheme={isDarkTheme} token={token} listHistory={listHistory} {...props}></HistoryScreen>} />
+        <Stack.Screen name="OrderDetailScreen" children={(props)=><OrderDetailScreen isDarkTheme={isDarkTheme} token={token} {...props}></OrderDetailScreen>} />
       </Stack.Navigator>
   );
 }
