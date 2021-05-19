@@ -74,7 +74,7 @@ export default function Item({ isDarkTheme, listCart, onClickRemoveHandler, onCl
             </Modal>
             {listCart.map((item, index) => {
                 return (
-                    <View style={[styles.item, { backgroundColor: isDarkTheme ? '#fff' : '#ee' }]} key={index}>
+                    <View style={[styles.item, { backgroundColor: isDarkTheme ? '#fff' : '#eee' }]} key={index}>
                         <View style={styles.infor}>
                             <View style={styles.image}>
                                 <Image style={{ width: 120, height: 120, resizeMode: 'contain' }} source={{ uri: IMAGE_URL + item.ProductImage }}></Image>

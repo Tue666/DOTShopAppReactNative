@@ -2,10 +2,12 @@ import React from 'react';
 import { Image } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/Home/HomeScreen';
-import { HeaderAbout, HeaderDetail, HeaderHome } from '../shared/header';
+import { HeaderAbout, HeaderDetail, HeaderHome, HeaderTop } from '../shared/header';
 import DetailScreen from '../screens/Home/DetailScreen';
 import AboutScreen from '../screens/Home/AboutScreen';
 import ImageScreen from '../screens/Shared/ImageScreen';
+import { IMAGE_URL } from '../core/config';
+import TopProductScreen from '../screens/Home/TopProductScreen';
 
 const Stack = createStackNavigator();
 
@@ -15,9 +17,9 @@ export default function HomeStack({ isDarkTheme, navigation, iconBadge, onClickU
             screenOptions={{
                 headerBackground: () =>
                     isDarkTheme ?
-                        <Image style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: 'https://img.freepik.com/free-vector/gold-luxury-background_52683-43998.jpg?size=626&ext=jpg' }}></Image>
+                        <Image style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: IMAGE_URL + 'headerBlack.png' }}></Image>
                         :
-                        <Image style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: 'https://static.vecteezy.com/system/resources/thumbnails/001/874/132/small/abstract-geometric-white-background-free-vector.jpg' }}></Image>
+                        <Image style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: IMAGE_URL + 'headerWhite.png' }}></Image>,
             }}
         >
             <Stack.Screen
@@ -39,10 +41,19 @@ export default function HomeStack({ isDarkTheme, navigation, iconBadge, onClickU
             </Stack.Screen>
             <Stack.Screen
                 name="About"
-                children={(props)=><AboutScreen isDarkTheme={isDarkTheme} {...props}></AboutScreen>}
+                children={(props) => <AboutScreen isDarkTheme={isDarkTheme} {...props}></AboutScreen>}
                 options={({ route }) => ({
                     headerTintColor: isDarkTheme ? '#fff' : 'black',
                     headerTitle: () => <HeaderAbout isDarkTheme={isDarkTheme} param={route.params}></HeaderAbout>
+                })}
+            >
+            </Stack.Screen>
+            <Stack.Screen
+                name="TopProduct"
+                children={(props) => <TopProductScreen isDarkTheme={isDarkTheme} {...props}></TopProductScreen>}
+                options={({ route }) => ({
+                    headerTitle: () => <HeaderTop isDarkTheme={isDarkTheme} iconBadge={iconBadge} param={route.params}></HeaderTop>,
+                    headerTintColor: isDarkTheme ? '#fff' : 'black',
                 })}
             >
             </Stack.Screen>

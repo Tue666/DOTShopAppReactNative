@@ -85,7 +85,7 @@ export default function Index({ isDarkTheme, drawerNavigation, token, navigation
                         colors={['green', '#5EF56D']}
                         style={{ borderRadius: 20, marginTop: 20, marginHorizontal: 10 }}
                     >
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => drawerNavigation.jumpTo('ProfileStack')}>
                             <Text style={{ paddingHorizontal: 20, paddingVertical: 10, color: '#fff' }}>HISTORY ⏱</Text>
                         </TouchableOpacity>
                     </LinearGradient>

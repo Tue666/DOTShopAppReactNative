@@ -13,7 +13,7 @@ export default function Item({ isDarkTheme, listItem, title, navigation, type })
         <View>
             <TouchableOpacity style={styles.title}>
                 <Title style={{ fontSize: 17, color: isDarkTheme ? '#fff' : 'black' }}>{title}</Title>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('TopProduct', { title: title })}>
                     <AntDesign name="arrowright" size={24} color={isDarkTheme ? '#fff' : 'black'} />
                 </TouchableOpacity>
             </TouchableOpacity>

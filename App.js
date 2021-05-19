@@ -8,7 +8,8 @@ export default function App() {
   const loadData = () => {
     return Font.loadAsync({
       'poppins-extralight': require('./assets/fonts/Poppins-ExtraLight.ttf'),
-      'poppins-bold': require('./assets/fonts/Poppins-Bold.ttf')
+      'poppins-bold': require('./assets/fonts/Poppins-Bold.ttf'),
+      'bigshoulders-bold': require('./assets/fonts/BigShouldersStencilText-Bold.ttf')
     });
   }
   const [isReady, setIsReady] = useState(false);

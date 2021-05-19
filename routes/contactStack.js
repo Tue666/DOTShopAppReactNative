@@ -5,6 +5,7 @@ import ContactScreen from '../screens/Contact/ContactScreen';
 import { HeaderContact } from '../shared/header';
 import HistoryScreen from '../screens/Contact/HistoryScreen';
 import DetailScreen from '../screens/Contact/DetailScreen';
+import { IMAGE_URL } from '../core/config';
 
 const Stack = createStackNavigator();
 
@@ -18,9 +19,9 @@ export default function ContactStack({ isDarkTheme, navigation, token, countUnre
                     title: '',
                     headerBackground: () =>
                         isDarkTheme ?
-                            <Image style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: 'https://img.freepik.com/free-vector/gold-luxury-background_52683-43998.jpg?size=626&ext=jpg' }}></Image>
+                            <Image style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: IMAGE_URL + 'headerBlack.png' }}></Image>
                             :
-                            <Image style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: 'https://static.vecteezy.com/system/resources/thumbnails/001/874/132/small/abstract-geometric-white-background-free-vector.jpg' }}></Image>,
+                            <Image style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: IMAGE_URL + 'headerWhite.png' }}></Image>,
                     headerTitle: () => <HeaderContact isDarkTheme={isDarkTheme} drawerNavigation={navigation}></HeaderContact>
                 }} />
             <Stack.Screen

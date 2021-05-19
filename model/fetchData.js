@@ -29,6 +29,22 @@ export const Register = (userName, passWord, confirmPass) => {
     });
 }
 
+export const changePassword = (token, oldPass, newPass, confirmNewPass) => {
+    return fetch(BASE_URL + 'ChangePassword', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Token: token,
+            OldPass: oldPass,
+            NewPass: newPass,
+            ConfirmNewPass: confirmNewPass
+        })
+    });
+}
+
 export const checkExistUserName = (userName) => {
     return fetch(BASE_URL + 'CheckExistUserName/' + userName);
 }
@@ -172,6 +188,23 @@ export const checkOut = (token, name, email, phone, address) => {
             Email: email,
             Phone: phone,
             Address: address
+        })
+    });
+}
+
+export const Searching = (key, isAdvanced, category, priceFrom, priceTo) => {
+    return fetch(BASE_URL + 'Searching', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Key: key,
+            IsAdvanced: isAdvanced,
+            Category: category,
+            PriceFrom: priceFrom,
+            PriceTo: priceTo
         })
     });
 }

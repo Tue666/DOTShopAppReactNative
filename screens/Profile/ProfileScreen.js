@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Alert, } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, TouchableOpacity, Alert, Modal, ScrollView, TextInput } from 'react-native';
 import { Avatar, Caption, Text, TouchableRipple } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Entypo } from '@expo/vector-icons';
@@ -7,27 +7,60 @@ import { AntDesign } from '@expo/vector-icons';
 import Svg, { Circle } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome } from '@expo/vector-icons';
+import { changePassword } from '../../model/fetchData';
+import { removeStorage } from '../../model/asyncStorage';
+import { TOKEN } from '../../constant';
 
 export default function ProfileScreen({ isDarkTheme, token, user, navigation, drawerNavigation, onClickRouteLogin }) {
+  const [switchModal, setSwitchModal] = useState(false);
+  const [oldPass, setOldPass] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [confirmNewPass, setConfirmNewPass] = useState('');
+  const [isEnableOne, setIsEnableOne] = useState(true);
+  const [isEnableTwo, setIsEnableTwo] = useState(true);
+  const [isEnableThree, setIsEnableThree] = useState(true);
+  const onClickChangePassHandler = () => {
+    Alert.alert('📣', 'You HAVE TO relogin if you update password. \nPress \'OK\' to continue 😇', [
+      {
+        text: 'OK',
+        onPress: () => {
+          changePassword(token, oldPass, newPass, confirmNewPass)
+            .then(response => response.json())
+            .then(json => {
+              if (JSON.parse(json['Type'])) {
+                removeStorage(TOKEN);
+                onClickRouteLogin();
+              }
+              else {
+                Alert.alert('📣', JSON.parse(json['Message']), [{ text: 'OK' }]);
+              }
+            })
+        }
+      },
+      { text: 'CANCEL' }
+    ])
+  }
   const onClickNavigateHandler = (navigateName) => {
-    if (token) {
-      switch (navigateName) {
-        case 'favorites':
-          Alert.alert('📣', 'Maintenance, come back later 💩', [{ text: 'OK' }]);
-          break;
-        case 'history':
-          navigation.navigate('HistoryScreen');
-          break;
-        case 'support':
-          Alert.alert('📣', 'Maintenance, come back later 💩', [{ text: 'OK' }]);
-          break;
-        case 'settings':
-          Alert.alert('📣', 'Maintenance, come back later 💩', [{ text: 'OK' }]);
-          break;
-      }
+    if (navigateName === 'support') {
+      navigation.navigate('SupportScreen');
     }
     else {
-      Alert.alert('📣', 'You are not logged in, do it and try again!. 💩', [{ text: 'OK' }]);
+      if (token) {
+        switch (navigateName) {
+          case 'favorites':
+            Alert.alert('📣', 'Maintenance, come back later 💩', [{ text: 'OK' }]);
+            break;
+          case 'history':
+            navigation.navigate('HistoryScreen');
+            break;
+          case 'change-password':
+            setSwitchModal(!switchModal);
+            break;
+        }
+      }
+      else {
+        Alert.alert('📣', 'You are not logged in, do it and try again!. 💩', [{ text: 'OK' }]);
+      }
     }
   }
   let wrapperAccount = (
@@ -130,6 +163,77 @@ export default function ProfileScreen({ isDarkTheme, token, user, navigation, dr
       colors={isDarkTheme ? ['black', '#848383'] : ['#fff', '#fff']}
       style={styles.container}
     >
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={switchModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalView}>
+            <ScrollView style={{ width: '100%' }}>
+              <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ fontWeight: 'bold', color: 'rgba(41, 127, 239, 1)', fontStyle: 'italic', fontSize: 20 }}>CHANGE YOUR PASS</Text>
+                <View style={styles.inputContainer}>
+                  <Caption style={styles.caption}>Old Password</Caption>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <TextInput style={styles.input}
+                      placeholder=" ... "
+                      onChangeText={value => setOldPass(value)}
+                      value={oldPass}
+                      maxLength={20}
+                      secureTextEntry={isEnableOne}
+                    >
+                    </TextInput>
+                    <TouchableOpacity onPress={() => setIsEnableOne(!isEnableOne)}>
+                      <Entypo name={isEnableOne ? "eye" : "eye-with-line"} size={26} color="black" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={styles.inputContainer}>
+                  <Caption style={styles.caption}>New Password</Caption>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <TextInput style={styles.input}
+                      placeholder=" ... "
+                      onChangeText={value => setNewPass(value)}
+                      value={newPass}
+                      maxLength={20}
+                      secureTextEntry={isEnableTwo}
+                    >
+                    </TextInput>
+                    <TouchableOpacity onPress={() => setIsEnableTwo(!isEnableTwo)}>
+                      <Entypo name={isEnableTwo ? "eye" : "eye-with-line"} size={26} color="black" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={styles.inputContainer}>
+                  <Caption style={styles.caption}>Confirm New Password</Caption>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <TextInput style={styles.input}
+                      placeholder=" ... "
+                      onChangeText={value => setConfirmNewPass(value)}
+                      value={confirmNewPass}
+                      maxLength={20}
+                      secureTextEntry={isEnableThree}
+                    >
+                    </TextInput>
+                    <TouchableOpacity onPress={() => setIsEnableThree(!isEnableThree)}>
+                      <Entypo name={isEnableThree ? "eye" : "eye-with-line"} size={26} color="black" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                  <TouchableOpacity onPress={onClickChangePassHandler} disabled={oldPass === '' || newPass === '' || confirmNewPass === '' ? true : false} style={styles.submitButton}>
+                    <Text style={styles.submitText}>SAVE 🥳</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => setSwitchModal(!switchModal)} style={[styles.submitButton, { backgroundColor: 'rgba(250, 76, 76, 1)', borderColor: 'rgba(250, 76, 76, 0.8)' }]}>
+                    <Text style={styles.submitText}>CANCEL</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
       <Svg height="100%" width="100%" style={{ position: 'absolute', opacity: 0.5 }}>
         <Circle cx="400" cy="50" r="150" fill="rgba(251, 210, 156, 1)" />
       </Svg>
@@ -172,10 +276,10 @@ export default function ProfileScreen({ isDarkTheme, token, user, navigation, dr
             <Text style={[styles.menuItemText, { color: isDarkTheme ? '#fff' : 'black' }]}>Support</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => onClickNavigateHandler('settings')}>
+        <TouchableRipple onPress={() => onClickNavigateHandler('change-password')}>
           <View style={styles.menuItem}>
-            <Ionicons name={isDarkTheme ? "settings" : "settings-outline"} color="#FF6347" size={25} />
-            <Text style={[styles.menuItemText, { color: isDarkTheme ? '#fff' : 'black' }]}>Settings</Text>
+            <Ionicons name={isDarkTheme ? "key" : "key-outline"} color="#FF6347" size={25} />
+            <Text style={[styles.menuItemText, { color: isDarkTheme ? '#fff' : 'black' }]}>Change Password</Text>
           </View>
         </TouchableRipple>
       </View>
@@ -219,5 +323,48 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 16,
     lineHeight: 26,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,.7)'
+  },
+  modalView: {
+    width: '90%',
+    height: '50%',
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 13,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  inputContainer: {
+    marginVertical: 10,
+    width: '95%'
+  },
+  caption: {
+    alignSelf: 'flex-start'
+  },
+  input: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    paddingVertical: 5,
+    fontSize: 16,
+    width: '85%'
+  },
+  submitButton: {
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(41, 127, 239, 0.7)',
+    marginTop: 20,
+    backgroundColor: 'rgba(41, 127, 239, 1)',
+    elevation: 5,
+    marginHorizontal: 5
+  },
+  submitText: {
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+    color: '#fff'
   }
 });

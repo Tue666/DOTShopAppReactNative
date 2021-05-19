@@ -177,6 +177,16 @@ export default function DetailScreen({ isDarkTheme, navigation, route, onClickUp
                             <Text style={styles.buyText}>BUY NOW</Text>
                         </LinearGradient>
                     </TouchableOpacity>
+                    <TouchableOpacity>
+                        <LinearGradient
+                            start={[0, 0]}
+                            end={[1, 1]}
+                            colors={['pink', 'orange']}
+                            style={styles.buyButton}
+                        >
+                            <Text style={styles.buyText}>ADD TO FAVORITES</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.imageProduct}>
                     <FlatList
@@ -253,7 +263,8 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     buyButton: {
-        borderRadius: 10
+        borderRadius: 10,
+        marginVertical: 5
     },
     buyText: {
         padding: 13,

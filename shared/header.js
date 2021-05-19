@@ -113,6 +113,31 @@ export function HeaderContact({ isDarkTheme, drawerNavigation }) {
     )
 }
 
+export function HeaderTop({ isDarkTheme, drawerNavigation, iconBadge }) {
+    return (
+        <View style={styles.header}>
+            <View style={styles.title}>
+                <Text style={[styles.textTitle, { color: 'orange' }]}>DOT </Text>
+                <Text style={[styles.textTitle, { color: isDarkTheme ? '#fff' : 'black' }]}>Shop</Text>
+            </View>
+            <View style={styles.action}>
+                <View style={styles.titleCart}>
+                    {iconBadge > 0 ?
+                        <View style={styles.titleCount}>
+                            <Text style={styles.textCount}>{iconBadge}</Text>
+                        </View>
+                        :
+                        <View></View>
+                    }
+                    <TouchableOpacity onPress={() => drawerNavigation.jumpTo('CartStack')}>
+                        <AntDesign name="shoppingcart" size={34} color={isDarkTheme ? '#fff' : 'black'} />
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </View>
+    )
+}
+
 const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
