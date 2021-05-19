@@ -12,7 +12,7 @@ import PurchasedStack from '../routes/purchasedStack';
 import ContactStack from '../routes/contactStack';
 import { getStorage, setStorage } from '../model/asyncStorage';
 import { ISDARK, TOKEN } from '../constant';
-import { countCartItem, getUser, loadCart, loadPurchased, loadHistory, loadFeedback } from '../model/fetchData';
+import { countCartItem, getUser, loadCart, loadPurchased, loadHistory, loadFeedback, loadFavorite } from '../model/fetchData';
 
 const Drawer = createDrawerNavigator();
 
@@ -27,6 +27,7 @@ export default function AppScreen({ onClickRouteLogin }) {
     const [listHistory, setListHistory] = useState([]);
     const [listFeedback, setListFeedback] = useState([]);
     const [countUnread, setCounUnread] = useState(0);
+    const [listFavorite, setListFavorite] = useState([]);
     useEffect(() => {
         getStorage(TOKEN).then(response => {
             if (response) {
@@ -55,6 +56,9 @@ export default function AppScreen({ onClickRouteLogin }) {
                         setCounUnread(JSON.parse(json['CountUnread']));
                         setListFeedback(JSON.parse(json['ListFeedback']));
                     });
+                loadFavorite(response)
+                    .then(response => response.json())
+                    .then(json => setListFavorite(json));
             }
         });
         getStorage(ISDARK).then(response => {
@@ -101,6 +105,11 @@ export default function AppScreen({ onClickRouteLogin }) {
                 setListFeedback(JSON.parse(json['ListFeedback']));
             });
     }
+    const onLoadFavorite = () => {
+        loadFavorite(token)
+            .then(response => response.json())
+            .then(json => setListFavorite(json));
+    }
     return (
         <NavigationContainer>
             <Drawer.Navigator
@@ -124,7 +133,8 @@ export default function AppScreen({ onClickRouteLogin }) {
                         iconBadge={iconBadge}
                         onClickUpdateIconBadge={onClickUpdateIconBadge}
                         token={token}
-                        onLoadCartHandler={onLoadCartHandler} {...props}></HomeStack>}
+                        onLoadCartHandler={onLoadCartHandler}
+                        onLoadFavorite={onLoadFavorite} {...props}></HomeStack>}
                     options={{
                         title: 'Home',
                         drawerIcon: ({ size, color }) => <Ionicons name="home-outline" size={size} color={color} />
@@ -137,9 +147,14 @@ export default function AppScreen({ onClickRouteLogin }) {
                         isDarkTheme={isDarkTheme}
                         token={token}
                         onClickRouteLogin={onClickRouteLogin}
+                        iconBadge={iconBadge}
+                        onClickUpdateIconBadge={onClickUpdateIconBadge}
                         user={user}
                         onEditUserHandler={onEditUserHandler}
-                        listHistory={listHistory} {...props}></ProfileStack>}
+                        onLoadCartHandler={onLoadCartHandler}
+                        listHistory={listHistory}
+                        listFavorite={listFavorite}
+                        onLoadFavorite={onLoadFavorite} {...props}></ProfileStack>}
                     options={{
                         title: 'Profile',
                         drawerIcon: ({ size, color }) => <MaterialCommunityIcons name="account-outline" size={size} color={color} />
@@ -174,7 +189,8 @@ export default function AppScreen({ onClickRouteLogin }) {
                         onClickRouteLogin={onClickRouteLogin}
                         onLoadCartHandler={onLoadCartHandler}
                         listPurchased={listPurchased}
-                        onLoadListPurchased={onLoadListPurchased} {...props}></PurchasedStack>}
+                        onLoadListPurchased={onLoadListPurchased}
+                        onLoadFavorite={onLoadFavorite} {...props}></PurchasedStack>}
                     options={{
                         title: 'Purchased',
                         drawerIcon: ({ size, color }) => <MaterialCommunityIcons name="av-timer" size={size} color={color} />

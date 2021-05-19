@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, Linking } from 'react-native';
-import { Avatar, Title, Caption, Text } from 'react-native-paper';
+import { View, StyleSheet, ScrollView, Linking, Image } from 'react-native';
+import { Avatar, Title, Caption } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { IMAGE_URL } from '../../core/config';
 
@@ -18,6 +18,7 @@ export default function AboutUs({ isDarkTheme }) {
                     <Title style={{ fontSize: 30, alignSelf: 'center', fontFamily: 'bigshoulders-bold', marginBottom: 8, color: isDarkTheme ? '#fff' : 'black' }}>
                         INTRODUCE
                     </Title>
+                    <Image style={{ width: 80, height: 80, resizeMode: 'contain', alignSelf: 'center', borderRadius: 20, marginVertical: 5 }} source={{ uri: IMAGE_URL + 'logo.png' }}></Image>
                     <Caption style={[styles.caption, { color: isDarkTheme ? '#fff' : 'black' }]} >DOTShop appeared in early 2021, DOTShop is the mobile application development project of  my group , this is an application to sell electronic appliances, below are the members of the group.</Caption>
                     <Caption style={[styles.caption, { color: isDarkTheme ? '#fff' : 'black' }]} >Wish you have the best and happy experience at DOTShop, pleased to serve you.</Caption>
                 </View>
@@ -25,7 +26,7 @@ export default function AboutUs({ isDarkTheme }) {
                     <Title style={{ fontSize: 30, alignSelf: 'center', fontFamily: 'bigshoulders-bold', marginBottom: 8, color: isDarkTheme ? '#fff' : 'black' }}>
                         OUR WEBSITE
                     </Title>
-                    <Caption onPress={()=>Linking.openURL('http://dotshop69.000webhostapp.com')} style={[styles.caption, { color: isDarkTheme ? '#fff' : 'black', alignSelf: 'center', textDecorationLine: 'underline' }]} >http://dotshop69.000webhostapp.com</Caption>
+                    <Caption onPress={() => Linking.openURL('http://dotshop69.000webhostapp.com')} style={[styles.caption, { color: isDarkTheme ? '#fff' : 'black', alignSelf: 'center', textDecorationLine: 'underline' }]} >http://dotshop69.000webhostapp.com</Caption>
                 </View>
                 {/* end head */}
 

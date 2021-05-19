@@ -5,10 +5,10 @@ import { Title, Caption } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { addCart, FetchRelatedProducts } from '../../model/fetchData';
+import { addCart, FetchRelatedProducts, insertToFavorite } from '../../model/fetchData';
 import Item from '../../components/home/item';
 
-export default function DetailScreen({ isDarkTheme, navigation, route, onClickUpdateIconBadge, onLoadCartHandler, token }) {
+export default function DetailScreen({ isDarkTheme, navigation, route, onClickUpdateIconBadge, onLoadCartHandler, token, onLoadFavorite }) {
     const [switchModal, setSwitchModal] = useState(false);
     const [listRelated, setListRelated] = useState([]);
     const [slideImage, setSlideImage] = useState([
@@ -64,6 +64,37 @@ export default function DetailScreen({ isDarkTheme, navigation, route, onClickUp
         else {
             Alert.alert('📣', 'You are not logged in, do it and try again!. 💩', [{ text: 'OK' }])
         }
+    }
+    const onClickInsertToFavoriteHandler = () => {
+        Alert.alert('📣', 'Click \'OK\' to continue 🙃', [
+            {
+                text: 'OK',
+                onPress: () => {
+                    if (token) {
+                        insertToFavorite(token, route.params.ID)
+                            .then(response => response.json())
+                            .then(json => {
+                                switch (json) {
+                                    case 1:
+                                        Alert.alert('📣', 'Add ' + route.params.ProductName + ' to favorite successfully ✅', [{ text: 'OK' }]);
+                                        onLoadFavorite();
+                                        break;
+                                    case 2:
+                                        Alert.alert('📣', 'This product already have in your favorite 🙃. \nTry something new 🤩', [{ text: 'OK' }]);
+                                        break;
+                                    case 3:
+                                        Alert.alert('📣', 'Add to favorite failed ❌. Maybe something going wrong 😥. \nCONTACT us for more information and resolve 📞', [{ text: 'OK' }])
+                                        break;
+                                }
+                            })
+                    }
+                    else {
+                        Alert.alert('📣', 'You are not logged in, do it and try again!. 💩', [{ text: 'OK' }])
+                    }
+                }
+            },
+            { text: 'CANCEL' }
+        ])
     }
     return (
         <LinearGradient
@@ -177,7 +208,7 @@ export default function DetailScreen({ isDarkTheme, navigation, route, onClickUp
                             <Text style={styles.buyText}>BUY NOW</Text>
                         </LinearGradient>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={onClickInsertToFavoriteHandler}>
                         <LinearGradient
                             start={[0, 0]}
                             end={[1, 1]}

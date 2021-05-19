@@ -48,7 +48,7 @@ export default function ProfileScreen({ isDarkTheme, token, user, navigation, dr
       if (token) {
         switch (navigateName) {
           case 'favorites':
-            Alert.alert('📣', 'Maintenance, come back later 💩', [{ text: 'OK' }]);
+            navigation.navigate('FavoriteScreen');
             break;
           case 'history':
             navigation.navigate('HistoryScreen');

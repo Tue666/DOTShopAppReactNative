@@ -9,7 +9,7 @@ import { IMAGE_URL } from '../core/config';
 
 const Stack = createStackNavigator();
 
-export default function PurchasedStack({ isDarkTheme, token, navigation, onClickRouteLogin, onLoadCartHandler, onClickUpdateIconBadge, iconBadge, listPurchased }) {
+export default function PurchasedStack({ isDarkTheme, token, navigation, onClickRouteLogin, onLoadCartHandler, onClickUpdateIconBadge, iconBadge, listPurchased, onLoadFavorite }) {
     return (
         <Stack.Navigator>
             <Stack.Screen
@@ -27,7 +27,7 @@ export default function PurchasedStack({ isDarkTheme, token, navigation, onClick
             </Stack.Screen>
             <Stack.Screen
                 name="Detail"
-                children={(props) => <DetailScreen isDarkTheme={isDarkTheme} token={token} onLoadCartHandler={onLoadCartHandler} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props} ></DetailScreen>}
+                children={(props) => <DetailScreen isDarkTheme={isDarkTheme} token={token} onLoadCartHandler={onLoadCartHandler} onClickUpdateIconBadge={onClickUpdateIconBadge} onLoadFavorite={onLoadFavorite} {...props} ></DetailScreen>}
                 options={({ route }) => ({
                     headerBackground: () =>
                         isDarkTheme ?

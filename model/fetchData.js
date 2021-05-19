@@ -79,6 +79,60 @@ export const editUser = (token, name, phone, email, address) => {
     });
 }
 
+export const loadFavorite = (token) => {
+    return fetch(BASE_URL + 'Favorite', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Token: token
+        })
+    });
+}
+
+export const insertToFavorite = (token, productID) => {
+    return fetch(BASE_URL + 'InsertToFavorite', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Token: token,
+            ProductID: productID
+        })
+    });
+}
+
+export const removeFavorite = (token, productID) => {
+    return fetch(BASE_URL + 'RemoveFavorite', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Token: token,
+            ProductID: productID
+        })
+    });
+}
+
+export const clearFavorite = (token) => {
+    return fetch(BASE_URL + 'ClearFavorite', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Token: token
+        })
+    });
+}
+
 export const loadPurchased = (token) => {
     return fetch(BASE_URL + 'Purchased', {
         method: 'POST',

@@ -11,7 +11,7 @@ import TopProductScreen from '../screens/Home/TopProductScreen';
 
 const Stack = createStackNavigator();
 
-export default function HomeStack({ isDarkTheme, navigation, iconBadge, onClickUpdateIconBadge, onLoadCartHandler, token }) {
+export default function HomeStack({ isDarkTheme, navigation, iconBadge, onClickUpdateIconBadge, onLoadCartHandler, token, onLoadFavorite }) {
     return (
         <Stack.Navigator
             screenOptions={{
@@ -32,7 +32,7 @@ export default function HomeStack({ isDarkTheme, navigation, iconBadge, onClickU
             </Stack.Screen>
             <Stack.Screen
                 name="Detail"
-                children={(props) => <DetailScreen isDarkTheme={isDarkTheme} token={token} onLoadCartHandler={onLoadCartHandler} onClickUpdateIconBadge={onClickUpdateIconBadge} {...props} ></DetailScreen>}
+                children={(props) => <DetailScreen isDarkTheme={isDarkTheme} token={token} onLoadCartHandler={onLoadCartHandler} onClickUpdateIconBadge={onClickUpdateIconBadge} onLoadFavorite={onLoadFavorite} {...props} ></DetailScreen>}
                 options={({ route }) => ({
                     headerTintColor: isDarkTheme ? '#fff' : 'black',
                     headerTitle: () => <HeaderDetail isDarkTheme={isDarkTheme} iconBadge={iconBadge} drawerNavigation={navigation} param={route.params}></HeaderDetail>

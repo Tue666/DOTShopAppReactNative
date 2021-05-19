@@ -25,7 +25,8 @@ export default function HistoryScreen({ isDarkTheme, navigation, listHistory }) 
                     <Text style={{ fontFamily: 'poppins-extralight', color: '#fff', fontSize: 30 }}>TRANSACTION</Text>
                     :
                     <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 30, color: 'rgba(41, 127, 239, 1)', fontStyle: 'italic', fontWeight: 'bold' }}>NOTHING 😛 HERE</Text>
+                        <Text style={{ fontSize: 25, color: isDarkTheme ? '#fff' : 'black', fontFamily: 'poppins-extralight' }}>NOTHING 😛 HERE</Text>
+                        <Text style={{ fontSize: 18, color: isDarkTheme ? '#fff' : 'black', fontFamily: 'poppins-extralight' }}>Go and buy something 🙆🏻‍♀️</Text>
                     </View>
                 }
             </View>
