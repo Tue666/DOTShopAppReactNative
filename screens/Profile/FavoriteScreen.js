@@ -72,7 +72,7 @@ export default function FavoriteScreen({ token, isDarkTheme, navigation, listFav
                 <View style={styles.modalContainer}>
                     <View style={styles.modalView}>
                         <TouchableOpacity style={{ position: 'absolute', top: 5, right: 7 }} onPress={() => setSwitchModal(!switchModal)}>
-                            <AntDesign name="close" size={20} color="black" />
+                            <AntDesign name="close" size={20} color="gray"/>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ width: '100%' }} onPress={() => navigation.navigate('Detail', itemHover)}>
                             <Text style={styles.textModal}>View</Text>

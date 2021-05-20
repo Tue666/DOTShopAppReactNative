@@ -16,6 +16,7 @@ export default function PurchasedStack({ isDarkTheme, token, navigation, onClick
                 name="Purchased"
                 children={(props) => <PurchasedScreen isDarkTheme={isDarkTheme} token={token} listPurchased={listPurchased} onClickRouteLogin={onClickRouteLogin} {...props}></PurchasedScreen>}
                 options={{
+                    headerBackTitleVisible: false,
                     headerBackground: () =>
                         isDarkTheme ?
                             <Image style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: IMAGE_URL + 'headerBlack.png' }}></Image>
@@ -29,6 +30,7 @@ export default function PurchasedStack({ isDarkTheme, token, navigation, onClick
                 name="Detail"
                 children={(props) => <DetailScreen isDarkTheme={isDarkTheme} token={token} onLoadCartHandler={onLoadCartHandler} onClickUpdateIconBadge={onClickUpdateIconBadge} onLoadFavorite={onLoadFavorite} {...props} ></DetailScreen>}
                 options={({ route }) => ({
+                    headerBackTitleVisible: false,
                     headerBackground: () =>
                         isDarkTheme ?
                             <Image style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: IMAGE_URL + 'headerBlack.png' }}></Image>

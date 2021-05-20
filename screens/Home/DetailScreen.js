@@ -111,16 +111,16 @@ export default function DetailScreen({ isDarkTheme, navigation, route, onClickUp
                 >
                     <View style={styles.modalContainer}>
                         <View style={styles.modalView}>
-                            <View style={styles.wrapper}>
-                                <View style={[styles.row, { justifyContent: 'flex-end' }]}>
-                                    <TouchableOpacity onPress={() => setSwitchModal(!switchModal)}>
-                                        <AntDesign name="close" size={28} color="black" />
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={[styles.row, { justifyContent: 'space-evenly', alignItems: 'center', marginBottom: 10 }]}>
-                                    <Image style={{ width: 140, height: 140, resizeMode: 'contain' }} source={{ uri: IMAGE_URL + route.params.Image }}></Image>
-                                    <Text style={{ color: 'red', fontWeight: 'bold', fontSize: 17, maxWidth: 230, marginLeft: 20 }}>{route.params.ProductName}</Text>
-                                </View>
+                            <View style={{ position: 'absolute', top: 10, right: 13 }}>
+                                <TouchableOpacity onPress={() => setSwitchModal(!switchModal)}>
+                                    <AntDesign name="close" size={28} color="black" />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ width: '100%', height: '50%', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
+                                <Image style={{ width: '40%', height: '100%', resizeMode: 'contain' }} source={{ uri: IMAGE_URL + route.params.Image }}></Image>
+                                <Text style={{ color: 'red', fontWeight: 'bold', fontSize: 17, maxWidth: '60%', marginLeft: 20, flexShrink: 1 }}>{route.params.ProductName}</Text>
+                            </View>
+                            <View style={{ width: '100%', height: '50%', justifyContent: 'center', alignItems: 'center' }}>
                                 {route.params.Quantity > 0 ?
                                     <>
                                         <View style={styles.quantity}>
@@ -139,30 +139,32 @@ export default function DetailScreen({ isDarkTheme, navigation, route, onClickUp
                                             </TouchableOpacity>
                                             <Text style={{ marginLeft: 20, fontSize: 17 }}> ( {maxInput} lefts )</Text>
                                         </View>
-                                        <View style={[styles.row, { justifyContent: 'flex-start', borderBottomWidth: 1, borderBottomColor: '#eee', marginBottom: 5 }]}>
-                                            <FontAwesome5 name="money-bill-alt" size={24} color="black" />
-                                        </View>
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                                            <View style={{ borderRadius: 5, elevation: 5, backgroundColor: '#eee' }}>
-                                                <Text style={{ fontWeight: 'bold', padding: 10 }}>{totalPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                                        <View style={{ width: '100%', height: '60%' }}>
+                                            <View style={[styles.row, { justifyContent: 'flex-start', borderBottomWidth: 1, borderBottomColor: '#eee', marginBottom: 5, width: '100%', height: '25%' }]}>
+                                                <FontAwesome5 name="money-bill-alt" size={24} color="black" />
                                             </View>
-                                            <View>
-                                                <TouchableOpacity onPress={onClickAddCartHandler}>
-                                                    <LinearGradient
-                                                        start={[0, 0]}
-                                                        end={[1, 1]}
-                                                        colors={['red', 'orange']}
-                                                        style={styles.addCartButton}
-                                                    >
-                                                        <Text style={styles.addCartText}>ADD TO CARD</Text>
-                                                    </LinearGradient>
-                                                </TouchableOpacity>
+                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', height: '75%' }}>
+                                                <View style={{ borderRadius: 5, elevation: 5, backgroundColor: '#eee' }}>
+                                                    <Text style={{ fontWeight: 'bold', padding: 10 }}>{totalPrice.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
+                                                </View>
+                                                <View>
+                                                    <TouchableOpacity onPress={onClickAddCartHandler}>
+                                                        <LinearGradient
+                                                            start={[0, 0]}
+                                                            end={[1, 1]}
+                                                            colors={['red', 'orange']}
+                                                            style={styles.addCartButton}
+                                                        >
+                                                            <Text style={styles.addCartText}>ADD TO CARD</Text>
+                                                        </LinearGradient>
+                                                    </TouchableOpacity>
+                                                </View>
                                             </View>
                                         </View>
                                     </>
                                     :
                                     <View style={{ marginTop: 75 }}>
-                                        <Text style={{ fontSize: 18, color: 'red', fontStyle: 'italic' }}>😍 Sold out! Thanks for your attention 😍</Text>
+                                        <Text style={{ fontSize: 16, color: 'red', fontFamily: 'poppins-extralight' }}>😍 Sold out! Thanks for your attention 😍</Text>
                                     </View>
                                 }
                             </View>
@@ -196,6 +198,14 @@ export default function DetailScreen({ isDarkTheme, navigation, route, onClickUp
                             :
                             <Text style={{ fontSize: 16, fontStyle: 'italic', color: isDarkTheme ? '#fff' : 'black' }}>{route.params.Price.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')} vnđ</Text>
                         }
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginBottom: 5 }}>
+                            <Text style={{ color: isDarkTheme ? '#fff' : 'black' }}>Status: </Text>
+                            {route.params.Quantity > 0 ?
+                                <Text style={{ fontSize: 14, fontStyle: 'italic', color: isDarkTheme ? '#fff' : 'black' }}>{route.params.Quantity} items left!</Text>
+                                :
+                                <Text style={{ color: 'red', fontWeight: 'bold', fontStyle: 'italic' }}>SOLD OUT</Text>
+                            }
+                        </View>
                         <Text style={{ fontSize: 14, fontStyle: 'italic', marginBottom: 17, color: isDarkTheme ? '#fff' : 'black' }}>{route.params.Count} products have been sold!</Text>
                     </View>
                     <TouchableOpacity onPress={() => { setSwitchModal(!switchModal) }}>
@@ -312,10 +322,12 @@ const styles = StyleSheet.create({
     },
     modalView: {
         width: '100%',
-        height: '45%',
+        height: 340,
         backgroundColor: '#fff',
         padding: 20,
-        borderRadius: 13
+        borderRadius: 13,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     row: {
         width: '100%',
@@ -325,7 +337,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 15
+        marginBottom: 15,
+        width: '100%',
+        height: '40%'
     },
     quantityButton: {
         borderRadius: 10,
@@ -342,10 +356,6 @@ const styles = StyleSheet.create({
     quantityInput: {
         width: 40,
         marginLeft: 10,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    wrapper: {
         justifyContent: 'center',
         alignItems: 'center'
     },

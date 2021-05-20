@@ -34,6 +34,7 @@ export default function HomeStack({ isDarkTheme, navigation, iconBadge, onClickU
                 name="Detail"
                 children={(props) => <DetailScreen isDarkTheme={isDarkTheme} token={token} onLoadCartHandler={onLoadCartHandler} onClickUpdateIconBadge={onClickUpdateIconBadge} onLoadFavorite={onLoadFavorite} {...props} ></DetailScreen>}
                 options={({ route }) => ({
+                    headerBackTitleVisible: false,
                     headerTintColor: isDarkTheme ? '#fff' : 'black',
                     headerTitle: () => <HeaderDetail isDarkTheme={isDarkTheme} iconBadge={iconBadge} drawerNavigation={navigation} param={route.params}></HeaderDetail>
                 })}
@@ -43,6 +44,7 @@ export default function HomeStack({ isDarkTheme, navigation, iconBadge, onClickU
                 name="About"
                 children={(props) => <AboutScreen isDarkTheme={isDarkTheme} {...props}></AboutScreen>}
                 options={({ route }) => ({
+                    headerBackTitleVisible: false,
                     headerTintColor: isDarkTheme ? '#fff' : 'black',
                     headerTitle: () => <HeaderAbout isDarkTheme={isDarkTheme} param={route.params}></HeaderAbout>
                 })}
@@ -52,6 +54,7 @@ export default function HomeStack({ isDarkTheme, navigation, iconBadge, onClickU
                 name="TopProduct"
                 children={(props) => <TopProductScreen isDarkTheme={isDarkTheme} {...props}></TopProductScreen>}
                 options={({ route }) => ({
+                    headerBackTitleVisible: false,
                     headerTitle: () => <HeaderTop isDarkTheme={isDarkTheme} iconBadge={iconBadge} param={route.params}></HeaderTop>,
                     headerTintColor: isDarkTheme ? '#fff' : 'black',
                 })}
@@ -61,6 +64,7 @@ export default function HomeStack({ isDarkTheme, navigation, iconBadge, onClickU
                 name="Image"
                 component={ImageScreen}
                 options={{
+                    headerBackTitleVisible: false,
                     title: '',
                     headerShown: false
                 }}
