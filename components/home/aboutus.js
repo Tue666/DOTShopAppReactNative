@@ -36,7 +36,7 @@ export default function AboutUs({ isDarkTheme }) {
                 </Title>
                 <View style={styles.userInfoSection}>
                     <Avatar.Image
-                        source={{ uri: IMAGE_URL + 'tue.png' }}
+                        source={{ uri: IMAGE_URL + 'huong.png' }}
                         size={80}
                         style={{
                             borderWidth: 41,
@@ -46,24 +46,8 @@ export default function AboutUs({ isDarkTheme }) {
                         }}
                     />
                     <View style={{ marginLeft: 20, justifyContent: 'center', alignItems: 'flex-start' }}>
-                        <Title style={{ fontSize: 20, fontFamily: 'bigshoulders-bold', marginBottom: 8, color: isDarkTheme ? '#fff' : 'black' }}>Le Chinh Tue</Title>
-                        <Caption style={[styles.caption, { color: isDarkTheme ? '#fff' : 'black' }]} >dapamu333@gmail.com</Caption>
-                    </View>
-                </View>
-                <View style={styles.userInfoSection}>
-                    <Avatar.Image
-                        source={{ uri: IMAGE_URL + 'long.png' }}
-                        size={80}
-                        style={{
-                            borderWidth: 41,
-                            borderColor: isDarkTheme ? '#fff' : '#bbb',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}
-                    />
-                    <View style={{ marginLeft: 20, justifyContent: 'center', alignItems: 'flex-start' }}>
-                        <Title style={{ fontSize: 20, fontFamily: 'bigshoulders-bold', marginBottom: 8, color: isDarkTheme ? '#fff' : 'black' }}>Nguyen Thang Long</Title>
-                        <Caption style={[styles.caption, { color: isDarkTheme ? '#fff' : 'black' }]} >ngthanglong@gmail.com</Caption>
+                        <Title style={{ fontSize: 20, fontFamily: 'bigshoulders-bold', marginBottom: 8, color: isDarkTheme ? '#fff' : 'black' }}>Nguyen Tran Huong</Title>
+                        <Caption style={[styles.caption, { color: isDarkTheme ? '#fff' : 'black' }]} >huongnguyentran01@gmail.com</Caption>
                     </View>
                 </View>
                 <View style={styles.userInfoSection}>
@@ -82,10 +66,9 @@ export default function AboutUs({ isDarkTheme }) {
                         <Caption style={[styles.caption, { color: isDarkTheme ? '#fff' : 'black' }]} >cnkimngan@gmail.com</Caption>
                     </View>
                 </View>
-
                 <View style={styles.userInfoSection}>
                     <Avatar.Image
-                        source={{ uri: IMAGE_URL + 'anh.png' }}
+                        source={{ uri: IMAGE_URL + 'phuc.png' }}
                         size={80}
                         style={{
                             borderWidth: 41,
@@ -95,8 +78,24 @@ export default function AboutUs({ isDarkTheme }) {
                         }}
                     />
                     <View style={{ marginLeft: 20, justifyContent: 'center', alignItems: 'flex-start' }}>
-                        <Title style={{ fontSize: 20, fontFamily: 'bigshoulders-bold', marginBottom: 8, color: isDarkTheme ? '#fff' : 'black' }}>Nguyen The Anh</Title>
-                        <Caption style={[styles.caption, { color: isDarkTheme ? '#fff' : 'black' }]} >nta@gmail.com</Caption>
+                        <Title style={{ fontSize: 20, fontFamily: 'bigshoulders-bold', marginBottom: 8, color: isDarkTheme ? '#fff' : 'black' }}>Phan Huynh Phuc</Title>
+                        <Caption style={[styles.caption, { color: isDarkTheme ? '#fff' : 'black' }]} >phucphan785@gmail.com</Caption>
+                    </View>
+                </View>
+                <View style={styles.userInfoSection}>
+                    <Avatar.Image
+                        source={{ uri: IMAGE_URL + 'tue.png' }}
+                        size={80}
+                        style={{
+                            borderWidth: 41,
+                            borderColor: isDarkTheme ? '#fff' : '#bbb',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                    />
+                    <View style={{ marginLeft: 20, justifyContent: 'center', alignItems: 'flex-start' }}>
+                        <Title style={{ fontSize: 20, fontFamily: 'bigshoulders-bold', marginBottom: 8, color: isDarkTheme ? '#fff' : 'black' }}>Le Chinh Tue</Title>
+                        <Caption style={[styles.caption, { color: isDarkTheme ? '#fff' : 'black' }]} >dapamu333@gmail.com</Caption>
                     </View>
                 </View>
             </ScrollView>

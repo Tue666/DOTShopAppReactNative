@@ -13,6 +13,7 @@ import ContactStack from '../routes/contactStack';
 import { getStorage, setStorage } from '../model/asyncStorage';
 import { ISDARK, TOKEN } from '../constant';
 import { countCartItem, getUser, loadCart, loadPurchased, loadHistory, loadFeedback, loadFavorite } from '../model/fetchData';
+import { View, Text } from 'react-native';
 
 const Drawer = createDrawerNavigator();
 
@@ -61,12 +62,16 @@ export default function AppScreen({ onClickRouteLogin }) {
                     .then(json => setListFavorite(json));
             }
         });
+    }, []);
+
+    useEffect(() => {
         getStorage(ISDARK).then(response => {
             if (response) {
                 setIsDarkTheme(JSON.parse(response));
             }
         })
     }, []);
+
     const onSwapDarkHandler = () => {
         setIsDarkTheme(!isDarkTheme);
         setStorage(ISDARK, JSON.stringify(!isDarkTheme));
